@@ -1,1 +1,0 @@
-PAGE_PATH = '/Users/sean/github/page'

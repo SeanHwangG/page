@@ -1,5 +1,0 @@
-@import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
-body { font-family: 'Lobster', cursive; margin: 0; padding: 0; }
-.full-screen { width: 100vw; min-height: 100vh; }
-.flex-center { display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.text-xl { font-size: 4rem; }
