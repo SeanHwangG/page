@@ -5,11 +5,9 @@ import sys, os
 import ssl
 import os
 import time
-import pyrebase
 from flask import Flask, render_template, url_for, request, session, redirect
 from oauthlib.oauth2 import WebApplicationClient
 from api import get_students, get_problems, hide_unsolved
-from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import (
     LoginManager,
     current_user,
@@ -42,7 +40,7 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("home.html", posts={})
+    return render_template("index.html", posts={})
     
 @app.route("/admin", methods=["POST", "GET"])
 def admin():
@@ -61,14 +59,14 @@ def python():
     posts = hide_unsolved(posts, [])
     print(1)
 
-    return render_template("home.html", posts=posts)
+    return render_template("index.html", posts=posts)
 
 @app.route("/terminal", methods=["GET"])
 def terminal():
     with open("data/terminal.json", "r") as read_file:
         data = json.load(read_file)
         posts = data["posts"]
-    return render_template("home.html", posts=posts)
+    return render_template("index.html", posts=posts)
 
 @app.route("/signin", methods=["POST", "GET"])
 def signin():
