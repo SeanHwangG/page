@@ -1,27 +1,34 @@
 {% extends "base.html" %}
 {% block body %}
-{% for k1, h2 in posts.items() %}
-<h1>{{k1}}</h1>
+<div class="side-bar">
+  {% for k1, v1 in posts.items() %}
+  <a class="side-item-l" href="#{{k1}}">{{k1}}</a>
+  {% for k2 in v1 %}
+  <a class=" side-item-m" href="#{{k2}}">{{k2}}</a>
+  {% endfor %}
+  {% endfor %}
+</div>
+<div class="content">
+  {% for k1, v1 in posts.items() %}
+  <h1 id="{{k1}}">{{k1}}</h1>
 
-{% for k2, h3 in h2.items() %}
-<h2>{{k2}}</h2>
+  {% for k2, v2 in v1.items() %}
+  <h2 id="{{k2}}">{{k2}}</h2>
 
-{% for k3, li in h3.items() %}
-<h3>{{k3}}</h3>
-{% for item in li %}
-<ul>
-  <li>
-    {{item["li"]}}
-  </li>
-</ul>
-{% for p in item["ps"] %}
-<p>
-  {{p|safe}}
-</p>
-{% endfor %}
+  {% for item in v2 %}
+  <ul>
+    <li>
+      {{item["li"]}}
+    </li>
+  </ul>
+  {% for p in item["ps"] %}
+  <p>
+    {{p | safe}}
+  </p>
 
-{% endfor %}
-{% endfor %}
-{% endfor %}
-{% endfor %}
+  {% endfor %}
+  {% endfor %}
+  {% endfor %}
+  {% endfor %}
+</div>
 {% endblock body %}

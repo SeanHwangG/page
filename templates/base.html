@@ -4,27 +4,28 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}">
-  <div class="navbar-nav">
-    {% if session.user %}
-    <a class="nav-item nav-link" href="{{ url_for('signout') }}">Signout</a>
-    {% else %}
-    <a class="nav-item nav-link" href="{{ url_for('signin') }}">Signin</a>
-    <a class="nav-item nav-link" href="{{ url_for('signup') }}">Signup</a>
-    {% endif %}
-  </div>
   <nav>
+    <div class="navbar-nav">
+      {% if session.user %}
+      <a class="nav-item nav-link" href="{{ url_for('signout') }}">Signout</a>
+      {% else %}
+      <a class="nav-item nav-link" href="{{ url_for('signin') }}">Signin</a>
+      {% endif %}
+    </div>
+    <div class="heading">Sean's Dev Note</div>
     <ul>
-      <li><a class="current" href="/">Home</a></li>
-      <li><a href="python">algorithm</a></li>
+      <li><a class="current" href="http://localhost:5000/">Home</a></li>
+      <li><a href="http://localhost:5000/python">Python</a></li>
+      <li><a href="http://localhost:5000/terminal">terminal</a></li>
     </ul>
   </nav>
 </head>
 
-<body>
+<body class="vsc-initialized">
   <div>
     {% for key, value in session.items() %}
-    <h1>Key: {{key}}</h1>
-    <h2>Value: {{value}}</h2>
+    <h1 id={{key}}>Key: {{key}}</h1>
+    <h2 id={{key}}>Value: {{value}}</h2>
     <a>df</a>
     {% endfor %}
     {% block body %} {% endblock body %}

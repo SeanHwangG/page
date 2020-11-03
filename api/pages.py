@@ -1,3 +1,4 @@
+import re
 import pickle
 import io
 import os.path
@@ -92,6 +93,22 @@ def html2json(html):
         i += 1
     return doc
 
+def hide_unsolved(docs, solved):
+    for h2 in docs.values():
+        for h3 in h2.values():
+            for post in h3:
+                new_ps = []
+                i = 0
+                while i < len(post["ps"]):
+                    id_match = re.match(r"<a.*(BJ|BJE|KT)_(\d+).*", post["ps"][i])
+                    if "KT_" not in post["ps"][i]:
+                        new_ps.append(post["ps"][i])
+                    if id_match and id_match.group(1) not in solved:
+                        while i + 1 < len(post["ps"]) and not re.match(r"<.*", post["ps"][i + 1]):
+                            i+=1
+                    i += 1
+                post["ps"] = new_ps
+    return docs
 
 if __name__ == '__main__':
     update_page('1B8J_rQtCihzPVSN5wOf7SgEOQRlJFs5Rsf3wFH9_hwM', 'python', to_json=True)

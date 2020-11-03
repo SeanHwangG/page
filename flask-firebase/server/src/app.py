@@ -27,16 +27,9 @@ def index():
     response.headers['Cache-Control'] = 'public, max-age=300, s-maxage=600'
     return response
 
-@app.route('/signup')
-def signup():
-    return render_template("signup.html")
-
-
 def signin():
     template = render_template('machine_learning.html')
     return template
-    #return 
-
 
 if __name__ == '__main__':
     pass
