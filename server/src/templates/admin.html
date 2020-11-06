@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block body %}
+<form action="admin" method="post">
+  <p>Name:</p>
+  <input type="text" name="nm">
+  <input type="submit" value="submit">
+</form>
+{{students|safe}}
+{% endblock body %}

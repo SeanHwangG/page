@@ -1,0 +1,869 @@
+{
+    "[1] Greedy": {
+        "Two Pointer | Optimize | others": [
+            {
+                "li": "Two Pointer",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2003&amp;sa=D&amp;ust=1604589163831000&amp;usg=AOvVaw1fxoE8wmokY6c-w30xNtm0\" style=\"color:inherit;text-decoration:inherit\">BJ_2003 수들의 합 2 (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1946&amp;sa=D&amp;ust=1604589163833000&amp;usg=AOvVaw2wCs8yXWhQ0qfxW6kdhgdR\" style=\"color:inherit;text-decoration:inherit\">BJ_1946 신입 사원 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1644&amp;sa=D&amp;ust=1604589163835000&amp;usg=AOvVaw2XX1xxT2sXec7nPQdtdLSx\" style=\"color:inherit;text-decoration:inherit\">BJ_1644 소수의 연속합 (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/3sum/&amp;sa=D&amp;ust=1604589163838000&amp;usg=AOvVaw2GDmR8U2U-RvHQ-E3Olcwp\" style=\"color:inherit;text-decoration:inherit\">LC_15 3sum (medium)</a>",
+                    "class Solution:",
+                    "    def threeSum(self, nums: List[int]) -> List[List[int]]:",
+                    "        res = []",
+                    "        nums.sort()",
+                    "        for i in range(len(nums) - 2):",
+                    "            if i > 0 and nums[i] == nums[i-1]:",
+                    "                continue",
+                    "            l, r = i + 1, len(nums)-1",
+                    "            while l < r:",
+                    "                s = nums[i] + nums[l] + nums[r]",
+                    "                if s < 0:",
+                    "                    l += 1 ",
+                    "                elif s > 0:",
+                    "                    r -= 1",
+                    "                else:",
+                    "                    res.append((nums[i], nums[l], nums[r]))",
+                    "                    while l < r and nums[l] == nums[l+1]:",
+                    "                        l += 1",
+                    "                    while l < r and nums[r] == nums[r-1]:",
+                    "                        r -= 1",
+                    "                    l += 1; r -= 1",
+                    "        return res",
+                    ""
+                ]
+            },
+            {
+                "li": "Optimize",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2839&amp;sa=D&amp;ust=1604589163841000&amp;usg=AOvVaw37aH0A6NbIfIlcBQ2P0lku\" style=\"color:inherit;text-decoration:inherit\">BJ_2839 설탕 배달 (5)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2839&amp;sa=D&amp;ust=1604589163841000&amp;usg=AOvVaw37aH0A6NbIfIlcBQ2P0lku\" style=\"color:inherit;text-decoration:inherit\">BJ_2839 설탕 배달 (5)</a>",
+                    "# Greedy",
+                    "N = int(input())",
+                    "for i in range(0, N + 1, 3):",
+                    "    if (N - i) % 5 == 0:",
+                    "        print(i // 3 + (N - i) // 5)",
+                    "        break",
+                    "else:",
+                    "    print(-1)",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/14916&amp;sa=D&amp;ust=1604589163842000&amp;usg=AOvVaw3WJoi6WAJ-ntkDm10z6u6I\" style=\"color:inherit;text-decoration:inherit\">BJ_14916 거스름돈 (6)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2217&amp;sa=D&amp;ust=1604589163843000&amp;usg=AOvVaw3viBPdbbYL3Fqd9lWcjnsh\" style=\"color:inherit;text-decoration:inherit\">BJ_2217 로프 (7)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1931&amp;sa=D&amp;ust=1604589163844000&amp;usg=AOvVaw0Ir7N05dqSZ3JaEuca7cb3\" style=\"color:inherit;text-decoration:inherit\">BJ_1931 회의실배정 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11047&amp;sa=D&amp;ust=1604589163845000&amp;usg=AOvVaw0btDuOkwQfzfv2jPz46Cn1\" style=\"color:inherit;text-decoration:inherit\">BJ_11047 동전 O (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/13904&amp;sa=D&amp;ust=1604589163846000&amp;usg=AOvVaw1kz43Z6yOJ2afwt82OXLsf\" style=\"color:inherit;text-decoration:inherit\">BJ_13904 과제 (13)</a>"
+                ]
+            },
+            {
+                "li": "Others",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/14659&amp;sa=D&amp;ust=1604589163848000&amp;usg=AOvVaw1K1zVvYWn-2mfXa8_G0vdS\" style=\"color:inherit;text-decoration:inherit\">BJ_14659 한조서열정리하고옴 (4)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1783&amp;sa=D&amp;ust=1604589163850000&amp;usg=AOvVaw39SX9FvtNIFAGahKnev_NE\" style=\"color:inherit;text-decoration:inherit\">BJ_1783 병든 나이트 (6)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/13305&amp;sa=D&amp;ust=1604589163852000&amp;usg=AOvVaw1E2c2wNURDk95qhvIuSp4T\" style=\"color:inherit;text-decoration:inherit\">BJ_13305 주유소 (7)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1439&amp;sa=D&amp;ust=1604589163853000&amp;usg=AOvVaw0a2SOzpIADWl5uD0-HnJKX\" style=\"color:inherit;text-decoration:inherit\">BJ_1439 뒤집기 (6)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1138&amp;sa=D&amp;ust=1604589163855000&amp;usg=AOvVaw1i1Z09X5bWCAXdYBwLG-qq\" style=\"color:inherit;text-decoration:inherit\">BJ_1138 한 줄로 서기 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1541&amp;sa=D&amp;ust=1604589163856000&amp;usg=AOvVaw2gIGt6l3Jyet6jATxI3_Gl\" style=\"color:inherit;text-decoration:inherit\">BJ_1541 잃어버린 괄호 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2138&amp;sa=D&amp;ust=1604589163857000&amp;usg=AOvVaw3fjd7p3JIjLXhSG_x6bJ48\" style=\"color:inherit;text-decoration:inherit\">BJ_2138 전구와 스위치 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1080&amp;sa=D&amp;ust=1604589163860000&amp;usg=AOvVaw0Qnt4FU1y8ZCAXhlfsjwfg\" style=\"color:inherit;text-decoration:inherit\">BJ_1080 행렬 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11509&amp;sa=D&amp;ust=1604589163863000&amp;usg=AOvVaw03IjvM8gPpH676cI0fgA3c\" style=\"color:inherit;text-decoration:inherit\">BJ_11509 풍선 맞추기 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1339&amp;sa=D&amp;ust=1604589163864000&amp;usg=AOvVaw2wUGMRqOXwqN2wq8mU2Vrf\" style=\"color:inherit;text-decoration:inherit\">BJ_1339 단어 수학 (12)</a>"
+                ]
+            }
+        ],
+        "sweeping | bruteforce": [
+            {
+                "li": "sweeping",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2594&amp;sa=D&amp;ust=1604589163867000&amp;usg=AOvVaw3D5C0s6tjn_81FlrLm8nS7\" style=\"color:inherit;text-decoration:inherit\">BJ_2594 놀이공원 (8)</a>"
+                ]
+            },
+            {
+                "li": "brute force",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/6131&amp;sa=D&amp;ust=1604589163868000&amp;usg=AOvVaw274rnpDW8w1nt049b8VSKn\" style=\"color:inherit;text-decoration:inherit\">BJ_6131 완전 제곱수 (3)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9094&amp;sa=D&amp;ust=1604589163869000&amp;usg=AOvVaw2-fboPAt0joh_WcmNlpw8Z\" style=\"color:inherit;text-decoration:inherit\">BJ_9094 수학적 호기심 (3)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2578&amp;sa=D&amp;ust=1604589163871000&amp;usg=AOvVaw3KZB2kcI7AQpENrHYfazi1\" style=\"color:inherit;text-decoration:inherit\">BJ_2578 빙고 (6)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1120&amp;sa=D&amp;ust=1604589163873000&amp;usg=AOvVaw0lMsfrToC_2-hbo4Vu5KkJ\" style=\"color:inherit;text-decoration:inherit\">BJ_1120 문자열 (7)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/14790&amp;sa=D&amp;ust=1604589163875000&amp;usg=AOvVaw1xkeI8vIN7qTuSsyxsVJZN\" style=\"color:inherit;text-decoration:inherit\">BJ_14790 Tidy Numbers (3)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/14791&amp;sa=D&amp;ust=1604589163875000&amp;usg=AOvVaw0c8OqCnJ0hgoGq9NWsA9xA\" style=\"color:inherit;text-decoration:inherit\">BJ_14791 Tidy Numbers (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/18111&amp;sa=D&amp;ust=1604589163877000&amp;usg=AOvVaw2R8FKCECxaq7czJ692K-MW\" style=\"color:inherit;text-decoration:inherit\">BJ_18111 마인크래프트 (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1107&amp;sa=D&amp;ust=1604589163879000&amp;usg=AOvVaw2rYRpHiqGxZSX4EW6IBZCQ\" style=\"color:inherit;text-decoration:inherit\">BJ_1107 리모컨 (11)</a>"
+                ]
+            }
+        ]
+    },
+    "[2] Recursion | Backtrack": {
+        "Recursion | Backtrack": [
+            {
+                "li": "Recursion",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.youtube.com/watch?v%3Dkx6DfrYfWnQ&amp;sa=D&amp;ust=1604589163881000&amp;usg=AOvVaw2heTp3WFZ9e5_JeXd46U5k\" style=\"color:inherit;text-decoration:inherit\">Comparing Iterative and Recursive Factorial Functions</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.youtube.com/watch?v%3Dzg-ddPbzcKM&amp;sa=D&amp;ust=1604589163882000&amp;usg=AOvVaw2D6WdrRTI9726apvarZ6l1\" style=\"color:inherit;text-decoration:inherit\">Stepping Through Recursive Fibonacci Function</a>",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/10870&amp;sa=D&amp;ust=1604589163883000&amp;usg=AOvVaw3eUCjUrOLNG75n_3fwHvDH\" style=\"color:inherit;text-decoration:inherit\">BJ_10870 피보나치 수 5 (4)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/17478&amp;sa=D&amp;ust=1604589163884000&amp;usg=AOvVaw12hwWLnejm9ak2a1dV4wfM\" style=\"color:inherit;text-decoration:inherit\">BJ_17478 재귀함수가 뭔가요? (6)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2630&amp;sa=D&amp;ust=1604589163887000&amp;usg=AOvVaw3IQp64EiOrDZbAxcnmY8HK\" style=\"color:inherit;text-decoration:inherit\">BJ_2630 색종이 만들기 (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1780&amp;sa=D&amp;ust=1604589163890000&amp;usg=AOvVaw1zJeY6uXnE0OFnVrjsGAvG\" style=\"color:inherit;text-decoration:inherit\">BJ_1780 종이의 개수 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11729&amp;sa=D&amp;ust=1604589163892000&amp;usg=AOvVaw0yeZDhs7WnBryBT2o4ZWZm\" style=\"color:inherit;text-decoration:inherit\">BJ_11729 하노이 탑 이동 순서 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1074&amp;sa=D&amp;ust=1604589163894000&amp;usg=AOvVaw3tp76DFFNv8EqtB3Fxk--N\" style=\"color:inherit;text-decoration:inherit\">BJ_1074 Z (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2447&amp;sa=D&amp;ust=1604589163896000&amp;usg=AOvVaw07kjh4XC72NMwDJcfVOsrE\" style=\"color:inherit;text-decoration:inherit\">BJ_2247 별 찍기 - 10 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1629&amp;sa=D&amp;ust=1604589163898000&amp;usg=AOvVaw3JtNpEpJvUEPZLB_kwG22U\" style=\"color:inherit;text-decoration:inherit\">BJ_1629 곱셈 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/12100&amp;sa=D&amp;ust=1604589163900000&amp;usg=AOvVaw2N3KNs7AZUq1iIBECJy3cq\" style=\"color:inherit;text-decoration:inherit\">BJ_12100 2048 (Easy) (14)</a>"
+                ]
+            },
+            {
+                "li": "Backtrack",
+                "ps": [
+                    "",
+                    "Bounding function : kill some live nodes without actually expanding them",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15649&amp;sa=D&amp;ust=1604589163903000&amp;usg=AOvVaw2l-dXWwOoxm5x3XF3-3Ngd\" style=\"color:inherit;text-decoration:inherit\">BJ_15649 N과 M (1) (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15650&amp;sa=D&amp;ust=1604589163904000&amp;usg=AOvVaw0gcHlvO63z-AaaXEXoYkKE\" style=\"color:inherit;text-decoration:inherit\">BJ_15650 N과 M (2) (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15651&amp;sa=D&amp;ust=1604589163906000&amp;usg=AOvVaw39uUz8uVZMx1uMduL0tz2i\" style=\"color:inherit;text-decoration:inherit\">BJ_15651 N과 M (3) (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15652&amp;sa=D&amp;ust=1604589163907000&amp;usg=AOvVaw1KGBC-q7b15kXijF9qmKMG\" style=\"color:inherit;text-decoration:inherit\">BJ_15652 N과 M (4) (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15654&amp;sa=D&amp;ust=1604589163909000&amp;usg=AOvVaw3cCsy4aFyH5-OC2TtQ9AD3\" style=\"color:inherit;text-decoration:inherit\">BJ_15654 N과 M (5) (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15655&amp;sa=D&amp;ust=1604589163911000&amp;usg=AOvVaw2R3xkMj1rayNqmiQdRdPnw\" style=\"color:inherit;text-decoration:inherit\">BJ_15654 N과 M (6) (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15656&amp;sa=D&amp;ust=1604589163912000&amp;usg=AOvVaw3BhCBsoeg7N2pj3qj4HK66\" style=\"color:inherit;text-decoration:inherit\">BJ_15656 N과 M (7) (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15657&amp;sa=D&amp;ust=1604589163914000&amp;usg=AOvVaw3yuoxTa0UK9xuW96ZZReaE\" style=\"color:inherit;text-decoration:inherit\">BJ_15657 N과 M (8) (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15663&amp;sa=D&amp;ust=1604589163916000&amp;usg=AOvVaw2BVz6QdazOMPCXDtYcQ_hS\" style=\"color:inherit;text-decoration:inherit\">BJ_15663 N과 M (9) (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2529&amp;sa=D&amp;ust=1604589163918000&amp;usg=AOvVaw3I37k6rp69qUY90uAyynv8\" style=\"color:inherit;text-decoration:inherit\">BJ_2529 부등호 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9663&amp;sa=D&amp;ust=1604589163920000&amp;usg=AOvVaw3dhF1yptU7zgaj7Q0bVvNw\" style=\"color:inherit;text-decoration:inherit\">BJ_9663  N-Queen (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2580&amp;sa=D&amp;ust=1604589163922000&amp;usg=AOvVaw06l0X8m8uCY-kDxbFHPeVb\" style=\"color:inherit;text-decoration:inherit\">BJ_2580 스도쿠 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15655&amp;sa=D&amp;ust=1604589163925000&amp;usg=AOvVaw2KYC2L-fgNho9P_wO67-SQ\" style=\"color:inherit;text-decoration:inherit\">https://www.acmicpc.net/problem/15655</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15656&amp;sa=D&amp;ust=1604589163926000&amp;usg=AOvVaw1H58Hab0qx_LYvsluBlAlL\" style=\"color:inherit;text-decoration:inherit\">https://www.acmicpc.net/problem/15656</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15657&amp;sa=D&amp;ust=1604589163927000&amp;usg=AOvVaw3S82brdxd9WEycos0nYiyL\" style=\"color:inherit;text-decoration:inherit\">https://www.acmicpc.net/problem/15657</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15663&amp;sa=D&amp;ust=1604589163927000&amp;usg=AOvVaw1EPdUXU-67tXR8uuyObnuR\" style=\"color:inherit;text-decoration:inherit\">https://www.acmicpc.net/problem/15663</a>",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/combination-sum/&amp;sa=D&amp;ust=1604589163928000&amp;usg=AOvVaw3msDTDyRFQU58xsISJjxLE\" style=\"color:inherit;text-decoration:inherit\">LC_39 combination-sum</a>",
+                    "# unique combinations in candidates where the candidate numbers sums to target",
+                    "vector<vector<int>> combinationSum(vector<int> &v, int target) {",
+                    "    vector<vector<int>> ret;",
+                    "    sort(v.begin(), v.end());",
+                    "    bt(v, 0, target, vector<int>(), ret);",
+                    "    return ret;",
+                    "}",
+                    "void bt(vector<int>& v, int index, int target, vector<int> cur, vector<vector<int>>& ret) {",
+                    "    if (target == 0) {",
+                    "        ret.push_back(cur);",
+                    "        return;",
+                    "    }",
+                    "",
+                    "    for (int i = index; i < v.size() && v[i] <= target; i++) {",
+                    "        if (i == index || v[i] != v[i - 1]) {",
+                    "            cur.push_back(v[i]);",
+                    "            bt(v, i + 1, target - v[i], cur, ret);",
+                    "            cur.pop_back();",
+                    "        }",
+                    "    }",
+                    "}"
+                ]
+            }
+        ]
+    },
+    "[3] DP ": {
+        "Game | optimization | Others": [
+            {
+                "li": "game",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15048&amp;sa=D&amp;ust=1604589163931000&amp;usg=AOvVaw0x2pfpl3FBY1ttYHUMMsor\" style=\"color:inherit;text-decoration:inherit\">BJ_15048 Jogo de Boca (2)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9655&amp;sa=D&amp;ust=1604589163932000&amp;usg=AOvVaw25x3EuNWwVFK9tPbPvQ2lS\" style=\"color:inherit;text-decoration:inherit\">BJ_9655 돌 게임 (7)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9656&amp;sa=D&amp;ust=1604589163933000&amp;usg=AOvVaw3Mgs40hjmz6WyWE82yN8dz\" style=\"color:inherit;text-decoration:inherit\">BJ_9656 돌 게임 2 (7)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9657&amp;sa=D&amp;ust=1604589163933000&amp;usg=AOvVaw2LODORRyXn9i2APmpD9QL4\" style=\"color:inherit;text-decoration:inherit\">BJ_9657 돌 게임 3 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9658&amp;sa=D&amp;ust=1604589163934000&amp;usg=AOvVaw0crrnTylBK3AoaAV6XLc-b\" style=\"color:inherit;text-decoration:inherit\">BJ_9658 돌 게임 4 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9659&amp;sa=D&amp;ust=1604589163935000&amp;usg=AOvVaw17JYWU99JxS9nv_TtAmFzC\" style=\"color:inherit;text-decoration:inherit\">BJ_9659 돌 게임 5 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9660&amp;sa=D&amp;ust=1604589163936000&amp;usg=AOvVaw2u3GYJxv_psVLXQ5vYfM8A\" style=\"color:inherit;text-decoration:inherit\">BJ_9660 돌 게임 6 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9661&amp;sa=D&amp;ust=1604589163936000&amp;usg=AOvVaw1-3gYdCu1H2zMr5BY4KbDx\" style=\"color:inherit;text-decoration:inherit\">hBJ_9661 돌 게임 7 (14)</a>"
+                ]
+            },
+            {
+                "li": "optimization",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/14501&amp;sa=D&amp;ust=1604589163937000&amp;usg=AOvVaw3DeH04WgNhgk2khl1phAC-\" style=\"color:inherit;text-decoration:inherit\">BJ_14501 퇴사 (7)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2670&amp;sa=D&amp;ust=1604589163938000&amp;usg=AOvVaw1xD0KPjtpSbN3MaoHpVPZo\" style=\"color:inherit;text-decoration:inherit\">BJ_2670 연속부분최대곱 (7)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1912&amp;sa=D&amp;ust=1604589163940000&amp;usg=AOvVaw0U_mR2TwJnyQzikFKyCk59\" style=\"color:inherit;text-decoration:inherit\">BJ_1912 연속합 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11055&amp;sa=D&amp;ust=1604589163941000&amp;usg=AOvVaw3iAbfPZTeAkjrTDSk1JyLx\" style=\"color:inherit;text-decoration:inherit\">BJ_11055 가장 큰 증가 부분 수열 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9251&amp;sa=D&amp;ust=1604589163942000&amp;usg=AOvVaw2N47Y6DF0oX-F54ulDQ8dA\" style=\"color:inherit;text-decoration:inherit\">BJ_9251 LCS (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9252&amp;sa=D&amp;ust=1604589163943000&amp;usg=AOvVaw3s4kaDT0oFMGIYzjTWspEp\" style=\"color:inherit;text-decoration:inherit\">BJ_9252 LCS 2 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1958&amp;sa=D&amp;ust=1604589163945000&amp;usg=AOvVaw3myb0Oo7VO2cpUeMkUoWBD\" style=\"color:inherit;text-decoration:inherit\">BJ_1958 LCS 3 (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1806&amp;sa=D&amp;ust=1604589163947000&amp;usg=AOvVaw05MKxR0BBcF-WN1fsMesqM\" style=\"color:inherit;text-decoration:inherit\">BJ_1806 부분합 (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11054&amp;sa=D&amp;ust=1604589163949000&amp;usg=AOvVaw1MD9DqbmPY7Hjz3JFoyg-9\" style=\"color:inherit;text-decoration:inherit\">BJ_11054 가장 긴 바이토닉 부분 수열 (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11049&amp;sa=D&amp;ust=1604589163951000&amp;usg=AOvVaw0OcwKWynrMVMuC3szpQTBB\" style=\"color:inherit;text-decoration:inherit\">BJ_11049 행렬 곱셈 순서 (13)</a>"
+                ]
+            },
+            {
+                "li": "DP Others",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2167&amp;sa=D&amp;ust=1604589163953000&amp;usg=AOvVaw0eJSiJmOCLjIDmhrcVbyJm\" style=\"color:inherit;text-decoration:inherit\">BJ_2167 2차원 배열의 합 (4)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9461&amp;sa=D&amp;ust=1604589163955000&amp;usg=AOvVaw2gXCRpyl7E1zW67x70wjA9\" style=\"color:inherit;text-decoration:inherit\">BJ_9461 파도반 수열 (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1947&amp;sa=D&amp;ust=1604589163956000&amp;usg=AOvVaw2kgBVXupx522Qp_c3pbw-d\" style=\"color:inherit;text-decoration:inherit\">BJ_1947 선물 전달 (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1126&amp;sa=D&amp;ust=1604589163957000&amp;usg=AOvVaw3yRKKolQo-yVkr4QvU4x7f\" style=\"color:inherit;text-decoration:inherit\">BJ_1126 같은 탑 (Platinum II)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/best-time-to-buy-and-sell-stock/&amp;sa=D&amp;ust=1604589163959000&amp;usg=AOvVaw2FjjVlNbeVi63A1baYf8lo\" style=\"color:inherit;text-decoration:inherit\">LC_121 best-time-to-buy-and-sell-stock</a>",
+                    "# row        # transaction",
+                    "# col        day",
+                    "vector<vector<int>> dp(k + 1, vector<int>(N));",
+                    "for (int i = 1; i <= k; i++){",
+                    "    int mx = -v[0];",
+                    "    for (int j = 1; j < N; j++){",
+                    "        dp[i][j] = max(dp[i][j - 1], mx + v[j]);",
+                    "        mx = max(mx, dp[i - 1][j] - v[j]);",
+                    "    }",
+                    "}",
+                    "return dp[k][N - 1];",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/burst-balloons/&amp;sa=D&amp;ust=1604589163960000&amp;usg=AOvVaw0c4RqFqecnm_NEIIpkvtlg\" style=\"color:inherit;text-decoration:inherit\">LC_312 Burst-balloons</a>",
+                    "def maxCoins(self, li):",
+                    "    li = [1] + li + [1]",
+                    "    n = len(li)",
+                    "    dp = [[0] * n for _ in range(n)]        # dp[i][j] coins obtained from balloons between index i and j",
+                    "    for gap in range(2, n):",
+                    "        for i in range(n - gap):",
+                    "            j = i + gap",
+                    "            for k in range(i+1, j):                # k is last balloon index",
+                    "                dp[i][j] = max(dp[i][j], li[i] * li[k] * li[j] + dp[i][k] + dp[k][j])",
+                    "    return dp[0][n-1]",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/regular-expression-matching/&amp;sa=D&amp;ust=1604589163961000&amp;usg=AOvVaw3KGbQ6bI9g6v603yNUhl3G\" style=\"color:inherit;text-decoration:inherit\">LC_10 regular-expression-matching</a>",
+                    "bool isMatch(string s, string p) {",
+                    "    int N = s.size(), M = p.size();",
+                    "    vector<vector<bool>> dp(N + 1, vector<bool>(M + 1, false));",
+                    "    dp[0][0] = true;",
+                    "",
+                    "    for (int j = 0; j < M; j++) {",
+                    "        if (p[j] == '*') {",
+                    "            dp[0][j + 1] = dp[0][j - 1];",
+                    "        }",
+                    "    }",
+                    "",
+                    "    for (int i = 0 ; i < N; i++) {",
+                    "        for (int j = 0; j < M; j++) {",
+                    "            if (p[j] == '.' || p[j] == s[i])",
+                    "                dp[i + 1][j + 1] = dp[i][j];",
+                    "",
+                    "            if (p[j] == '*') {",
+                    "                if (p[j - 1] == s[i] || p[j - 1] == '.')",
+                    "                    dp[i + 1][j + 1] = dp[i + 1][j] || dp[i][j + 1]",
+                    "                                                    || dp[i + 1][j - 1];",
+                    "                else",
+                    "                    dp[i + 1][j + 1] = dp[i + 1][j - 1];",
+                    "            }",
+                    "        }",
+                    "    }",
+                    "    return dp[N][M];",
+                    "}",
+                    ""
+                ]
+            }
+        ],
+        "Counting | Optimized path": [
+            {
+                "li": "Counting",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9095&amp;sa=D&amp;ust=1604589163964000&amp;usg=AOvVaw0cDdlaRm7nbnWRe6lV4_RG\" style=\"color:inherit;text-decoration:inherit\">BJ_9095 1, 2, 3 더하기 (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/12101&amp;sa=D&amp;ust=1604589163965000&amp;usg=AOvVaw1Q5ZZHP1Sxkk4nT4UKfmaC\" style=\"color:inherit;text-decoration:inherit\">BJ_12101 1, 2, 3 더하기 2 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15988&amp;sa=D&amp;ust=1604589163967000&amp;usg=AOvVaw2IHDAN77jj59bQNtl70F_U\" style=\"color:inherit;text-decoration:inherit\">BJ_15988 1, 2, 3 더하기 3 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/15989&amp;sa=D&amp;ust=1604589163968000&amp;usg=AOvVaw3GRjQoxrJnRLOD_GkIltPL\" style=\"color:inherit;text-decoration:inherit\">BJ_15989 1, 2, 3 더하기 4 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1890&amp;sa=D&amp;ust=1604589163970000&amp;usg=AOvVaw1HqwsXRcQp5-l7Apjqs-NQ\" style=\"color:inherit;text-decoration:inherit\">BJ_1890 점프 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2133&amp;sa=D&amp;ust=1604589163971000&amp;usg=AOvVaw02oLhO1z7FeZ_o21rM-1fs\" style=\"color:inherit;text-decoration:inherit\">BJ_2133 타일 채우기 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2293&amp;sa=D&amp;ust=1604589163973000&amp;usg=AOvVaw2ioMScfTEK4nHRVI_8CVeG\" style=\"color:inherit;text-decoration:inherit\">BJ_2293 동전 1 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11057&amp;sa=D&amp;ust=1604589163974000&amp;usg=AOvVaw29h_Lm6Xg4db9XBkM-zzll\" style=\"color:inherit;text-decoration:inherit\">BJ_11057 오르막 수 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2225&amp;sa=D&amp;ust=1604589163977000&amp;usg=AOvVaw2wV1a9hlnGeWHnx9SeQ5_Z\" style=\"color:inherit;text-decoration:inherit\">BJ_2225 합분해 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/unique-paths/&amp;sa=D&amp;ust=1604589163979000&amp;usg=AOvVaw3EcNbnowoGSVuDkTTWL3tc\" style=\"color:inherit;text-decoration:inherit\">LC62_ Unique-paths</a>",
+                    "def uniquePaths(self, m, n):",
+                    "    dp = [1] * n",
+                    "    for i in range(1, m):",
+                    "        for j in range(1, n):",
+                    "            dp[j] = dp[j - 1] + dp[j]",
+                    "    return dp[-1] if m and n else 0",
+                    ""
+                ]
+            },
+            {
+                "li": "Optimized path",
+                "ps": [
+                    "",
+                    "Q. Given a target find minimum / maximum, cost / path / sum to reach the target",
+                    "A. Choose min / max path among all possible paths before current state, then add value for current state",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/17626&amp;sa=D&amp;ust=1604589163980000&amp;usg=AOvVaw33wkpMgPxxYT2aYaCUgrQ9\" style=\"color:inherit;text-decoration:inherit\">BJ_17626 Four Squares (6)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1699&amp;sa=D&amp;ust=1604589163981000&amp;usg=AOvVaw1PJxpJH0CtAqpboWYqcJfk\" style=\"color:inherit;text-decoration:inherit\">BJ_1699 제곱수의 합 (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11060&amp;sa=D&amp;ust=1604589163982000&amp;usg=AOvVaw23W_Yb5dA2mpw6V0u06R8u\" style=\"color:inherit;text-decoration:inherit\">BJ_11060 점프 점프 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11048&amp;sa=D&amp;ust=1604589163983000&amp;usg=AOvVaw0GQjTy3AJI4V6_KXWPFHaX\" style=\"color:inherit;text-decoration:inherit\">BJ_11048 이동하기 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/minimum-path-sum/&amp;sa=D&amp;ust=1604589163984000&amp;usg=AOvVaw0BhmOMeYh727I0VeYiTO9z\" style=\"color:inherit;text-decoration:inherit\">LC_64 minimum-path-sum</a>",
+                    "# find a path from top left to bottom right minimizes the sum",
+                    "def minPathSum(self, grid):",
+                    "    r, c = len(grid), len(grid[0])",
+                    "    dp = [[0 for _ in range(c)] for _ in range(r)]",
+                    "    dp[0][0] = grid[0][0]",
+                    "    for i in range(1, r):",
+                    "        dp[i][0] = dp[i-1][0] + grid[i][0]",
+                    "    for i in range(1, c):",
+                    "        dp[0][i] = dp[0][i-1] + grid[0][i]",
+                    "    for i in range(1, r):",
+                    "        for j in range(1, c):",
+                    "            dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]",
+                    "    return dp[-1][-1]",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/maximal-square/&amp;sa=D&amp;ust=1604589163986000&amp;usg=AOvVaw0YZSdLBsH8kXGPAXxh2wk4\" style=\"color:inherit;text-decoration:inherit\">LC221_ maximal-square</a>",
+                    "# largest square containing only 1's ",
+                    "def maximalSquare(self, G):",
+                    "    if len(G) == 0:",
+                    "        return 0",
+                    "    n, m, ret, flag = len(G), len(G[0]), 0, 0",
+                    "    dp = [[0] * (m + 1) for _ in range(n + 1)]",
+                    "    for i in range(n):",
+                    "        for j in range(m):",
+                    "            if G[i][j] == '1':",
+                    "                dp[i + 1][j + 1] = min(dp[i + 1][j], dp[i][j], dp[i][j + 1]) + 1",
+                    "                ret = max(ret, dp[i + 1][j + 1])",
+                    "        ",
+                    "    return ret ** 2",
+                    "",
+                    "# with flag",
+                    "    for i in range(n):",
+                    "        for j in range(m):",
+                    "            if G[i][j] == '1':",
+                    "                dp[flag][j + 1] = min(dp[flag][j], dp[flag ^ 1][j], dp[flag ^ 1][j + 1]) + 1",
+                    "                ret = max(ret, dp[flag][j + 1])",
+                    "            else:",
+                    "                dp[flag][j + 1] = 0",
+                    "        flag ^= 1"
+                ]
+            }
+        ],
+        "kmp | Knapsack | TSP": [
+            {
+                "li": "kmp",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1701&amp;sa=D&amp;ust=1604589163988000&amp;usg=AOvVaw2_gbxVn4DRVGz1ewUk1cL9\" style=\"color:inherit;text-decoration:inherit\">BJ_1701 Cubeditor (14)</a>"
+                ]
+            },
+            {
+                "li": "Knapsack",
+                "ps": [
+                    "",
+                    "Knapsack problem w[1], ..., w[n] and values v[1], ..., v[n] given that you cannot have more weight than C. ",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/12865&amp;sa=D&amp;ust=1604589163990000&amp;usg=AOvVaw1Fl66dbIzpAAyuTcHgpgVw\" style=\"color:inherit;text-decoration:inherit\">BJ_12865 평범한 배낭 (11)</a>"
+                ]
+            },
+            {
+                "li": "Traveling salesman",
+                "ps": [
+                    "",
+                    "// row        current vertex",
+                    "// col        visited bitset",
+                    "const int N = 20, INF = 100000000;",
+                    "int c[N][N];",
+                    "int dp[N][1<<N];",
+                    "memset(dp, -1, sizeof(dp));",
+                    "int tsp(int i, int S) {",
+                    "    if (S == ((1 << N) - 1))",
+                    "        return c[i][0];",
+                    "",
+                    "    if (dp[i][S] != -1)",
+                    "        return dp[i][S];",
+                    "",
+                    "    int res = INF;",
+                    "    for (int j = 0; j < N; j++) {",
+                    "        if (S & (1 << j))",
+                    "            continue;",
+                    "        res = min(res, c[i][j] + tsp(j, S | (1 << j)));",
+                    "    }",
+                    "",
+                    "    dp[i][S] = res;",
+                    "    return res;",
+                    "}",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/10971&amp;sa=D&amp;ust=1604589163993000&amp;usg=AOvVaw15m4Jz7hEK4fQ8tFdr9Thc\" style=\"color:inherit;text-decoration:inherit\">BJ_10971 외판원 순회 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2098&amp;sa=D&amp;ust=1604589163994000&amp;usg=AOvVaw1k_GHHcjnHOsDCYHegtCIe\" style=\"color:inherit;text-decoration:inherit\">BJ_2098 외판원 순회 (15)</a>"
+                ]
+            }
+        ],
+        "Sparse Table": [
+            {
+                "li": "Sparse Table",
+                "ps": [
+                    "",
+                    "",
+                    "Brute Force                # Memory O(1)         Time O(N)",
+                    "Dynamic Program        # Memory O(N^2)        Time O(1)",
+                    "Segment Tree                # Memory O(N)        Time O(log N)",
+                    "Sparse Table                # Memory O(NlogN)        Time O(1)",
+                    "LCA                        # Memory O(N)        Time O(1)",
+                    "",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/17435&amp;sa=D&amp;ust=1604589163997000&amp;usg=AOvVaw2En6oN6Br0Lt29neLpMiXo\" style=\"color:inherit;text-decoration:inherit\">BJ_17435 합성함수와 쿼리 (15)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11437&amp;sa=D&amp;ust=1604589163999000&amp;usg=AOvVaw2NrPswrxX0fgznyf8CdVjq\" style=\"color:inherit;text-decoration:inherit\">BJ_11437 LCA (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11438&amp;sa=D&amp;ust=1604589164000000&amp;usg=AOvVaw12IKCEeAJQ0bK6RuYi2uqp\" style=\"color:inherit;text-decoration:inherit\">BJ_11438 LCA2 (16)</a>"
+                ]
+            }
+        ]
+    },
+    "[4] Graph": {
+        "DFS | DP": [
+            {
+                "li": "BFS ",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.youtube.com/watch?v%3DpcKY4hjDrxk&amp;sa=D&amp;ust=1604589164005000&amp;usg=AOvVaw2JrG2WMrCdACKkYlp3epdr\" style=\"color:inherit;text-decoration:inherit\">BFS &amp; DFS</a>",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/4963&amp;sa=D&amp;ust=1604589164006000&amp;usg=AOvVaw2XW6j6HHWVYFKiRxQCYMGZ\" style=\"color:inherit;text-decoration:inherit\">BJ_4963 섬의 개수 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11724&amp;sa=D&amp;ust=1604589164008000&amp;usg=AOvVaw1SDzyOiCFlIL6FzJ3p0woe\" style=\"color:inherit;text-decoration:inherit\">BJ_11724 연결 요소의 개수 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/9466&amp;sa=D&amp;ust=1604589164010000&amp;usg=AOvVaw1FMP8WDZonzB9YoNASPYw1\" style=\"color:inherit;text-decoration:inherit\">BJ_9466 텀 프로잭트 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://open.kattis.com/problems/weakvertices&amp;sa=D&amp;ust=1604589164012000&amp;usg=AOvVaw3M86LIlvVPogn75VnqAvQQ\" style=\"color:inherit;text-decoration:inherit\">weakvertices</a>",
+                    "from collections import defaultdict",
+                    "while True:",
+                    "    N = int(input())",
+                    "    if N == -1:",
+                    "        break",
+                    "",
+                    "    G = defaultdict(set)",
+                    "    for i in range(N):",
+                    "        for j, e in enumerate(list(map(int, input().split()))):",
+                    "            if e == 1:",
+                    "                G[i].add(j)",
+                    "",
+                    "    for i in range(N):",
+                    "        count = 0",
+                    "        for j in G[i]:",
+                    "            count += sum([1 for k in G[j] if k in G[i]])",
+                    "        if count == 0:",
+                    "            print(i, end = ' ')",
+                    "    print()",
+                    ""
+                ]
+            },
+            {
+                "li": "dp",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1520&amp;sa=D&amp;ust=1604589164015000&amp;usg=AOvVaw3QAA_RdGyPpc9fadrfGMdK\" style=\"color:inherit;text-decoration:inherit\">BJ_1520 내리막 길 (12)</a>"
+                ]
+            }
+        ],
+        "BFS | floodfill | DP": [
+            {
+                "li": "BFS",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2606&amp;sa=D&amp;ust=1604589164018000&amp;usg=AOvVaw1hwoInp6mJOeTqiCvn7Vg6\" style=\"color:inherit;text-decoration:inherit\">BJ_2606 바이러스 (8)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2644&amp;sa=D&amp;ust=1604589164020000&amp;usg=AOvVaw3t7_91Qm8E2Ou5SmgXJs6I\" style=\"color:inherit;text-decoration:inherit\">BJ_2644 촌수계산 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1260&amp;sa=D&amp;ust=1604589164022000&amp;usg=AOvVaw2xu6q-fRWNzUFvW6r0FkZF\" style=\"color:inherit;text-decoration:inherit\">BJ_1260 DFS와 BFS (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/5567&amp;sa=D&amp;ust=1604589164025000&amp;usg=AOvVaw1j_pITX56Tr6yB1meZKkoO\" style=\"color:inherit;text-decoration:inherit\">BJ_5567 결혼식 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/7576&amp;sa=D&amp;ust=1604589164027000&amp;usg=AOvVaw0Y08kjSXVmMNjJyiOt8li1\" style=\"color:inherit;text-decoration:inherit\">BJ_7576 토마토 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2178&amp;sa=D&amp;ust=1604589164030000&amp;usg=AOvVaw1-J711BDuEWdZRgUJQAY5K\" style=\"color:inherit;text-decoration:inherit\">BJ_2178 미로 탐색 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1697&amp;sa=D&amp;ust=1604589164031000&amp;usg=AOvVaw3yN9emvtvlNBlI05vPeIUv\" style=\"color:inherit;text-decoration:inherit\">BJ_1697 숨바꼭질 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2636&amp;sa=D&amp;ust=1604589164034000&amp;usg=AOvVaw2Q-idZIhph-vFEtbVQagA1\" style=\"color:inherit;text-decoration:inherit\">BJ_2636 치즈 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/10026&amp;sa=D&amp;ust=1604589164036000&amp;usg=AOvVaw0-aNqxRh20oVKF6FAe3MSg\" style=\"color:inherit;text-decoration:inherit\">BJ_10026 적록색약 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/13549&amp;sa=D&amp;ust=1604589164038000&amp;usg=AOvVaw05xyrJ6JbNksdhNKGLyhwi\" style=\"color:inherit;text-decoration:inherit\">BJ_13549 숨바꼭질 3 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/13913&amp;sa=D&amp;ust=1604589164041000&amp;usg=AOvVaw1yG43L7dk73wKNSW7Xqpfq\" style=\"color:inherit;text-decoration:inherit\">BJ_13913 숨바꼭질 4 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/14502&amp;sa=D&amp;ust=1604589164043000&amp;usg=AOvVaw3JCK6rFUsJDAPhX2qoYhJU\" style=\"color:inherit;text-decoration:inherit\">BJ_14502 연구소 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/17141&amp;sa=D&amp;ust=1604589164047000&amp;usg=AOvVaw0DUO2Qi6hlBGcMB2Hg3g6v\" style=\"color:inherit;text-decoration:inherit\">BJ_17141 연구소 2 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/17142&amp;sa=D&amp;ust=1604589164050000&amp;usg=AOvVaw2Z6b47WFOiZH9JMbyQALIb\" style=\"color:inherit;text-decoration:inherit\">BJ_17142 연구소 3 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1987&amp;sa=D&amp;ust=1604589164052000&amp;usg=AOvVaw0x7bw0um5ZIWDzDEaFBjNw\" style=\"color:inherit;text-decoration:inherit\">BJ_1987 알파벳 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1939&amp;sa=D&amp;ust=1604589164055000&amp;usg=AOvVaw2ZheoXMOBZ-HyM6mlJRfGm\" style=\"color:inherit;text-decoration:inherit\">BJ_1939 중량제한 (12)</a>"
+                ]
+            },
+            {
+                "li": "FloodFill",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1012&amp;sa=D&amp;ust=1604589164058000&amp;usg=AOvVaw1uSw9NYix0vrB-O9AHu4dv\" style=\"color:inherit;text-decoration:inherit\">BJ_1012 유기농 배추 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1926&amp;sa=D&amp;ust=1604589164060000&amp;usg=AOvVaw0nkVSq_ZGqVIaJUsaBZ9bH\" style=\"color:inherit;text-decoration:inherit\">BJ_1926 그림 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2146&amp;sa=D&amp;ust=1604589164063000&amp;usg=AOvVaw19w0UNgta4aALvRwxKQmlC\" style=\"color:inherit;text-decoration:inherit\">BJ_2146 다리 만들기 (13)</a>"
+                ]
+            },
+            {
+                "li": "DP",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2206&amp;sa=D&amp;ust=1604589164066000&amp;usg=AOvVaw2zIOxNyUjOTfqLruIzkt3G\" style=\"color:inherit;text-decoration:inherit\">BJ_2206 벽 부수고 이동하기 (12)</a>"
+                ]
+            }
+        ],
+        "Tree | Trie": [
+            {
+                "li": "Tree",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11725&amp;sa=D&amp;ust=1604589164068000&amp;usg=AOvVaw3JZ4640lo19tTFR3P0pxJs\" style=\"color:inherit;text-decoration:inherit\">BJ_11725 트리의 부모 찾기 (9)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/5639&amp;sa=D&amp;ust=1604589164069000&amp;usg=AOvVaw0Fqx8iTr25TluTFCX2oqnB\" style=\"color:inherit;text-decoration:inherit\">BJ_5639 이진 검색 트리 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1068&amp;sa=D&amp;ust=1604589164071000&amp;usg=AOvVaw1gY5puPgHnSVXwgbmCiUs4\" style=\"color:inherit;text-decoration:inherit\">BJ_1068 트리 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1991&amp;sa=D&amp;ust=1604589164073000&amp;usg=AOvVaw0EH8dB98pYYrc6EHV2I2y7\" style=\"color:inherit;text-decoration:inherit\">BJ_1991 트리 순회 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1167&amp;sa=D&amp;ust=1604589164076000&amp;usg=AOvVaw2GLgNBEjOhcOfdANQhPc6V\" style=\"color:inherit;text-decoration:inherit\">BJ_1167 트리의 지름 (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1967&amp;sa=D&amp;ust=1604589164078000&amp;usg=AOvVaw3j408kOKPMMJDTGHSQSDoy\" style=\"color:inherit;text-decoration:inherit\">BJ_1967 트리의 지름 (14)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2533&amp;sa=D&amp;ust=1604589164079000&amp;usg=AOvVaw2YtYqmjoKnaFauEKSF6Rd7\" style=\"color:inherit;text-decoration:inherit\">BJ_2533 사회망 서비스(SNS) (14)</a>"
+                ]
+            },
+            {
+                "li": "trie",
+                "ps": []
+            }
+        ],
+        "Dijkstra | Bellman | Floyd": [
+            {
+                "li": "Dijkstra",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1916&amp;sa=D&amp;ust=1604589164082000&amp;usg=AOvVaw0AkVAOobvZBoTNa1qsDr3y\" style=\"color:inherit;text-decoration:inherit\">BJ_1916 최소비용 구하기 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1753&amp;sa=D&amp;ust=1604589164084000&amp;usg=AOvVaw3qe-eNGATyfUNDFhfQrY9_\" style=\"color:inherit;text-decoration:inherit\">BJ_1753 최단경로 (11)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1504&amp;sa=D&amp;ust=1604589164087000&amp;usg=AOvVaw1GaF1yb7iAiQNSpHFniYzB\" style=\"color:inherit;text-decoration:inherit\">BJ_1504 특정한 최단 경로 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1719&amp;sa=D&amp;ust=1604589164090000&amp;usg=AOvVaw2JVUyaU6BEl87A58qKMMHC\" style=\"color:inherit;text-decoration:inherit\">BJ_1719 택배 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2665&amp;sa=D&amp;ust=1604589164092000&amp;usg=AOvVaw15wQVMXs311AwazSCMqBHb\" style=\"color:inherit;text-decoration:inherit\">BJ_2665 미로만들기 (12)</a>"
+                ]
+            },
+            {
+                "li": "Bellman ford",
+                "ps": [
+                    "",
+                    "Single source shortest path in ",
+                    "Can be used to detect negative-weight cycles",
+                    "",
+                    "def bellman_ford(G, source):",
+                    "    dist, pre = dict(), dict()",
+                    "    for node in G:",
+                    "        dist[node], pre[node] = float('inf'), None",
+                    "    dist[source] = 0",
+                    "",
+                    "    for _ in range(len(G) - 1):",
+                    "        for node in G:",
+                    "            for nei in G[node]:",
+                    "                if dist[nei] > dist[node] + G[node][nei]:",
+                    "                    dist[nei], pre[nei] = dist[node] + G[node][nei], node",
+                    "",
+                    "    for node in G:",
+                    "        for nei in G[node]:",
+                    "            assert dist[nei] <= dist[node] + G[node][nei], \"Negative weight cycle.\"",
+                    " ",
+                    "    return dist, pre",
+                    ""
+                ]
+            },
+            {
+                "li": "Floyd",
+                "ps": [
+                    "",
+                    "all pairs shortest pathSoftest path from every pair in O(V^3)",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11403&amp;sa=D&amp;ust=1604589164096000&amp;usg=AOvVaw0e6gx34w487FRFOgX79ytV\" style=\"color:inherit;text-decoration:inherit\">BJ_11403 경로 찾기 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1389&amp;sa=D&amp;ust=1604589164097000&amp;usg=AOvVaw3-X2wSSNf2_k5-6cotsoSz\" style=\"color:inherit;text-decoration:inherit\">BJ_1389 케빈 베이컨의 6단계 법칙 (10)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11404&amp;sa=D&amp;ust=1604589164098000&amp;usg=AOvVaw3BdMCGbbPPs3vctqXirabk\" style=\"color:inherit;text-decoration:inherit\">BJ_11404 플로이드 (12)</a>"
+                ]
+            }
+        ],
+        "SCC | disjoint_set": [
+            {
+                "li": "SCC",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.youtube.com/watch?v%3DRpgcYiky7uw&amp;sa=D&amp;ust=1604589164101000&amp;usg=AOvVaw2VenTGOWusNwFZN7OGoWXL\" style=\"color:inherit;text-decoration:inherit\">Kosaraju's Algorithm Graph Algorithm</a>",
+                    ""
+                ]
+            },
+            {
+                "li": "Disjoint set",
+                "ps": [
+                    "",
+                    "vector<int> v;",
+                    "int find(int a) {",
+                    "    if (v[a] != a)    return v[a] = find(v[a]);",
+                    "    return a;",
+                    "}",
+                    "",
+                    "void unions(int a, int b) {",
+                    "    v[find(b)] = find(a);",
+                    "}",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1717&amp;sa=D&amp;ust=1604589164103000&amp;usg=AOvVaw31CgeyQ7CVHwVcgKJfx-kU\" style=\"color:inherit;text-decoration:inherit\">BJ_1717 집합의 표현 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1197&amp;sa=D&amp;ust=1604589164106000&amp;usg=AOvVaw3UZYVzASK3JJQzMqMlYJmk\" style=\"color:inherit;text-decoration:inherit\">BJ_1197 최소 스패닝 트리 (12)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/4195&amp;sa=D&amp;ust=1604589164110000&amp;usg=AOvVaw3dwLHPjt1e6qMppammewXi\" style=\"color:inherit;text-decoration:inherit\">BJ_4195 친구 네트워크 (14)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2150&amp;sa=D&amp;ust=1604589164113000&amp;usg=AOvVaw27jBU4xGa6mhc3VkRXXZnB\" style=\"color:inherit;text-decoration:inherit\">BJ_2150 Strongly Connected Component (16)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/largest-component-size-by-common-factor/&amp;sa=D&amp;ust=1604589164117000&amp;usg=AOvVaw22GlP060k2phI1JMTHMW9T\" style=\"color:inherit;text-decoration:inherit\">LC_952 largest-component-size-by-common-factor (Hard)</a>",
+                    "import collections",
+                    "import math",
+                    "",
+                    "class UF:",
+                    "    def __init__(self, N):",
+                    "        self.parent = list(range(N))",
+                    "        self.size = [1] * N",
+                    "        ",
+                    "    def find(self, x):",
+                    "        if self.parent[x] != x:",
+                    "            self.parent[x] = self.find(self.parent[x])",
+                    "        return self.parent[x]",
+                    "",
+                    "    def union(self, x, y):",
+                    "        px, py = self.find(x), self.find(y)",
+                    "        if px != py:",
+                    "            size_x, size_y = self.size[px], self.size[py]",
+                    "            if size_x < size_y:",
+                    "                self.parent[px] = py",
+                    "                self.size[py] += size_x",
+                    "            else:",
+                    "                self.parent[py] = px",
+                    "                self.size[px] += size_y",
+                    "",
+                    "class Solution:",
+                    "    def largestComponentSize(self, A: List[int]) -> int:",
+                    "        factor2i = collections.defaultdict(int)",
+                    "        uf = UF(len(A))",
+                    "        for i, num in enumerate(A):",
+                    "            for factor in range(2, int(math.sqrt(num) + 1)):",
+                    "                if num % factor == 0:",
+                    "                    for fac in (factor, num // factor):",
+                    "                        if fac in factor2i:",
+                    "                            uf.union(i, factor2i[fac])",
+                    "                        else:",
+                    "                            factor2i[fac] = i",
+                    "            if num not in factor2i:",
+                    "                factor2i[num] = i",
+                    "            else:",
+                    "                uf.union(i, factor2i[num])",
+                    "        return max(uf.size)"
+                ]
+            }
+        ],
+        "Topological | articulation": [
+            {
+                "li": "Topological sort",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1005&amp;sa=D&amp;ust=1604589164122000&amp;usg=AOvVaw1WQ3rIytf_M_dkOz37vNO5\" style=\"color:inherit;text-decoration:inherit\">BJ_1005 ACM Craft (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/1516&amp;sa=D&amp;ust=1604589164124000&amp;usg=AOvVaw0iksfa3ynfmZsqnkJ4xgYS\" style=\"color:inherit;text-decoration:inherit\">BJ_1516 게임 개발 (13)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2252&amp;sa=D&amp;ust=1604589164126000&amp;usg=AOvVaw1CJ9MHlDU1egBghrOiqDdw\" style=\"color:inherit;text-decoration:inherit\">BJ_2252 줄 세우기 (14)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/course-schedule/&amp;sa=D&amp;ust=1604589164128000&amp;usg=AOvVaw1ckmvjuHrkJnWsPn9OF0fX\" style=\"color:inherit;text-decoration:inherit\">LC_207 course-schedule</a>",
+                    "def canFinish(n, prerequisites):",
+                    "    G = [[] for i in range(n)]",
+                    "    degree = [0] * n",
+                    "    for i, j in prerequisites:",
+                    "        G[i].append(j)                                                # Take i before j",
+                    "        degree[j] += 1",
+                    "    bfs = [i for i in range(n) if degree[i] == 0]",
+                    "    for i in bfs:",
+                    "        for j in G[i]:",
+                    "            degree[j] -= 1",
+                    "            if degree[j] == 0:",
+                    "                bfs.append(j)",
+                    "    return len(bfs) == n",
+                    "",
+                    ""
+                ]
+            },
+            {
+                "li": "Articulation",
+                "ps": [
+                    "",
+                    "",
+                    "case v = root ",
+                    "vertex will be the point of articulation iff this vertex has more than one child. ",
+                    "case v ≠ root. ",
+                    "During DFS, (v, to) is articulation iff none of the vertices to or its descendents in the DFS traversal tree has a back-edge to any of the ancestors of v, then v is an articulation point. ",
+                    "visited time ≤ low time of adjacent vertex",
+                    "",
+                    ""
+                ]
+            }
+        ],
+        "Branch and Bound | ILP": [
+            {
+                "li": "Branch and bound",
+                "ps": [
+                    ""
+                ]
+            },
+            {
+                "li": "Integer Linear Programming",
+                "ps": [
+                    "",
+                    ""
+                ]
+            }
+        ],
+        "Flow Network | Targan": [
+            {
+                "li": "Flow Network",
+                "ps": [
+                    "",
+                    "",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/2188&amp;sa=D&amp;ust=1604589164132000&amp;usg=AOvVaw11rzxmZat2nX96blcJgTHF\" style=\"color:inherit;text-decoration:inherit\">BJ_2188 축사 배정 (17)</a>",
+                    "<a href=\"https://www.google.com/url?q=https://www.acmicpc.net/problem/11375&amp;sa=D&amp;ust=1604589164133000&amp;usg=AOvVaw19MBxJU3hmKbE1AF9mvs24\" style=\"color:inherit;text-decoration:inherit\">BJ_11375 열혈강호 (17)</a>"
+                ]
+            }
+        ]
+    },
+    "[5] concurrency": {
+        "Lock | Semaphore | Barrier": [
+            {
+                "li": "lock",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/print-in-order/&amp;sa=D&amp;ust=1604589164136000&amp;usg=AOvVaw1VxeVZbE-fnHeYNWSXaYrP\" style=\"color:inherit;text-decoration:inherit\">LC_1114 print-in-order</a>",
+                    "from threading import Lock",
+                    "",
+                    "class Foo:",
+                    "    def __init__(self):",
+                    "        self.locks = (Lock(),Lock())",
+                    "        self.locks[0].acquire()",
+                    "        self.locks[1].acquire()",
+                    "        ",
+                    "    def first(self, printFirst):",
+                    "        printFirst()",
+                    "        self.locks[0].release()",
+                    "        ",
+                    "    def second(self, printSecond):",
+                    "        with self.locks[0]:",
+                    "            printSecond()",
+                    "            self.locks[1].release()",
+                    "            ",
+                    "            ",
+                    "    def third(self, printThird):",
+                    "        with self.locks[1]:",
+                    "            printThird()",
+                    ""
+                ]
+            },
+            {
+                "li": "semaphore",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/fizz-buzz-multithreaded/&amp;sa=D&amp;ust=1604589164138000&amp;usg=AOvVaw0HuncpxkZmPSIG-v3576SM\" style=\"color:inherit;text-decoration:inherit\">LC_1195 fizz-buzz-multithreaded</a>",
+                    "from threading import Semaphore",
+                    "",
+                    "class FizzBuzz(object):",
+                    "    def __init__(self, n):",
+                    "        self.n = n",
+                    "        self.sem0 = Semaphore(1)",
+                    "        self.sem3 = Semaphore(0)",
+                    "        self.sem5 = Semaphore(0)",
+                    "        self.sem15 = Semaphore(0)",
+                    "",
+                    "    def fizz(self, printFizz):",
+                    "        for i in range(3, self.n + 1, 3):",
+                    "            if i % 15:",
+                    "                self.sem3.acquire()",
+                    "                printFizz()",
+                    "                self._release(i+1)",
+                    "                ",
+                    "    def buzz(self, printBuzz):",
+                    "        for i in range(5, self.n + 1, 5):",
+                    "            if i % 15:",
+                    "                self.sem5.acquire()",
+                    "                printBuzz()",
+                    "                self._release(i+1)",
+                    "    ",
+                    "    def fizzbuzz(self, printFizzBuzz):",
+                    "        for i in range(15, self.n + 1, 15):",
+                    "            self.sem15.acquire()",
+                    "            printFizzBuzz()",
+                    "            self._release(i+1)",
+                    "",
+                    "    def number(self, printNumber):",
+                    "        for i in range(1, self.n + 1):",
+                    "            if i % 3 and i % 5:",
+                    "                self.sem0.acquire()",
+                    "                printNumber(i)",
+                    "                self._release(i+1)",
+                    "    ",
+                    "    def _release(self, i):",
+                    "        if i % 3 and i % 5:",
+                    "            self.sem0.release()",
+                    "        elif i % 5:",
+                    "            self.sem3.release()",
+                    "        elif i % 3:",
+                    "            self.sem5.release()",
+                    "        else:",
+                    "            self.sem15.release()",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/print-foobar-alternately/&amp;sa=D&amp;ust=1604589164141000&amp;usg=AOvVaw3P5b6ieYkZM_ZxMoiBr7IX\" style=\"color:inherit;text-decoration:inherit\">LC_1115 print-foobar-alternately</a>",
+                    "from threading import Semaphore",
+                    "",
+                    "class FooBar:",
+                    "    def __init__(self, n):",
+                    "        self.n = n",
+                    "        self.semF = Semaphore(1)",
+                    "        self.semB = Semaphore(0)",
+                    "",
+                    "",
+                    "    def foo(self, printFoo: 'Callable[[], None]') -> None:",
+                    "        for i in range(self.n):",
+                    "            self.semF.acquire()",
+                    "            printFoo()",
+                    "            self.semB.release()",
+                    "",
+                    "    def bar(self, printBar: 'Callable[[], None]') -> None:",
+                    "        for i in range(self.n):",
+                    "            self.semB.acquire()",
+                    "            printBar()",
+                    "            self.semF.release()",
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/print-zero-even-odd/&amp;sa=D&amp;ust=1604589164143000&amp;usg=AOvVaw1-4fozbKyEEM1daNLvjtL-\" style=\"color:inherit;text-decoration:inherit\">LC_1116 print-zero-even-odd</a>",
+                    "from threading import Semaphore",
+                    "",
+                    "class ZeroEvenOdd:",
+                    "    def __init__(self, n):",
+                    "        self.n = n",
+                    "        self.semZ = Semaphore(1)",
+                    "        self.semO = Semaphore(0)       ",
+                    "        self.semE = Semaphore(0)       ",
+                    "        ",
+                    "    def zero(self, printNumber: 'Callable[[int], None]') -> None:",
+                    "        for i in range(self.n):",
+                    "            self.semZ.acquire()",
+                    "            printNumber(0)",
+                    "            (self.semE if i % 2 else self.semO).release() ",
+                    "        ",
+                    "    def even(self, printNumber: 'Callable[[int], None]') -> None:",
+                    "        for i in range(2, self.n + 1, 2):",
+                    "            self.semE.acquire()",
+                    "            printNumber(i)",
+                    "            self.semZ.release()",
+                    "        ",
+                    "    def odd(self, printNumber: 'Callable[[int], None]') -> None:",
+                    "        for i in range(1, self.n + 1, 2):",
+                    "            self.semO.acquire()",
+                    "            printNumber(i)",
+                    "            self.semZ.release()",
+                    ""
+                ]
+            },
+            {
+                "li": "Barrier",
+                "ps": [
+                    "",
+                    "<a href=\"https://www.google.com/url?q=https://leetcode.com/problems/building-h2o/&amp;sa=D&amp;ust=1604589164145000&amp;usg=AOvVaw23-XV6oocIs_PF2tn9lkiT\" style=\"color:inherit;text-decoration:inherit\">LC_1117 building-h2o</a>",
+                    "from threading import Barrier, Semaphore",
+                    "class H2O:",
+                    "    def __init__(self):",
+                    "        self.b = Barrier(3)",
+                    "        self.h = Semaphore(2)",
+                    "        self.o = Semaphore(1)",
+                    "",
+                    "    def hydrogen(self, releaseHydrogen: 'Callable[[], None]') -> None:",
+                    "        self.h.acquire()",
+                    "        self.b.wait()",
+                    "        releaseHydrogen()",
+                    "        self.h.release()",
+                    "",
+                    "    def oxygen(self, releaseOxygen: 'Callable[[], None]') -> None:",
+                    "        self.o.acquire()",
+                    "        self.b.wait()",
+                    "        releaseOxygen()",
+                    "        self.o.release()",
+                    "",
+                    "",
+                    ""
+                ]
+            }
+        ]
+    }
+}

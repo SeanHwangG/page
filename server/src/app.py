@@ -8,6 +8,7 @@ import time
 from flask import Flask, render_template, url_for, request, session, redirect
 from oauthlib.oauth2 import WebApplicationClient
 from api import get_students, get_problems, hide_unsolved
+from user import User
 from flask_login import (
     LoginManager,
     current_user,
@@ -16,8 +17,18 @@ from flask_login import (
     logout_user,
 )
 
-
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY") or os.urandom(24)
+
+# User session management setup
+# https://flask-login.readthedocs.io/en/latest
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
 firebaseConfig = {
   "apiKey": "AIzaSyAIu3NQa8hdg_STYi65vGSIHkd3g-nkxp0",
   "authDomain": "seansdevnote-d14de.firebaseapp.com",
@@ -49,16 +60,21 @@ def admin():
     else:
         return render_template("admin.html")
 
+@app.route("/premium", methods=["GET"])
+def premium():
+    return render_template("premium.html")
+
 @app.route("/python", methods=["GET"])
 def python():
     with open("data/python.json", "r") as read_file:
         data = json.load(read_file)
-        posts = data["posts"]["Algorithm"]
-    
-    print(2)
-    posts = hide_unsolved(posts, [])
-    print(1)
-
+        subpage = request.args.get('subpage', "")
+        if subpage:
+            posts = data["posts"][subpage]
+            if subpage in ["Algorithm", "Syntax"]:
+                posts = hide_unsolved(posts, session.get("solved", []))
+        else:
+            posts = data["posts"]
     return render_template("index.html", posts=posts)
 
 @app.route("/terminal", methods=["GET"])
@@ -98,29 +114,29 @@ def callback():
         auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
     )
     client.parse_request_body_response(json.dumps(token_response.json()))
-    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+    userinfo_endpoint = requests.get(GOOGLE_DISCOVERY_URL).json()["userinfo_endpoint"]
     uri, headers, body = client.add_token(userinfo_endpoint)
     userinfo_response = requests.get(uri, headers=headers, data=body).json()
 
-    user = {
-        'id' : userinfo_response["sub"],
-        'name' : userinfo_response["given_name"],
-        'email' : userinfo_response["email"],
-        'picture' : userinfo_response["picture"]
-    }
+    user = User(userinfo_response["sub"], name = userinfo_response["name"])
     login_user(user)
-    return redirect(url_for("/"))
+    if not user.solved:
+        session["id"] = user["id"]
+        return redirect(url_for("singup.html"))
+    session['name'] = user.name
+    session['solved'] = user.solved
+    return redirect(url_for("index"))
 
 
 @app.route("/signout", methods=["POST", "GET"])
 def signout():
     logout_user()
-    return redirect(url_for("/"))
+    return redirect(url_for("index"))
 
 if __name__ == "__main__":
     #fb_auth.create_user_with_email_and_password("rbtmd1010@gmail.com", "Ghkdrb12@s")
     #fb_auth.sign_in_with_email_and_password("rbtmd1010@gmail.com", "Ghkdrb12@s")
-    app.run(debug=True)
+    app.run(debug=True, port=8100, ssl_context=('server.crt', 'server.key'))
     #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
     #ssl_context.load_cert_chain(certfile='newcert.pem', keyfile='newkey.pem', password='secret')
     #app.run(host="0.0.0.0", port=4443, ssl_context=ssl_context)

@@ -1,0 +1,195 @@
+/* dark blue #2E5389
+*/
+
+/* GLOBAL STYLE
+--------------------------------------------------------*/
+html {
+    box-sizing: border-box;
+}
+*, * before, *after{
+    box-sizing: inherit;
+}
+* {
+    color: black;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    text-decoration: none;
+}
+@font-face {
+    font-family: "Nanum";
+    src: url("font/NanumSquare_acB.ttf");
+    src: url("font/NanumSquare_acEB.ttf");
+    src: url("font/NanumSquare_acL.ttf");
+    src: url("font/NanumSquare_acR.ttf");
+    font-family: "gotham";
+    src: url("font/GothaProBol.otf");
+    src: url("font/GothaProBla.otf");
+    src: url("font/GothaProMed.otf");
+    src: url("font/GothaProLig.otf");
+}
+
+/* MENU BAR
+--------------------------------------------------------*/
+nav {
+    width: 100%;
+    height: 245px;
+    margin: 0,auto;
+    background-color: #2E5389;
+    display:inline-block;
+    text-align: center;
+}
+.heading {
+    font-family: 'gotham', sans-serif;
+    font-weight: 700;
+    font-size: 38px;
+    padding-top: 100px;
+    position: relative;
+    float: none;
+    color: white;
+    text-align: center;
+}
+ul {
+    width: 100%;
+    display: table;
+    padding-top: 5px;
+}
+ul li {
+    list-style: none;
+    display: inline-block;
+    position: relative;
+    float: none;
+    text-align: center;
+}
+ul li a {
+    font-family: 'nanum', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    padding: 20px 30px 20px 30px;
+    color:white;
+    display: block;
+}
+ul li a:hover {
+    color: #D8D8D8;
+    font-weight: 400;
+}
+ul li .current {
+    color: #5fbe74;
+    font-weight: 400;
+}
+.navbar-nav {
+    margin: 0px 10px 0 0;
+}
+.nav-item {
+    font-family: 'gotham', sans-serif;
+    font-weight: bolder;
+    font-size: 15px;
+    color: #2E5389;
+    position: relative;
+    float: right;
+    text-align: right;
+    padding: 3px 20px 3px 20px;
+    margin: 20px 10px 0 0;
+    background-color: white;
+    border-radius: 30px;
+    z-index: 1;
+}
+.side-bar {
+    height: 100%;
+    width: 220px;
+    position: relative;
+    z-index: 1;
+    top: 150px;
+    left: 100px;
+    background-color: white;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-color: #D8D8D8;
+    overflow-x: hidden;
+    padding: 20px 0 0 0px;
+}
+.side-item-l {
+    padding: 8px 8px 8px 30px;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: 'gotham', sans-serif;
+    font-weight: 700;
+    color: black;
+    display: block;
+}
+.side-item-m {
+    padding: 6px 8px 6px 35px;
+    text-decoration: none;
+    font-size: 15px;
+    font-family: 'gotham', sans-serif;
+    font-weight: 400;
+    color: rgb(85, 85, 85);
+    display: block;
+}
+.side-item-s {
+    padding: 6px 8px 6px 40px;
+    text-decoration: none;
+    font-size: 13px;
+    font-family: 'gotham', sans-serif;
+    font-weight: 400;
+    color: rgb(85, 85, 85);
+    display: block;
+}
+.side-item-l .current {
+    background-color: #5fbe74;
+    color: white;
+}
+.side-item-m .current {
+    background-color: #5fbe74;
+    color: white;
+}
+.side-item-s .current {
+    background-color: #5fbe74;
+    color: white;
+}
+.side-item-l:hover {
+    color: #5fbe74;
+}
+.side-item-m:hover {
+    color: #5fbe74;
+}
+.side-item-s:hover {
+    color: #5fbe74;
+}
+.content {
+    padding: 40px 0 0 400px;
+}
+h1 {
+    font-size: 38px;
+    font-family: 'gotham', sans-serif;
+    font-weight: 900;
+    color: #2E5389;
+}
+h2 {
+    font-size: 25px;
+    font-family: 'nanum', sans-serif;
+    font-weight: 400;
+    padding-left: 20px;
+}
+h3 {
+    font-size: 17px;
+    font-family: 'nanum', sans-serif;
+    font-weight: 400;
+    padding-left: 30px;
+    border-color: rgb(85, 85, 85);
+}
+p {
+    font-size: 13px;
+    font-family: 'nanum', sans-serif;
+    font-weight: 400;
+    padding-left: 35px;
+    border-color: black;
+}
+.list {
+    font-size: 13px;
+    font-family: 'nanum', sans-serif;
+    font-weight: 400;
+    padding-left: 35px;
+    border-color: black;
+}
