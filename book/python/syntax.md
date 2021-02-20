@@ -388,19 +388,15 @@ else:
 
 > Exception
 
-* Builtins exceptions
 
 ```py
+# Builtins exceptions
 ImportError
 NotImplementedError
 ZeroDivisionError
-```
 
-* Catch all exception
-
-```py
+# Catch all exception
 test_cases = [(1, 0), ('1', 1), (1, 1)]
-
 for x, y in test_cases:
   try:
     z = x / y
@@ -410,11 +406,8 @@ for x, y in test_cases:
     print(sys.exc_info()[0])
   else:
     print("Successful")
-```
-
-* Raise exception quitely
-
-```py
+    
+# Raise exception quitely
 class StopExecution(Exception):
   def _render_traceback_(self):
   pass
