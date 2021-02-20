@@ -273,38 +273,32 @@ import a
 python b.py             # prints 1
 ```
 
-## Interpreters
+> Interpreters
 
-> Cpython
+* Cpython
+  * Default and most widely used python interpreter written in C and Python 
+  * uses GIL for thread-safe operation
+  * each thread owns PyThreadState  and only thread created it can acquire GIL
 
-* Default and most widely used python interpreter written in C and Python 
-* uses GIL for thread-safe operation
-* each thread owns PyThreadState  and only thread created it can acquire GIL
+* Jython
+  * as a scripting language for Java applications
+  * tests for Java libraries | create applications using the Java class libraries 
 
-> Jython
+* Pypy
+  * faster than CPython because PyPy is a just-in-time compiler while CPython is an interpreter
+  * easier to modify the interpreter
 
-* as a scripting language for Java applications
-* tests for Java libraries | create applications using the Java class libraries 
+> Files
 
-> Pypy
+* __pycache__
+  * caches the compiled version of each module in the __pycache__
+  * directory to put  bytecode which interpreter compiled
+  * PYTHONDONTWRITEBYTECODE to any non blank string to disable bytecode 
+  * .pyc files is the speed with which they are loaded
 
-* faster than CPython because PyPy is a just-in-time compiler while CPython is an interpreter
-* easier to modify the interpreter 
-
-## Files
-
-> __pycache__
-
-* caches the compiled version of each module in the __pycache__
-* directory to put  bytecode which interpreter compiled
-* PYTHONDONTWRITEBYTECODE to any non blank string to disable bytecode 
-* .pyc files is the speed with which they are loaded
-
-> __init__.py 
-
-* __init__.py code defines a list named __all__ (default None)
-* taken to be list of module names that should be imported when from package import * 
-
+* __init__.py
+  * __init__.py code defines a list named __all__ (default None)
+  * taken to be list of module names that should be imported when from package import * 
 
 ## Tools
 

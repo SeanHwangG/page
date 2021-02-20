@@ -402,7 +402,7 @@ CREATE VIEW standings(name, points) AS
   GROUP BY name
 ```
 
-## Update
+### Update
 
 ```sql
 -- change all 'berto' entries to 'bertolucci' 
@@ -422,13 +422,39 @@ WHERE type = 'jumbo' OR type = 'student';
 
 ```
 
-### NoSQL
+## NoSQL
 
-## Elastic Search
+|      | nested                                        | subcollections                                    | root-level collections                                                 |
+| ---- | --------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
+| pros | Simple, Easy <br> Three recently visited chat | Size of Parent same <br> Create users within chat | Many to many relation one for users and another for rooms and messages |
+| cons | Not scalable                                  | Hard to delete subcollection                      | Getting data that is naturally hierarchical increase complexity        |
 
-### Terms
+ 
 
-> Cluster
+
+> Type
+
+* wide column
+  * Have column families, which are containers for rows
+  * Don’t need to know all the columns and row doesn’t have to have the same # of columns
+  * [+] Best suited for analyzing large datasets.
+  * Example : Cassandra, HBase
+
+![wide column](images/20210220_191640.png)
+
+* Graph
+  * Store data whose relations are best represented in a graph. 
+  * Data is saved in graph with nodes (entities), properties (information), lines (connections)
+  * Neo4J
+  * solr
+    * distributed indexing, replication, load-balanced querying, automated failover | recovery, centralized config 
+    * powers the search and navigation features of many of the world's largest internet sites
+
+### Elastic Search
+
+> Terms
+
+* Cluster
 
 ![alt](.gitbook/assets/20210205_165935.png)
 
@@ -443,11 +469,11 @@ WHERE type = 'jumbo' OR type = 'student';
 
 > Indexes
 
-* Collection of similar documents 
+* Collection of similar documents
 
 > Types
 
-* category or partition of index 
+* category or partition of index
 
 > Documents
 
@@ -457,7 +483,81 @@ WHERE type = 'jumbo' OR type = 'student';
 <REST verb> <Index> <Type> <ID>
 ```
 
-## Hadoop
+### Mongo DB
+
+![mongo db](images/20210220_192135.png)
+
+> Configuration
+
+```sh
+systemctl start mongod   # start mongodb
+systemctl status mongod  # show mongodb status
+
+/etc/mongod.conf     # configuration
+/data/db             # default dbpath
+/var/lib/mongo       # data directory
+/var/log/mongodb     # log directory
+
+27017                # default port for mongod and mongos instances
+27018                # when running with --shardsvr command-line option 
+27019                # when running with --configsvr command-line option 
+```
+
+> cli
+
+* mongod
+
+```sh
+--repair                # repair
+--dbpath arg            # Directory for datafiles defaults to /data/db
+
+help                    # Show help.
+db.help()               # Show help for database methods
+db.<collection>.help()  # help on collection methods. collection can be non-existing 
+show dbs                # Print a list of all databases on the server
+use <db>                # Switch current database to <db>
+show collections        # Print a list of all collections for current database
+```
+
+* DDL
+
+```js
+db.dropDatabase()
+db.createCollection('users')
+```
+
+> DML
+
+* count
+
+```js
+user_cl.count()                       // Count # of drinkers.
+user_cl.count(addr: {$exists: true})  // with unique addresses 
+```
+
+```js
+// db.<collection>.find(<query filter>, <projection>).<cursor modifier>
+// SELECT <projection> FROM <collection> WHERE <query filter>
+
+user_cl.find(name: {$ne : null))   // Non null value
+user_cl.find().pretty()            // pretty
+user_cl.find().sort({title:-1})    // sort by title
+user_cl.find(tags.1: "summer")     // 2nd element in tags is "summer" 
+user_cl.find().forEach(function(d){print(d.id)}) // forEach
+user_cl.find({_id:{$gt:24}}, {email:1, _id:0})   // Grab email info for indexes gt 24
+user_cl.find(name: {$regex: |^go.*le$|})         // RE: starts with go ends with le
+user_cl.find({tags: {$in : ["popular", "smart"] } })    // users tagged as popular or smart
+user_cl.find({tags: {$nin : ["popular", "organic"] } }) // not tagged as 
+user_cl.insert({ name:'sean', rating:5})   // insert sean’s rating
+post_cl.remove({ name : 'Ryan' })          // insert post named ryan
+user_cl.update({ _id: 1 }, { rating: 4 }, { upsert: true } ); // Add if not present
+user_cl.update({ _id: 1 }, { $set: { rating: 4}});            // Only update without erasing
+user_cl.update({ _id: 1 }, { $inc : { rating: 10 } })         // Increment
+user_cl.update({ _id: 1 }, { $rename : { rating: 'rate'} })   // rename
+```
+
+### Hadoop
+
 ![alt](images/20210205_170217.png)
 
 * A framework that allows us to store and process large data sets in parallel and distributed fashion

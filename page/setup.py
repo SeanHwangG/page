@@ -8,10 +8,12 @@ import json
 # Member.update_all_baekjoon_solved([member for member in remote_db.get_all("member").values() if len(member.baekjoon_id) != 0])
 
 # get docs from docs.json
-local_db.add("problem", Problem.get_baekjoon_problems() + Problem.get_leetcode_problems())
+# local_db.add("problem", Problem.get_baekjoon_problems() + Problem.get_leetcode_problems())
+
+Member.update_all_baekjoon_solved([member for member in remote_db.get_all("member").values() if len(member.baekjoon_id) != 0])
 
 problems = local_db.get_all("problem")
-for document_path in PATH.PROBLEM.iterdir():
+for document_path in sorted(PATH.PROBLEM.iterdir(), key=lambda a: h1s.index(a.stem)):
   for problem_path in document_path.iterdir():
     if problem_path.is_dir():
       continue

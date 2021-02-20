@@ -2,19 +2,16 @@
 
 ## Error
 
-> Connection to _ closed by remote host  
+* Connection to _ closed by remote host  
+  * Administrator Disconnect
 
-* Administrator Disconnect
+* The System is going down for reboot NOW!
+  * Remote server shuts down
 
-> The System is going down for reboot NOW!
+* Broken pipe
+  * IP changed or server can't guarantee security
 
-* Remote server shuts down
-
-> Broken pipe
-
-* IP changed or server can't guarantee security
-
-> @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  
+* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  
 @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @  
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  
 IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!  
@@ -29,28 +26,19 @@ Offending ECDSA key in /home/sean/.ssh/known_hosts:23
   ssh-keygen -f "/home/sean/.ssh/known_hosts" -R "11.11.1.12"  
 Password authentication is disabled to avoid man-in-the-middle attacks.  
 Keyboard-interactive authentication is disabled to avoid man-in-the-middle attacks.  
+  * scp -oStrictHostKeyChecking=no
+  * ssh-keygen -f "/home/sean/.ssh/known_hosts" -R "11.11.1.12"
 
-* scp -oStrictHostKeyChecking=no
-* ssh-keygen -f "/home/sean/.ssh/known_hosts" -R "11.11.1.12"
+* Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+  * -> run apt update
+  * apt install tftp
 
-> Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+* Problem with update-manager: No module named 'apt_pkg' in Ubuntu 13.10, having installed Python 3.4 on /usr/local/lib
+  * sudo apt-get install --reinstall python3-apt
 
-* -> run apt update
-* apt install tftp
-
-> Problem with update-manager: No module named 'apt_pkg' in Ubuntu 13.10, having installed Python 3.4 on /usr/local/lib
-
-* sudo apt-get install --reinstall python3-apt
-
-> Error
-
-```sh
-rm file
-device or resource busy
-```
-
-* lsof +D /path and kill
-* umount /path
+* device or resource busy (when rm file)
+  * lsof +D /path and kill
+  * umount /path
 
 ## File
 
@@ -189,7 +177,7 @@ $(dirname a/b/file.cpp) # cd into file's located folder
 ```sh
 -u                   # Search everything
 --hidden             # find hidden file, except ~/.agignore
--G .java 'ftp' .     # specific file extension
+-G PATTERN 'ftp' .   # specific file patterns
 -C 5                 # five lines around
 ```
 
@@ -222,8 +210,9 @@ $(dirname a/b/file.cpp) # cd into file's located folder
 * copy file
 
 ```sh
--r [directory]    # copy all of the files including files inside of subfolders
--f                # if destination file cannot be opened, remove and try 
+-r [directory]  # copy all of the files including files inside of subfolders
+-f              # if destination file cannot be opened, remove and try 
+-T              # if target already existed as a directory, then cp will fail
 ```
 
 > mv
@@ -1162,7 +1151,9 @@ for i in 1 2 4 8 16 32; do
 -r                # sync recursively
 -v                # increase verbosity
 -h / -p / -g      # preserve hard links / permissions / group
+--update          # skip files when the mtimes are identical 
 
+-rav sean/ .      # copy all config files
 -avCL -e "ssh tunnel ssh" cgw01.nlp:/home/data/*.db .   # get files through tunnel
 ```
 
@@ -1634,6 +1625,7 @@ system_cpu=`uname -m`
 
 ```sh
 alias untar='tar -zxvf '
+\aliased_command       # temporaily disable aliased command
 ```
 
 > unalias

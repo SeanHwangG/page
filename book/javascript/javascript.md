@@ -2,13 +2,11 @@
 
 * interpreted, dynamic typing, prototype-based programming language 
 
-## Speed Optimization
+> Speed Optimization
 
 * https://developers.google.com/speed/pagespeed/insights/
 * https://tinyjpg.com
 * https://jakearchibald.github.io/svgomg/
-
-## Terms
 
 > Versions
 
@@ -21,7 +19,9 @@
   * Internet Explorer does not support ECMAScript 2015
   * let and const, default parameter values, Array.find(), Array.findIndex().
 
-> Packages
+> Terms
+
+* Packages
 
 ```sh
 nodemon         # update refresh backend
@@ -38,17 +38,16 @@ npm list -g
 npm root -g
 ```
 
-> Ajax
-* Asynchronous JavaScript and XML
-* the request are sent to the server by using XMLHttpRequest objects
+* Ajax
+  * Asynchronous JavaScript and XML
+  * the request are sent to the server by using XMLHttpRequest objects
 
-> Content delivery network (CDN)
+* Content delivery network (CDN)
 
-> Status Messages
+* Status Messages
+  * 1** Informational      # received and the process is continuing.
 
-* 1** Informational      # received and the process is continuing.
-
-```
+```sh
 101 Switching Protocols  # asked the server to switch protocols
 103 Checkpoint           # resumable requests proposal to resume aborted PUT/POST requests
 
@@ -101,69 +100,77 @@ npm root -g
 511 Network Auth          # client needs to authenticate to gain network access
 ```
 
-> xml
+* xml
+  * Extensible Markup Language
+  * a markup language that defines a set of rules for encoding documents in a format that is both human-readable and machine-readable
 
-* Extensible Markup Language 
-* a markup language that defines a set of rules for encoding documents in a format that is both human-readable and machine-readable
+* Application Programming Interface (API)
+  * a software intermediary that enables two applications to communicate with each other
+  * All Web services are APIs but not all APIs are Web services
+  * All Web services need a network to operate while APIs don’t need a network for operation
+  * First estimate your usage and understand how that will impact the overall cost of the offering
+  * Many protocols are now available to be used in API testing (ex JMS, REST, HTTP, UDDI and SOAP)
 
-> Application Programming Interface (API)
+* Representational State Transfer
+  * an architectural style for developing web services which exploit the ubiquity of HTTP protocol and uses HTTP method to define actions
 
-* a software intermediary that enables two applications to communicate with each other
-* All Web services are APIs but not all APIs are Web services
-* All Web services need a network to operate while APIs don’t need a network for operation
-* First estimate your usage and understand how that will impact the overall cost of the offering
-* Many protocols are now available to be used in API testing (ex JMS, REST, HTTP, UDDI and SOAP)
+* Websocket
+  * two way communication between the clients and the servers
+  * Four main events : Open / Close / Error / Message
 
-> Representational State Transfer
+* Same Origin Policy
+  * When using XMLHttpRequest or Fetch API → local files origin is null
 
-* an architectural style for developing web services which exploit the ubiquity of HTTP protocol and uses HTTP method to define actions
+* URI
+  * stands for Uniform Resource Identifier. It is a string of characters designed for unambiguous identification of resources and extensibility via the URI scheme.
 
-> Websocket
-
-* two way communication between the clients and the servers
-* Four main events : Open / Close / Error / Message
-
-> Same Origin Policy
-
-* When using XMLHttpRequest or Fetch API → local files origin is null
-
-> URI
-
-* stands for Uniform Resource Identifier. It is a string of characters designed for unambiguous identification of resources and extensibility via the URI scheme.
-
-> xss
-
-* Cross Site Scripting
-* By using Cross Site Scripting (XSS) technique, users executed malicious scripts (also called payloads) unintentionally by clicking on untrusted links and hence, these scripts pass cookies information to attackers
+* xss
+  * Cross Site Scripting
+  * By using Cross Site Scripting (XSS) technique, users executed malicious scripts (also called payloads) unintentionally by clicking on untrusted links and hence, these scripts pass cookies information to attackers
 
 > HTTP Methods
 
 * GET
-    * can be cached, bookmarked, only used to request data (not modify)
-    * remain in the browser history, have max 2048 characters, ASCII characters allowed
-    * should never be used when dealing with sensitive data
-    * application/x-www-form-urlencoded
+  * can be cached, bookmarked, only used to request data (not modify)
+  * remain in the browser history, have max 2048 characters, ASCII characters allowed
+  * should never be used when dealing with sensitive data
+  * application/x-www-form-urlencoded
 
 * POST
-    * send data to a server to create/update a resource
-    * never cached, do not remain in the browser history, cannot be bookmarked
-    * no restrictions on data length
-    * application/x-www-form-urlencoded or multipart/form-data / multipart encoding for binary data
+  * send data to a server to create/update a resource
+  * never cached, do not remain in the browser history, cannot be bookmarked
+  * no restrictions on data length
+  * application/x-www-form-urlencoded or multipart/form-data / multipart encoding for binary data
 
 * PUT
-    * send data to a server to create/update a resource (idempotent to POST)
-    * same PUT request multiple times will always produce the same result
+  * send data to a server to create/update a resource (idempotent to POST)
+  * same PUT request multiple times will always produce the same result
 
 * HEAD
-    * almost identical to GET, but without the response body
+  * almost identical to GET, but without the response body
 
 * DELETE
-    * DELETE method deletes the specified resource.
+  * DELETE method deletes the specified resource.
 
 * PATCH
 
 * OPTIONS
-    * describes the communication options for the target resource.
+  * describes the communication options for the target resource.
+
+> gunicorn
+
+* based on the pre-fork worker model →  a central master process that manages worker processes
+* master never knows anything about individual clients
+* All requests and responses are handled completely by worker processes
+* Best practice: number of worker
+  * DO NOT scale the number of workers to the number of clients you expect to have
+  * should only need 4-12 worker processes to handle hundreds or thousands of requests per second
+  * recommend (2 x $num_cores) + 1 as the number of workers to start off with
+  * Too many processes start thrashing system resources decreasing throughput of entire system
+
+```sh
+gunicorn --bind :8080 --workers 1 --threads 8 page.app:app
+```
 
 ## Files
 

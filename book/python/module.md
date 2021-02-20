@@ -972,6 +972,72 @@ toolbar = DebugToolbarExtension(app)
 * project can contain multiple apps
 * automatically reloads Python code for each request as needed
 
+```sh
+nohup ./manage.py runserver & | fg        # run server on background
+./manage.py runserver > /dev/null 2>&1 &  # run server on background
+```
+
+> Field
+
+```py
+CharField(max_length=10, choices)
+TextField 
+EmailField 
+URLField
+IntegerField       # blank is equivalent to 0
+DecimalField
+BooleanField  
+DateTimeField
+ForeignKey         # id of record in another table
+ManyToManyField
+```
+
+> Structure
+
+* admin.py
+  * admin file defines admin interface see / edit
+
+* app.py
+  * controls settings specific to this app
+
+* django-admin
+
+```sh
+django-admin startproject pollster
+django-admin startapp polls
+```
+
+* manage.py
+
+```py
+makemigrations     # Generate migration files for later use
+showmigrations     # Show if migrated
+migrate            # Sync DB with models (create, remove | field change)
+createsuperuser
+runserver port     # starts server on internal IP at port
+startapp <name>    # create new app
+shell              # interactive mode
+```
+
+* migration/
+  * holds files to migrate DB when schema changes
+
+* models.py
+  * data layer to construct DB schema and queries
+
+* tests.py
+  * writing unit tests for the functionality of this app
+
+* views.py
+  * defines logic and control flow
+
+* settings.py
+
+* urls.py
+  * url routing specific to this app
+  * path(path, view, template)            # first patching → no match 404
+
+
 > bs4
 
 ```sh
@@ -1204,6 +1270,45 @@ SearchClient.create('key', 'cred')        # create client
 client.init_index('page')            # create index
 clear_objects()                # remove all objects
 save_objects()
+```
+
+### Automation
+
+> pyautogui
+
+```py
+pyautogui.mouseInfo()   # get RGB from mouse
+pyautogui.pixel(28, 18) # get RGB from pixel
+```
+
+* Box
+
+```py
+left, top, width, height
+```
+
+* locateOnScreen
+  * region=(x, y, width, height)
+  * greyscale=True
+  * confidence=0.9 (pip install opencv-python)
+
+```py
+file_loc = pyautogui.locateOnScreen("file_menu.png") # Get location on certain image, None if not exists
+pyautogui.moveTo(file_loc)
+pyautogui.click(file_loc)
+
+# Multiple images
+for file_loc in pyautogui.locateAllOnScreen("file_menu.png"):
+  pyautogui.click(i, duration=0.25)
+
+# With timeout
+file_location = None
+while not file_location:
+  file_location = pyautogui.locateOnScreen("file_menu.png") 
+  end = time.time()
+  if end - start > timeout:
+    print("timout")
+    sys.exit()
 ```
 
 ## Algorithm

@@ -26,8 +26,8 @@ class PATH:
   GITHUB = "https://github.com/SeanHwangG/private/tree/main/practice/"
 
 
-categories = ["operation", "tree", "design", "Iterable", "conditional", "sort", "recursion", "linkedlist", "bruteforce", "graph", "hashable", "dynamic_programming", "math", "ordering",
-              "sparse_table", "cut", "greedy", "queue", "binary", "string", "geometry", "syntax"]
+categories = ["syntax", "operation", "conditional", "binary", "iterable", "string", "sort", "bruteforce", "greedy", "queue",  "tree", "math", "geometry",
+              "hashable",  "graph", "ordering", "cut", "linkedlist", "dynamic_programming", "recursion", "backtracking", "sparse_table", "design", "sql", "shell", "regex"]
 
 
 def get_logger(name, level):  # WARNING 30, INFO 20, DEBUG 10

@@ -1,6 +1,37 @@
-# Software
+# Computer Science
 
 ![alt](images/20210210_190539.png)
+
+> Program
+
+![input / process /output diagram](images/20210219_213251.png)
+
+* Input
+  * Keyboard, Scanner
+* Output
+  * Screen, Headset
+* Input + output
+  * Touch screen, Digital camera
+
+## Software
+
+> Terms
+
+* Software development Toolkit
+
+* Library / Frameworks
+  * predefined set of classes that does similar things
+
+* kernel
+  * cgroups is essential for container process isolation.
+
+* Process
+  * sends parents to exit code when exit
+  * zero is special called init → process that starts the rest
+
+* Time
+  * Universal time coordinate : Compromise between english and french abbreviation
+  * GMT : Greenwich Mean Time, time zone at UTC + 0.0
 
 * Posix (Portable Operating System Interface)
   * standards specified by IEEE Computer Society for maintaining compatibility between operating systems
@@ -17,16 +48,35 @@
 * X Window System
   * xAuthority file is in ~, stores credentials in cookies used by xauth for authentication of X sessions
 
-> Program
+> Encodings
 
-![input / process /output diagram](images/20210219_213251.png)
+* Rules for translating a Unicode string into a sequence of bytes are called an encoding
+* Byte Order Mark # Set encoding for file
 
-* Input
-  * Keyboard, Scanner
-* Output
-  * Screen, Headset
-* Input + output
-  * Touch screen, Digital camera
+* ASCII
+  * American Standard Code for Information Interchange
+
+![Ascii](images/20210220_233720.png)
+
+> Cloud
+
+* computing resources are provisioned in a shareable way so that users get what they need when they need 
+* best be defined as infrastructure as a service or IaaS
+* keep their data secure, accessible, and available
+* operate in lots of different geographic regions → easily duplicate your data across multiple sites
+
+* Cloud computing
+  * platform independent → increase mobility and productivity
+  * more storage capacity
+
+* Hybrid
+  * Sensitive in public, secure in private
+
+* Private
+  * used by a single large corporation and generally physically hosted on its own premises 
+
+* Public
+  * large cluster of machines run by another company
 
 > GNU
 
@@ -42,11 +92,244 @@
 * GPL (GNU General Public License)
   * software licence
 
+> Service
+
+* IaaS
+  * Infrastructure as a service
+  * You shouldn't have to worry about building your own network or your own servers
+
+* PaaS
+  * Platform as a service abstracts away the server instances you need
+  * subset of cloud computing where a platform is provided for customers to run their services
+  * This basically means that an execution engine is provided for whatever software someone wants to run
+  * web developer writing a application w/o entire server complete with file system, dedicated resources
+
+* SaaS
+  * Software as a service
+  * way of licensing the use of software to others while keeping that software centrally hosted and managed
+
+### Files
+
+> Text
+
+* ini
+  * text-based content config file a structure and syntax comprising key-value pairs for properties
+
+* mime
+  * two-part identifier for file formats and format contents transmitted on the Internet
+  * image/png, text/html, text/plain
+
+* tar
+  * collecting several files into one archive file, including videos and images, for easier distribution
+  * contain useful information about files contain, user permissions, dates, directory structures
+
+* csv
+  * [+] easy import / export
+  * [-] No type information / No standard / No unicode support
+
+* json
+  * Keys are unique Strings that cannot be null.
+  * Values can be anything from a String, Boolean, Number, list, or even null.
+  * [+] serialization format or serving up data for your APIs
+  * [-] lacking features to support editing, comment
+
+* xml
+  * load to dom → everything into memory
+  * SAX → Simple API for XML
+
+```sh
+' "   # &apos; &quot;
+< >   # &lt; &gt;
+&     # &amp;
+```
+
+* yaml
+  * YAML is a superset of JSON, which means you can parse JSON with a YAML parser
+  * suited for configuration, readable and editable by humans
+  * ability to self reference, support for complex types, embedded block literals, comments
+  * [-] YAML parsers are younger and have been known to be less secure.
+
+```yml
+y|Y|yes|Yes|YES|n|N|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF
+- disktype=ssd    # list 
+- disktype: ssd   # map
+```
+
+> Image
+
+* Img extension
+
+* Bitmap Picture (BMP)
+  * Does not support effective image compression
+  * easily created from existing pixel data stored in an array
+  * Images that will be sent to print.
+
+* Graphics Interchange Format (GIF)
+  * have fewer colors, smaller file size, 256 colors → quality deterioration 
+  * Very small Icon, animation, simple drawing → animated files
+
+* Joint Photographic Experts Group (JPEG)
+  * 24bit color with up to 16million colors
+  * Lossy compression
+  * Standard format for most digital cameras
+  * Great for making smaller sizes
+  * Compatible across MAC, PC, mobile, web browser
+
+* portable network graphics (PNG)
+  * lossless compression
+  * Portable Network Graphics
+  * Background images without jagged edges
+  * Lossless compression
+  * PNG 8     smaller than GIF, 256 colors and 1 bit transparency
+  * PNG 24    larger than JPEG
+  * Use for text images, Images while editing process
+
+* obj
+  * a geometry definition file format
+
+* svg
+  * Scalable Vector Graphics
+  * responsive
+
+* tiff
+  * Tagged Image Format File
+  * Can be viewed and edited in nearly every photo editing software.
+
+### Security
+
+> Term
+
+* Mac filtering
+  * Configure your access points to only allow for connections from a specific set of MAC addresses belonging to devices you trust
+
+* WEP
+  * Wired equivalent privacy
+  * Web uses 40 bit for encryption keys → cracked in few minutes
+  * Wi-Fi Protected Access uses 128 bits for encryption keys
+  * WPA2 uses 256 bits for keys 
+  * Encryption technology that provides a very low level of privacy
+
+> Proxy
+
+* server that acts on behalf of a client in order to access another service
+* Not implementation → exist in many layers
+* intermediary for requests from clients seeking resources from servers that provide those resources
+
+![proxy](images/20210220_233349.png)
+
+* Web proxy
+  * Reduce web traffic by caching web data / Deny malign websites → old technologies
+
+* reverse proxy
+  * appear to be a single server to external clients, but actually represents many servers living behind it
+  * load balancing / decryption
+
+![Reverse proxy](images/20210220_233442.png)
+
+* VPN
+  * Allow for the extension of a private or local network to hosts that might not be on that local network
+  * transport payload section to carry encrypted payload that actually contains an entire second set of packets
+  * requires strict authentication procedures to ensure they connected to by authorized users 
+
+![vpn](images/20210220_233545.png)
+
+### Parallel programming
+
+* Simultaneous execution doing multiple things at once
+* Concurrence is a program structure dealing with multiple things at once
+
+> Terms
+
+* Concurrency
+  * ability of an algorithm or program to be broken into different parts that can be executed out of order
+* Critical path
+  * Sequence of project network activities which add up to the longest overall duration
+* Span
+  * length of the longest series of operations (critical path) to be performed sequentially due to dependencies
+
 ## Pattern
 
 ![alt](images/20210213_142102.png)
 
+### Object Oriented
+
+* Consistent terminology  / Templates that match problem to solution
+* Only relevant in OO languages → not in C
+
+> Terms
+
+* Abstraction
+  * process of removing physical, spatial, temporal details in objects to focus attention on details
+
+* Class
+  * Template to create objects to avoid recreating them each time → cookie cutter
+  * attributes → properties and state of entity
+  * methods → behavior of entity
+
+* Child Class
+  * keeps attributes and methods of its parent
+  * overrides / adds new attributes or methods of its own
+
+* Object
+  * Represents (the) noun (person, car, date) that responds to messages (method, things it does to itself)
+  * Identity (coffee mug), Attributes (color, size, fullness), Behavior (fill() empty() clean())
+  * Opaque so that it cannot be seen (messages are only way)
+  * Active relation (collide) must be represented by a separate object like NearbyFriendsTracker
+
+* Method
+  * Programming procedure that can return a value
+  * defined as part of a class → only access data known to its object
+
+* Composition
+  * Composition over inheritance → save memory (is_hot, is_sugar …)
+
+![Composition](images/20210220_234334.png)
+
+* Encapsulation
+  * bundling of data with methods that operate on data, or restrict access to some of components
+
+* Inheritance
+  * establishes a relation between two classes as parent and child
+
+* Polymorphism
+  * Allows child classes to be instantiated and treated as same type as its parent
+  * Enables parent class to be manifested into any of its child classes
+
+> Relation
+
+* UML
+  * Visibility : (public), - (private) # (protected) ~ (package)
+
+* Aggregation
+  * Implies a relationship where the child can exist independently of the parent
+  * ex) professor ↔ students
+
+![Aggregation](images/20210220_234605.png)
+
+* Association
+  * Represents the ability of one instance to send a message to another instance
+  * ex) student ↔ seat
+
+* Composition
+  * It is not a standard UML relationship, but it is still used in various applications
+  * whole/part relationship. if composite is deleted, other associated parts are delete
+  * Final keyword to represent Composition
+  * ex) visitor center ↔ Lobby, Human ↔ Leg
+  * Implement : class implements interface
+
 ### Principle
+
+> Interface Segregation
+
+* no client should be forced to depend on methods it does not use
+
+> Liskov substitution
+
+* S is a subtype of T, then objects of type T may be replaced with objects of type S (GAPI kernel impl)
+
+> Loose Coupling
+
+* Loose Coupling → changes should not change other classes for maintainable/extensible code
 
 > Dependency Inversion
 
@@ -56,7 +339,7 @@
 * Both should depend on abstractions, abstractions should not depend on details. 
 * many unit testing tools rely on inheritance to accomplish mocking
 
-### Creational pattern
+### Creational
 
 * Used to create objects in a systematic way
 * Polymorphism is widely used
@@ -72,7 +355,7 @@
 * Separate the construction of a complex object from its representation 
 * same construction process can create different representations
 
-### Structural Pattern
+### Structural
 
 * Establishes useful relationships between software components in configuration
 * Inheritance
@@ -149,7 +432,7 @@
 * A constructor, setter, or Factory binds the field with the desired variant.
 * Composition over inheritance
 
-### Behavioral Pattern
+### Behavioral 
 
 * Best practices of objects interaction → define protocols
 * methods and signatures
@@ -158,30 +441,11 @@
 
 * used to traverse a container and access the container's elements.
 
-### Parallel programming
-
-* Simultaneous execution doing multiple things at once
-* Concurrence is a program structure dealing with multiple things at once
-
-> Concurrency
-
-* ability of an algorithm or program to be broken into different parts that can be executed out of order
-
-> Critical path
-
-* Sequence of project network activities which add up to the longest overall duration
-
-> Span
-
-* length of the longest series of operations (critical path) to be performed sequentially due to dependencies
-
-
 ## Hardware
 
-> Architecture
-
-* determine arch or uname -m command
-* 64-bit extension of arm
+* hrchitecture
+  * determine arch or uname -m command
+  * 64-bit extension of arm
 
 | Type         | ARM                            | x86                            |
 | ------------ | ------------------------------ | ------------------------------ |
@@ -193,35 +457,65 @@
 | Usage        | Mobile                         | Game                           |
 | Venter       | ARM                            | Intel (80**)                   |
 
-> Data processing unit
+* Data processing unit
+  * new class of programmable processor and will join CPUs and GPUs as one of the three pillars of computing
 
-* new class of programmable processor and will join CPUs and GPUs as one of the three pillars of computing
-
-> Direct memory access
+* Direct memory access
+  * Access data from I/O and memory without CPU
 
 ![alt](images/20210210_101227.png)
-
-* Access data from I/O and memory without CPU
 
 ```sh
 Cycle stealing Mode   # CPU prioritize DMA, 1cycle break, fast IO
 Burst Mode            # Block level data 
 ```
 
-> Post Processing Engine
+* Post Processing Engine
+  * Bias add, scale, shift + Activation function
+  * Programmability
 
-* Bias add, scale, shift + Activation function
-* Programmability
+* kernel
+  * allocate resources, memory, CPU, network
+  * Most applications are not self-contained and make calls (system calls) to Linux kernel and library
+  * Kernel time is the time spent in Linux kernel, and user time is time spent in application or library code
 
-> kernel
+* Yocto project
+  * OpenEmbedded Core (oe-core) contains base layer of recipes, classes and files
 
-* allocate resources, memory, CPU, network
-* Most applications are not self-contained and make calls (system calls) to Linux kernel and library
-* Kernel time is the time spent in Linux kernel, and user time is time spent in application or library code
+> Memory
 
-> Yocto project
+![Memory types](images/20210220_232622.png)
 
-* OpenEmbedded Core (oe-core) contains base layer of recipes, classes and files
+* Disc
+  * In order to access a particular byte, track #, sector #, offset needed.
+  * Each block usually contains 512 bytes.
+  * Data must be brought to main memory (RAM)
+
+
+![Disc](images/20210220_233025.png)
+
+* Central processing unit
+  * calculate 1 billion operations per second / 0.3 nano per operation → cooler
+
+* GPU
+  * specialized for graphics
+
+* VPU
+  * specialized for visions
+
+* Register
+  * Memory in cpu (16 registers / each store 64 bit for 64-bit cpu)
+  * Register instruction pointer (intel 64)
+
+* Random Access memory
+  * volatile
+  * RAM - CPU  # 0.1 microsecond
+  * SSD        # 50-150 microsecond
+  * Hard Disk  # 1000 microseconds
+  * SRAM, DRAM, SDRAM, PSRAM, DDR SDRAM
+
+![Ram](images/20210220_232858.png)
+
 
 ## Software Engineering
 
@@ -297,45 +591,39 @@ Maintenance Release # release of a product that does not add new features or con
 
 * collaboration among everyone participating in delivering software
 
-> on premise
+> Terms
 
-* all computing resources are accessed and managed by premises
+* on premise
+  * all computing resources are accessed and managed by premises
 
-> Process of Reference
+* Process of Reference
+* Meeting
+  * Learn progress, status -> Update big board
+  * Surface problems that are slowing things downj
 
-> Meeting
+* Standup questions
+  * What have you accomplished since the last standup?
+  * What did you learn that would be valuable for the team to know?
+  * What's impeding you?
+  * What do you intend to do before the next stand up?
 
-* Learn progress, status -> Update big board
-* Surface problems that are slowing things down. 
+* Milestone
+  * Project get paid after milestone
 
-> Standup questions
+* Iteration (sprint)
+  * Trying to make a large project act like a small one  Default to 20 days.
+  * How much communication do I need to have with the customer? How much risk?
+  * Rapid feedback from the customer to avoid deviating from the customer’s wants
 
-* What have you accomplished since the last standup? 
-* What did you learn that would be valuable for the team to know? 
-* What's impeding you? 
-* What do you intend to do before the next stand up?
+* User Story
+  * keep the end goal in mind from the user's perspective to prevent things like feature creep and facilitate communication between all stakeholders.
+  * Describes an observable end-user feature in customer language
+  * Can have direct feed-back from the customer
+  * Planning poker to decide estimates
+  * In Business Driven Development Scenario, disambiguating user stories using sequence and special cases (multiple scenarios per story)
+  * BDD scenario is covered by matching automated story test
 
-> Milestone
-
-* Project get paid after milestone
-
-> Iteration (sprint)
-
-* Trying to make a large project act like a small one  Default to 20 days.
-* How much communication do I need to have with the customer? How much risk?
-* Rapid feedback from the customer to avoid deviating from the customer’s wants
-
-> User Story
-
-* keep the end goal in mind from the user's perspective to prevent things like feature creep and facilitate communication between all stakeholders.
-* Describes an observable end-user feature in customer language
-* Can have direct feed-back from the customer
-* Planning poker to decide estimates
-
-* In Business Driven Development Scenario, disambiguating user stories using sequence and special cases (multiple scenarios per story)
-* BDD scenario is covered by matching automated story test
-
-```
+```text
 Scenario 1: Favorite a New Route
 Given that the user is on the Save Route screen
 And they are saving a route named “RouteA”
@@ -569,6 +857,26 @@ word      #  least significant bits which uniquely identify a word on a line of 
   * provides smooth video transmission on any platform
   * ex. Hulu, Netflix, WebEx, and GoToMeeting
 
+> Port
+
+![standard port](images/20210220_193728.png)
+
+* 16-bit number that's used to direct traffic to specific services running on a networked computer
+
+```sh
+20, 21       # File transfer protocol
+53           # domain name system
+80           # HTTP (web service)
+443          # HTTPS
+1-1023       # system ports
+1024-49151   # registered ports
+49152-65535  # dynamic and/or private ports
+```
+
+* Forwarding
+  * port preservation source port chosen by a client is the same port used by the router
+* Preservation
+  * source port chosen by a client is the same port used by the router
 
 ### OSI Model
 
@@ -644,16 +952,133 @@ word      #  least significant bits which uniquely identify a word on a line of 
 * Link LED flashes when linked, Activity LED flashes when data flows
 * connect different devices to each other, allowing data to be transmitted over them
 
-![](images/20210218_230324.png)
+![cable plugs](images/20210218_230324.png)
 
 * Copper Cable
   * Multiple pairs of copper wires inside plastic insulator
   * Cat5 < Cat5e < Cat6 to reduce crosstalk → One wire accidentally detected on another wire
 
-![](images/20210218_230345.png)
+![copper cable](images/20210218_230345.png)
 
 * Fiber Cable
   * Contain individual optical fibers, which are tiny tubes made out of glass about the width of a human hair
   * Much more expensive and fragile
 
-![](images/20210218_230438.png)
+![fiber cable](images/20210218_230438.png)
+
+## Design
+
+### TinyURL
+
+> Requirements
+
+* Functional
+  * Given a URL, our service should generate a shorter and unique alias of it, called a short link.
+  * This link should be short enough to be easily copied and pasted into applications.
+  * When users access a short link, our service should redirect them to the original link.
+  * Users should optionally be able to pick a custom short link for their URL.
+  * Links will expire after a standard default timespan → specify the expiration time.
+
+* Non-Functional Requirements
+  * The system should be highly available →  if service is down, all the URL redirections will fail
+  * URL redirection should happen in real-time with minimal latency.
+  * Shortened links should not be guessable (not predictable).
+
+* Extended Requirements
+  * Analytics; e.g., how many times a redirection happened?
+  * Our service should also be accessible through REST APIs by other services.
+
+> Terms
+
+```sh
+ratio      # ratio between read and write (100:1)
+QPS_read   # read query per second (20K)
+QPS_write  # write query per second (200)
+duration   # years to store (5 y)
+size       # size of URL object (500 bytes)
+
+storage    # storage needed (2003.15e7s/y+5y500bytes=15TB)
+band_write # bandwidth of incoming data     (200500 bytes=100KB/s)
+band_read  # bandwidth of reading data (20K500 bytes=10MB/s)
+cache      # cache for 20% per day w/o dup (20K864000.2500bytes=170G)
+len        # base64 encoding (646=68.7 bil)
+```
+
+> Database
+
+![database](images/20210220_194128.png)
+![Flow](images/20210220_194215.png)
+
+* Our service is read-heavy
+* We need to store billions of records → Each object is small (less than 1K).
+* There are no relationships between records other than storing which user created a URL.
+* base36 ([a-z ,0-9]) or base62 ([A-Z, a-z, 0-9])
+
+> API
+
+```sh
+createURL(api_dev_key, original_url, custom_alias=None, user_name=None, expire_date=None)
+"""
+  Params:
+    api_dev_key (str)    The API key of a registered account to throttle users based on quota.
+    original_url (str)    Original URL to be shortened.
+    custom_alias (str)    Optional custom key for the URL.
+    user_name (str)    Optional user name to be used in the encoding.
+    expire_date (str)    Optional expiration date for the shortened URL.
+  Returns: (str)
+    A successful insertion returns the shortened URL; otherwise, it returns an error code
+"""
+
+deleteURL(api_dev_key, url_key)
+```
+
+> Question
+
+* Hash vs KGS
+  * Hash can be used concurrently
+  * Key Generation Service (KGS) → simple, fast, no duplications and collisions
+
+![K GS](images/20210220_194438.png)
+
+* Different hash functions?
+  * MD5         # 128-bit hash value
+  * SHA256
+
+* Range Based Partitioning vs Hash-Based Partitioning
+  * unbalanced DB servers / overloaded partitions (consistent hashing)
+
+* Load balance?
+  * Clients and Application servers / Application and database servers / Application and Cache servers
+  * Round Robin LB → periodically queries the backend server about its load and adjusts traffic
+
+* Key duplication?
+  * append an increasing sequence number to each input URL
+  * append user id which should be unique → not signed in
+
+* How to avoid KGS being a single point of failure?
+  * Whenever the primary server dies, the standby server can take over to generate and provide keys
+
+* How would we perform a key lookup?
+  * We can look up the key in our database to get the full URL
+  * If in DB, send “HTTP 302 Redirect”, passing the stored URL in the “Location” field of the request
+  * If not in our system, issue an “HTTP 404 Not Found” status or redirect back to the homepage
+
+### Pastebin
+
+> Requirement
+
+* Functional
+  * Users should be able to upload or “paste” their data and get a unique URL to access it.
+  * Users will only be able to upload text.
+  * Data and links will expire after a specific timespan automatically; users can specify expiration time.
+  * Users should optionally be able to pick a custom alias for their paste.
+
+* Non-Functional
+  * The system should be highly reliable, any data uploaded should not be lost.
+  * The system should be highly available → If our service is down, users can’t access their Pastes
+  * Users should be able to access their Pastes in real-time with minimum latency
+  * Paste links should not be guessable (not predictable)
+
+* Extended
+  * Analytics, e.g., how many times a paste was accessed?
+  * Our service should also be accessible through REST APIs by other services.

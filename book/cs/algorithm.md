@@ -428,19 +428,58 @@ $$ |O S(I)| \leq\left|O S^{\prime}(I)\right|=\left|\{g\} \cup S\left(I^{\prime}\
 
 [Finbonacci](https://www.youtube.com/watch?v=zg-ddPbzcKM)
 
-> backtracking
+### backtracking
 
 * Bounding function : kill some live nodes without actually expanding them
+* generic method that can be applied to problems with large solution set, in search and optimization problems
+* often be a first step towards finding a greedy or dynamic programming algorithm
+* often gives a more efficient runtime over exhaustive search or brute force
+* but may not result in a polynomial time algorithm, and is usually an improved exponential time (also for NP-complete problems)
+* Often, they are better on typical inputs that their worst-cast
+* Difference between divide and conquer is decrease size by a factor vs difference.
+
+* Instance : What does the input look like?
+* Solution format : What does the output look like?
+* Constraints : What properties must a solution have?
+* Objective function : What makes a solution have?
+
+```py
+# return all subset →  Without backtracking
+def subsets(li):
+  res = []
+  dfs(sorted(li), 0, [], res)
+  return res
+  
+def dfs(li, i, cur, res):
+  res.append(cur)
+  for i in range(i, len(li)):
+    dfs(li, i+1, cur+[li[i]], res)
+
+# return all subset that sums up to target → With backtracking
+def combinationSum(li, targ):
+  res = []
+  dfs(sorted(li), targ, 0, [], res)
+  return res
+  
+def dfs(nums, target, idx, cur, res):
+  if targ < 0:
+    return                    # backtracking
+  if targ == 0:
+    res.append(cur)
+    return
+  for i in range(i, len(li)):
+    dfs(li, targ - li[i], i, cur + [li[i]], res)
+```
 
 ### LinkedList
 
-Type | Access | Search | Insert | Delete
---- | --- | --- | --- | ---
-Array | 1 | n | n | n
-Stack | n | n | 1 | 1
-Queue | n | n | 1 | 1
-Singly-Linked | n | n | 1 | 1
-Doubly-Linked | n | n | 1 | 1
+| Type          | Access | Search | Insert | Delete |
+| ------------- | ------ | ------ | ------ | ------ |
+| Array         | 1      | n      | n      | n      |
+| Stack         | n      | n      | 1      | 1      |
+| Queue         | n      | n      | 1      | 1      |
+| Singly-Linked | n      | n      | 1      | 1      |
+| Doubly-Linked | n      | n      | 1      | 1      |
 
 ### Graph
 

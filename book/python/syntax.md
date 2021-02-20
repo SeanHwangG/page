@@ -1300,7 +1300,7 @@ print(f"oslo to vancouver is {oslo.distance_to(vancouver)}km away")
 print(list(sorted([oslo, vancouver, seoul])))
 ```
 
-> <namedtuple>
+> namedtuple
 
 ```py
 NamedTupleCard = namedtuple('NamedTupleCard', ['rank', 'suit'])
@@ -1309,12 +1309,13 @@ ace_of_spades = NamedTupleCard('A', 'Spades')
 ace_of_spades == Person('A', 'Spades')    # True
 ```
 
-
-### Patterns
+## Pattern
 
 * [Theory](../cs/cs.md#Patterns)
 
 ### Creational
+
+* [Creational Theory](../cs/cs.md#Creational)
 
 > Singleton
 
@@ -1340,7 +1341,7 @@ def singleton(cls):
   return getinstance
 ```
 
-> Borg 
+> Borg
 
 * subclass have the same state as their parents classes objects
 
@@ -1495,7 +1496,7 @@ class classmethod(object):    # classmethod
     return lambda *args, **kw: self.method(cls, *args, **kw)
 ```
 
-## Behavior
+### Behavior
 
 * about communication between separate objects
 

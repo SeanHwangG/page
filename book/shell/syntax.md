@@ -1,8 +1,19 @@
 # Syntax
 
-## IO
+> Error
 
-![](images/20210216_013604.png)
+* script.sh: line 100: syntax error: unexpected end of file
+  * close do done / if fi / case esac / { } / ( )?
+* Unexpected end of file while looking for matching ...
+  * double-quote pairs, single-quote pairs (also $'string'!)
+  * missing a closing } with parameter expansion syntax
+* Too many arguments
+  * likely forgot to quote a variable expansion somewhere
+* syntax error near unexpected token `('
+  * have an alias defined with the same name as the function.
+  * Alias expansion happens before the real language interpretion, so expanded and makes your function definition invalid
+
+## IO
 
 ### builtIns
 
@@ -15,7 +26,7 @@ onintr, popd, printenv, pushd, pwd, read, readonly, rehash, repeat, return, sche
 ulimit, umask, unalias, uncomplete, unhash, unlimit, unset, unsetenv, until, wait, where, which, while
 ```
 
-> Builtin
+> keywords
 
 ```sh
 $         # Escape to variable
@@ -40,6 +51,7 @@ LINENO          # line number in script or shell function currently executing
 OLDPWD          # previous working directory
 PPID (readonly) # The process ID of the shell’s parent process
 RANDOM          # Each time referenced, expands to a random integer 0 ~ 32767.
+PS4             # denotes the value is the prompt printed before the command line
 
 locale-gen en_US.UTF-8  # Create UTF-8
 ```

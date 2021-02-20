@@ -55,20 +55,35 @@
 * Issue
   * "fix \#33" commit messages closes issue
 
-### Files
+> Files
 
-> .git
+* .git
 
 ```sh
 cat .git/HEAD        # see head
 rm -rf .git          # Delete git repository
+
+# Accidentally removed .git
+git init
+git remote add origin <remote_address>.git
+git pull
+got reset --hard origin/main
 ```
 
-> .gitignore
+* .gitignore
 
 ```sh
 *                    # Ignore everything    
 !*.py                # But not these files...
+
+# For home file
+*
+
+!.ssh/**
+!*.vimrc
+!*.vim
+!*.bashrc
+!.gitignore
 ```
 
 > .gitconfig
@@ -161,6 +176,14 @@ fetch all data from that project and check out appropriate commit
 
 ```sh
 
+```
+
+> shopt
+
+* [zsh] shopt
+
+```sh
+shopt -s dotglob nullglob   # also glob hidden file
 ```
 
 ### lfs
@@ -272,7 +295,7 @@ git ls-tree --name-only -r HEAD    # List all files on the branch
 
 ```sh
 -U<n>                        # allows you to customize the number of lines to show around a change
---name-only --diff-filter=U  # show all unmerged files
+--name-only --diff-filter=U  # show all unmerged files/
 ```
 
 ### Operation
@@ -280,8 +303,9 @@ git ls-tree --name-only -r HEAD    # List all files on the branch
 > mv
 
 ```sh
-<> src dest           # move src to dest
-mv -t dest src1 scr2  # move multiple item at once
+<> src dest       # move src to dest
+-t dest src1 scr2 # move multiple item at once
+-n                # Do not overwrite an existing file
 ```
 
 > rm
@@ -416,12 +440,12 @@ ssh://[user@]host.xz[:port]/path/to/repo.git/
 git://host.xz[:port]/path/to/repo.git/      # does no authentication
 http[s]://host.xz[:port]/path/to/repo.git/
 native transport (i.e. git:// URL) and should be used with caution on unsecured networks.
-<folder>        # get a local copy of an existing repository (default cwd)
+<folder>        # get a local copy of an existing repository (default cwd) (. for current directory)
 --depth 1       # shallow clone
---recurse-submodules  # initialize, update each submodule in repository
 -b / --branch   # clone branch
 --bare          # clone bare repository
--j <n>, --jobs <n>  # number of submodules fetched at the same time.
+-j <n>, --jobs <n>   # number of submodules fetched at the same time.
+--recurse-submodules # initialize, update each submodule in repository
 ```
 
 > Fetch
@@ -564,6 +588,104 @@ a (b)            # a → b (current if omitted)
 fetch && origin/master  # Merge remote master to the local branch
 ```
 
+## GitLab
+
+![gitlab](images/20210221_023453.png)
+
+> Variable
+
+```sh
+CI_PROJECT_NAME      # name of repository
+CI_COMMIT_REF_NAME   # name of branch
+
+# registry dictionary
+registry_http_addr # Needs to be reachable by web server (or LB).
+token_realm        # authentication endpoint, usually GitLab URL. needs to be reachable by the user
+http_secret        # random string to sign state that may be stored with client to protect tampering
+internal_key       # automatically generated. Contents of key that GitLab uses to sign the tokens. 
+```
+
+> register
+
+* stage,qa,build,deploy
+
+> File
+
+* .gitlab-ci.yml
+
+```yml
+# 1: Hello World
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script:
+    - echo "Building"
+    - mkdir build
+    - touch build/info.txt
+  artifacts:
+    paths:
+      - build/
+
+test:
+  stage: test
+  script:
+    - echo "Testind"
+    - test -f "build/info.txt"
+
+# 2: With Docker
+# docker run --rm -it  ubuntu:latest --privileged=true
+# [inside docker]
+# apt update
+# apt install -y apt-transport-https software-properties-common
+# apt install curl
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+# add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" # docker repository 
+# apt install docker-ce
+# docker run -d --name gitlab-runner --restart always -v /srv/gitlab-runner/config:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest
+image: busybox:latest
+
+before_script:
+  - echo "Run an update here or install a build dependency or print out some debugging details"
+
+after_script:
+  - echo "do some cleanup here"
+
+build1:
+  tags:
+    - docker
+  stage: build
+  script:
+    - echo "Do your build here"
+
+test1:
+  tags:
+    - docker
+  stage: test
+  script:
+    - echo "For example run a test suite"
+
+test2:
+  tags:
+    - docker
+  stage: test
+  script:
+    - echo "Do another parallel test here"
+  only:
+    variables:
+      - $TEST_LINUX == "true"
+
+deploy1:
+  tags:
+    - docker
+  stage: deploy
+  script:
+    - echo "Do your deploy here"
+```
+
+
 ## Github
 
 ### CLI
@@ -680,7 +802,7 @@ ma             # mark a
 
 > map
 
-```
+```sh
 map / imap     # normal, visual mode / insert mode 
 unmap          # cancel mapping 
 inoremap       # insert mode non recursive
