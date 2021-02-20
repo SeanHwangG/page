@@ -340,6 +340,11 @@ for i in range(50):
 * [round](https://docs.google.com/forms/d/19Hzj2ohcfL9cT4QnrDVvd89YTPj_a8z53KNOM-55ZlE/edit)
 * [combination](https://docs.google.com/forms/d/1AeV7i1ky3EHT0ap8SStwHDkQiBmrlG8w2hXDEOQrh_c/edit)
 
+```py
+ceil(x)    # ceiling of x, smallest integer greater than or equal to x. If x is not a float, use x.__ceil__(), which should return int.
+comb(n, k) # number of ways to choose k items from n items without repetition and without order.
+```
+
 > decimal
 
 ```py
