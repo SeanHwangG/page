@@ -660,6 +660,552 @@ def complex():
 complex()       # Took 0.111s
 ```
 
+### Network
+
+> socket
+
+* tcp client
+
+```py
+import socket
+
+host = '127.0.0.1'
+port = 5000
+
+def tcp_client():
+  s = socket.socket()
+  s.connect((host, port))
+
+  while (message := input("->").encode()) != 'q':
+    s.send(message)
+    data = s.recv(1024)
+    print(f"Recieved from server {data}")
+  s.close()
+
+def tcp_server():
+  s = socket.socket()
+  s.bind((host, port))
+
+  s.listen(1)
+  c, addr = s.accept()
+  print(f"Connection from {addr}")
+
+  while True:
+    data = c.recv(1024)
+    if not data:
+      break
+    print(f"message {data} recieved, sending back {data.upper()}")
+    c.send(data.upper())
+  c.close()
+```
+
+* udp client
+
+```py
+import socket
+
+host, port = '127.0.0.1', 5001
+server = ('127.0.0.1',5000)
+
+def udp_client():
+  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+  s.bind((host, port))
+
+  while (message := input("-> ").encode()) != 'q':
+    s.sendto(message, server)
+    data, addr = s.recvfrom(1024)
+    print(f'Received from server:{data}')
+  s.close()
+
+def udp_server():
+  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+  s.bind((host,port))
+
+  print("Server Started.")
+  while True:
+    data, addr = s.recvfrom(1024)
+    print(f"message {data} recieved from {addr}, sending back {data.upper()}")
+    s.sendto(data.upper(), addr)
+  c.close()
+```
+
+* get_ip_address
+
+```py
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+print(s.getsockname()[0])
+```
+
+> cgi
+
+* dynamically generating web pages that respond to user input
+
+> http.server.HTTPServer
+
+```sh
+python3 -m http.server
+serve_forever()
+```
+
+> urllib
+
+* Request class
+
+```py
+urllib2.Request(www.example.com)
+add_header('Referer', 'http://www.python.org/')
+urlopen(url)  k# string / Request object.  For HTTP, returns http.client.HTTPResponse object
+```
+
+* parse
+
+```py
+unquote(str)  # decode urlencoded bytes
+```
+
+* HTTPResponse
+
+```py
+content = resp.read()
+```
+
+```py
+import time
+import urllib.request
+import multiprocessing as mp
+import concurrent.futures
+
+""" Returns: total bytes from downloading all images in image_numbers list """
+def seq_download_images(image_numbers):
+  total_bytes = 0
+  for num in image_numbers:
+    total_bytes += _download_image(num)
+  return total_bytes
+
+def _download_image(image_number):
+  image_number = (abs(image_number) % 50) + 1  # force between 1 and 50
+  image_url = 'http://699340.youcanlearnit.net/image{:03d}.jpg'.format(image_number)
+  try:
+    with urllib.request.urlopen(image_url, timeout=60) as conn:
+      return len(conn.read())  # number of bytes in downloaded image
+  except Exception as e:
+    print(e)
+
+def par_download_images(image_numbers):
+  total_bytes = 0
+  with concurrent.futures.ThreadPoolExecutor() as pool:
+    futures = [pool.submit(_download_image, num) for num in image_numbers]
+    for f in concurrent.futures.as_completed(futures):
+      total_bytes += f.result()
+  return total_bytes
+
+if __name__ == '__main__':
+  IMAGE_NUMBERS = list(range(1, 50))
+
+  print('Evaluating Sequential Implementation...')
+  sequential_result = seq_download_images(IMAGE_NUMBERS)
+  sequential_time = 0
+  start = time.perf_counter()
+  seq_download_images(IMAGE_NUMBERS)
+  sequential_time += time.perf_counter() - start
+
+  print('Evaluating Parallel Implementation...')
+  parallel_result = par_download_images(IMAGE_NUMBERS)
+  parallel_time = 0
+  start = time.perf_counter()
+  par_download_images(IMAGE_NUMBERS)
+  parallel_time += time.perf_counter() - start
+
+  if sequential_result != parallel_result:
+    raise Exception('sequential_result and parallel_result do not match.')
+  print('Average Sequential Time: {:.2f} ms'.format(sequential_time*1000))
+  print('Average Parallel Time: {:.2f} ms'.format(parallel_time*1000))
+  print('Speedup: {:.2f}'.format(sequential_time | parallel_time))
+  print('Efficiency: {:.2f}%'.format(100*(sequential_time | parallel_time) | mp.cpu_count()))
+```
+
+### Web
+
+> jinja
+
+* variable
+
+```py
+{{ var | default(5) }}    # 5 if not set
+{{ var | isnan }}
+{{ var | log }}
+{{ var | pow(2) }}
+{{ var | root }}
+{{ var | ipaddr }}        # check if var is ipaddr
+{{ var | ipv6 }}          # check if
+{{ "C style" | comment('c') }}
+{% |reverse %}
+```
+
+* load
+
+```py
+{% load A %}
+{% A 'images/logo.png' %}
+{% extends "base.html" %}            # substitute A block in base.html
+```
+
+* Conditional
+
+```py
+{% if title %} {% else %} {% endif %}
+{% if ( (foo == 'foo' or bar == 'bar') and (fo == 'fo' or ba == 'ba') ) %}
+```
+
+* list
+
+```py
+{{ value|last }}                    # last element 
+```
+
+* set
+
+```py
+{{ list1 | unique }}                      # To get a unique set from a list:
+{{ list1 | union(list2) }}                # To get a union of two lists
+{{ list1 | intersect(list2) }}            # unique list of all items in both
+{{ list1 | difference(list2) }}           # items in 1 that don’t exist in 2
+{{ list1 | symmetric_difference(list2) }} # list1 - list2
+```
+
+> flask
+
+* [Flask](https://www.youtube.com/watch?v=Z1RJmh_OqeA)
+* [Flask + https](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)
+* [Flask + Firebase](https://medium.com/firebase-developers/hosting-flask-servers-on-firebase-from-scratch-c97cfb204579)
+* [Flask + Google login](https://realpython.com/flask-google-login/)
+* [Flask + Firestore](https://medium.com/google-cloud/building-a-flask-python-crud-api-with-cloud-firestore-firebase-and-deploying-on-cloud-run-29a10c502877)
+
+* application context
+  * keeps track of the application-level data during a request, CLI command
+
+* Basic Docker
+
+```sh
+# Structure
+flask-fire (root dir)
+├── server
+ | ├── src
+ |    └── app.py
+ |    └── templates
+ |       └── index.html
+ | ├── Dockerfile
+├── static
+ |  └── style.css
+├── firebase.json
+├── .firebaserc
+
+# ./Dockerfile
+FROM python
+COPY . /app
+WORKDIR /app
+RUN pip install flask
+EXPOSE 5000
+CMD ["python", "app.py"]
+
+$ docker build -t flask-test .
+$ docker run -d -p 5000:5000 flask-test
+```
+
+```py
+# ./app.py
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+  return "Hello Docker!"
+
+if __name__ == '__main__':
+  app.run(debug=True, host='0.0.0.0')
+```
+
+* Global jinja
+
+```py
+global jinja accessible by {{ stage }}
+@app.context_processor
+def inject_stage_and_region():
+    return dict(stage="alpha", region="NA")
+```
+
+* CLI
+
+```
+flask run --cert adhoc    # run in https
+
+FLASK_APP      # app.py
+FLASK_ENV      # development
+```
+
+> flask_wtf
+
+```py
+FlaskForm
+
+flask_login
+
+LoginManager
+current_user
+login_required
+login_user
+logout_user
+
+flask_debugtoolbar
+
+app.config['SECRET_KEY'] = '<replace with a secret key>'
+toolbar = DebugToolbarExtension(app)
+```
+
+> django
+
+![alt](images/20210213_015930.png)
+
+* Model-view-controller
+* URL patterns to decide which view to pass the request to for handling
+* project can contain multiple apps
+* automatically reloads Python code for each request as needed
+
+> bs4
+
+```sh
+(from bs4 import BeautifulSoup)
+
+name                          # tagname
+text, attrs                   # inside text, attribute object
+next / previous_elements      # next / previous tags generator
+next / previous_siblings      # next sibling tags generator
+original_encoding
+
+# bs4.element.Tag
+string
+text
+clear()                       # removes the contents of a tag:
+decompose()                   # remove tag
+extract()                     # hide element
+find_all(tag, href=None, limit=None) → [Tags]    # find all matching tags
+find("span")                  # find tags inside
+get_text()                    # 
+insert(pos, tag)              # insert tag to position
+insert_before() / after()     # immediately before
+prettify()
+wrap(soup.new_tag("b"))       # wrap around new tags
+
+new_button = soup.new_tag('a')
+new_button.attrs["onclick"] = "toggle()"
+new_button.append('This is a new button!')
+```
+
+* Multifile gist toggle
+
+```py
+import requests
+import re
+from ..common import PATH, logger, git_credential
+from bs4 import BeautifulSoup
+from itertools import islice
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+class Gist:
+  def __init__(self, gist_id="", h1="", h2='', h3='', li='', link='', file_names=None, html='', problem_id=''):
+    self.gist_id = gist_id
+    self.h1 = h1
+    self.h2 = h2
+    self.h3 = h3
+    self.li = li
+    self.link = link
+    self.file_names = file_names or []
+    self.html = html
+    self.problem_id = problem_id
+
+  def __repr__(self):
+    return f"{self.__dict__}"
+
+  @classmethod
+  def get_gist(cls, gist_id, h1="", h2="", h3="", li=""):
+    gist = cls(gist_id, h1, h2, h3, li, f"<a href=https://gist.github.com/SeanHwangG/{gist_id}>{gist_id}</a>")
+    result = requests.get(f'https://gist.github.com/{gist_id}.js', headers=git_credential)
+
+    if result.text.startswith("<!DOCTYPE html>"):
+      return None
+    # update with regex
+    result = result.text.replace("\\\\n", "[NEW_LINE]").replace("\\n", "\n").replace("[NEW_LINE]", "\\n")
+    result = re.sub(r"\\(/|&|\$|<|`|\"|\\|')", r"\1", result)
+    result = result.split("document.write('")[-1][:-3]
+
+    bs = BeautifulSoup(result, "html.parser")
+
+    for tag in bs.find_all(class_="gist"):
+      file_box = tag.find(class_="file-box")
+      root = tag.find(class_="file-box")
+      toggle_div = bs.new_tag('div', attrs={"class": "gist-meta"})
+
+      for i, d in enumerate(tag.find_all(class_="file")):
+        d["class"] = f"file gist-id-{gist_id}"
+        if i != 0:
+          file_box.append(d)  # combine to first table
+
+      for d in tag.find_all(class_="gist-meta"):
+        siblings = list(d.next_elements)
+        file_id, file_name = siblings[4].attrs["href"].split("#")[-1], siblings[5]
+        toggle_a = bs.new_tag('a', attrs={"id": file_id, "class": f"gist-toggler gist-id-{gist_id}", "onclick": f"toggle('gist-id-{gist_id}', '{file_id}')", "style": "padding: 0 18px"})
+        toggle_a.append(file_name)
+        toggle_div.append(toggle_a)
+        d.extract()  # remove bottom nav
+      edit_gist = bs.new_tag('a', attrs={"class": f"edit-gist", "href": f"https://gist.github.com/{gist_id}", "style": "float: right"})
+      edit_gist.append("edit")
+      toggle_div.append(edit_gist)
+
+      root.insert(0, toggle_div)
+      for d in islice(tag.find_all(class_="gist-file"), 1, None):
+        d.extract()  # remove except first
+    gist.html = str(bs)
+
+    return gist
+
+  @staticmethod
+  def get_all_gist(gist_ids, h1="", h2="", h3="", li=""):
+    logger.debug(f"get_all_gist({h1}, {h2}, {h3}, {li})")
+    futures = []
+    with ThreadPoolExecutor() as ex:
+      futures.extend([ex.submit(Gist.get_gist, gist_id, h1, h2, h3, li) for gist_id in gist_ids])
+    gists = [future.result() for future in as_completed(futures)]
+    return [gist for gist in gists if gist != None]
+```
+
+> requests
+
+```py
+json()            # convert back to
+```
+
+* Clone Gist subprocess
+
+```py
+import json
+import subprocess as sp
+import requests
+import os
+from itertools import islice
+from math import ceil
+
+def clone_all(username='seanhwangg', clone_path):
+  current_count, total_count = 0, 1000
+  git_cred = get_git_credential()
+
+  for i in range(ceil(total_count / 100)):
+    pid2popen = {}
+    result = requests.get(f'https://api.github.com/users/{username}/gists?page={i}&per_page={100}', headers=git_cred)
+    gists = json.loads(result.content)
+
+    loop_count = min(total_count - current_count, len(gists))
+    current_count += loop_count
+
+    for g in islice(gists, loop_count):
+      url, gist_path = f"https://gist.github.com/{g['id']}.git", f"{clone_path}/{g['id']}"
+      if os.path.isdir(gist_path):
+        p = sp.Popen(['git', '-C', gist_path, 'pull', url], stdout=sp.PIPE, stderr=sp.PIPE)
+      else:
+        p = sp.Popen(['git', 'clone', url, f"{clone_path}/{g['id']}"], stdout=sp.PIPE, stderr=sp.PIPE)
+      pid2popen[gist_path] = p
+    for gist_path, p in pid2popen.items():
+      out, err = p.communicate()
+      file2content = {}
+      for file in os.listdir(gist_path):
+        if not os.path.isdir(f"{gist_path}/{file}"):
+          with open(f"{gist_path}/{file}", 'r') as f:
+            file2content[file] = f.read().split('\n')
+    return file2content
+```
+
+> selenium
+
+* Multithreading
+
+```py
+import multithreading as mt
+import json
+import re
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
+
+
+def update_problems(*, update_page=None, update_level=None):
+  if update_level:
+    with mt.Pool(16) as pool:
+      levels = pool.map(get_problems_level, range(0, 31))
+    problems = [problem for level in levels for problem in level]
+  else:
+    with open(f"{PATH.DATA}/problems.json", 'r') as f:
+      problems = json.load(f)
+
+  with open(f"{PATH.DATA}/problems.json", 'w') as f:
+    json.dump(problems, f, ensure_ascii=False)
+
+
+def get_problems_level(level):
+  problems = []
+  chrome_options = Options()
+  chrome_options.add_argument('headless')
+  driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+  try:
+    level_problems = []
+    for page in range(1, 100):
+      driver.get(f"https://solved.ac/problems/level/{level}?sort=id&direction=asc&page={page}")
+      WebDriverWait(driver, 100).until(EC.presence_of_element_located((By.CLASS_NAME, 'contents')))
+      lines = driver.find_element_by_class_name('contents').text
+      if '해당하는 문제가 없습니다' in lines:
+        break
+      for line in lines.split('\n'):
+        level_problems.extend(re.findall(r'^ (\d+)', line))
+    for problem in level_problems:
+      problems.append({'id': f"BJ_{problem}", 'level': level})
+  except Exception:
+    driver.quit()
+  else:
+    driver.quit()
+  return problems
+```
+
+> Errors
+
+* DevToolsActivePort file doesn't exist
+
+```py
+chrome_options.add_argument("--single-process")  
+```
+
+> livereload
+
+```sh
+gh repo clone nathanwright1242/flask_livereload_example
+# <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+```
+
+> algolia
+
+* full-text search
+
+```py
+# client
+SearchClient.create('key', 'cred')        # create client
+
+# index
+client.init_index('page')            # create index
+clear_objects()                # remove all objects
+save_objects()
+```
+
 ## Algorithm
 
 ### Data structure
@@ -678,6 +1224,200 @@ bisect.bisect_right(a, x, lo=0, hi=len(a))     # last insert point for x in a to
 
 ```py
 bisect.insort(a, x, lo=0, hi=len(a))
+```
+
+### Concurrency
+
+* Global Interpreter Lock is a mutex that allows one thread to hold the control of Python interprete
+
+> psutil
+
+```py
+cpu_count()
+ps.memory_info()[0] / 1024 / 1024)
+```
+
+> shlex
+
+```py
+split(command_line)            # split command line into list
+```
+
+> signal
+
+* catch ctr c
+
+```py
+import fire
+import sys
+import signal
+
+
+count = 0
+
+
+def handler(signum, frame):
+  print(f"1 sec passed \t {count}")
+  sys.exit(0)
+
+
+signal.signal(signal.SIGINT, lambda sn, f: print("CTRL+C Pressed"))
+signal.signal(signal.SIGALRM, handler)
+signal.alarm(5)
+while True:
+  count += 1
+print(count)
+```
+
+* timeout decorator
+
+```py
+import signal
+import os
+import errno
+import time
+from functools import wraps
+
+def timeout(seconds, error_message=os.strerror(errno.ETIME)):
+  def decorator(func):
+    def _handle_timeout(signum, frame):
+      raise Exception(f"Took longer than {seconds}s")
+
+    def wrapper(*args, **kwargs):
+      signal.signal(signal.SIGALRM, _handle_timeout)
+      signal.alarm(seconds)
+      try:
+        result = func(*args, **kwargs)
+      finally:
+        signal.alarm(0)
+      return result
+
+    return wraps(func)(wrapper)
+
+  return decorator
+
+
+@timeout(1)
+def fast_function():
+  time.sleep(0.5)
+  print("hello")
+
+
+@timeout(1)
+def slow_function():
+  time.sleep(2)
+  print("heeeeeeello")
+```
+
+* timeout context
+
+```py
+import contextlib
+import errno
+import os
+import signal
+import time
+
+class timeout(contextlib.ContextDecorator):
+  def __init__(self, seconds, *, timeout_message=os.strerror(errno.ETIME), suppress_error=False):
+    self.seconds = seconds
+    self.timeout_message = timeout_message
+    self.suppress_error = suppress_error
+
+  def _timeout_handler(self, signum, frame):
+    raise TimeoutError(self.timeout_message)
+
+  def __enter__(self):
+    signal.signal(signal.SIGALRM, self._timeout_handler)
+    signal.alarm(self.seconds)
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    signal.alarm(0)
+    if self.suppress_error and exc_type is TimeoutError:
+      return True
+
+
+with timeout(1):
+  time.sleep(0.5)
+  print("hello")
+
+with timeout(1):
+  time.sleep(2)
+  print("heeeello")
+```
+
+
+### Race Control
+
+> <queue>
+
+* thread safe 
+
+```py
+Queue(maxsize=0)
+empty()
+get(block=True, timeout=None)
+put(item, block=True, timeout=None)
+qsize()
+
+from queue import PriorityQueue
+
+pq = PriorityQueue(maxsize=3)
+pq.put((8, 'top'))
+pq.put((1, 'sean'))
+pq.put((3, 'top'))
+while pq.size():
+    print(pq.get())
+```
+
+> subprocess
+
+```py
+run(["ls", "-l"], capture_output=True, text=True)    # simplified Popen, execute and wait 
+
+# Popen
+Popen(args)           # Execute a child program in a new process
+universal_newlines=False      # input/output is accepted as bytes, not Unicode
+p = subprocess.Popen("ls", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+out, err = p.communicate()    # out is byte -> must be encoded
+```
+
+* Example
+
+```py
+import os
+import subprocess
+import time
+from collections import deque
+
+
+def ls():
+  commands = "ls -a"
+
+  process = subprocess.Popen(commands.split(), stdout=subprocess.PIPE)
+  out, err = process.communicate()
+
+  print(out)
+  print(err)
+
+def top():
+  cpu_usages = [1]
+  while True:
+    process = subprocess.Popen("ps -a -o %cpu,%mem,cmd".split(), stdout=subprocess.PIPE)
+    out, _ = process.communicate()
+    try:
+      cpu_usages.append(int([line.split()[0] for line in out.decode('utf-8').split('\n') if "_type_" in line][0]))
+      print(cpu_usages)
+      time.sleep(0.1)
+    except Exception as e:
+      return sum(cpu_usages) / len(cpu_usages)
+
+def cpu_usage():
+  p = subprocess.Popen(['/usr/bin/time'] + ["ls"], stdout=open(os.devnull, 'wb', 0), stderr=subprocess.PIPE)
+  with p.stderr:
+    q = deque(iter(p.stderr.readline, b''), maxlen=2)
+  rc = p.wait()
+  return b''.join(q).decode().strip()
 ```
 
 ## Database
@@ -1304,699 +2044,6 @@ getsitepackages()     # see sitepackages
 ps1 /.ps2             # used for interactive mode string
 ```
 
-## Concurrency
-
-* Global Interpreter Lock is a mutex that allows one thread to hold the control of Python interprete
-
-> psutil
-
-```py
-cpu_count()
-ps.memory_info()[0] / 1024 / 1024)
-```
-
-> shlex
-
-```py
-split(command_line)            # split command line into list
-```
-
-> signal
-
-* catch ctr c
-
-```py
-import fire
-import sys
-import signal
-
-
-count = 0
-
-
-def handler(signum, frame):
-  print(f"1 sec passed \t {count}")
-  sys.exit(0)
-
-
-signal.signal(signal.SIGINT, lambda sn, f: print("CTRL+C Pressed"))
-signal.signal(signal.SIGALRM, handler)
-signal.alarm(5)
-while True:
-  count += 1
-print(count)
-```
-
-* timeout decorator
-
-```py
-import signal
-import os
-import errno
-import time
-from functools import wraps
-
-def timeout(seconds, error_message=os.strerror(errno.ETIME)):
-  def decorator(func):
-    def _handle_timeout(signum, frame):
-      raise Exception(f"Took longer than {seconds}s")
-
-    def wrapper(*args, **kwargs):
-      signal.signal(signal.SIGALRM, _handle_timeout)
-      signal.alarm(seconds)
-      try:
-        result = func(*args, **kwargs)
-      finally:
-        signal.alarm(0)
-      return result
-
-    return wraps(func)(wrapper)
-
-  return decorator
-
-
-@timeout(1)
-def fast_function():
-  time.sleep(0.5)
-  print("hello")
-
-
-@timeout(1)
-def slow_function():
-  time.sleep(2)
-  print("heeeeeeello")
-```
-
-* timeout context
-
-```py
-import contextlib
-import errno
-import os
-import signal
-import time
-
-class timeout(contextlib.ContextDecorator):
-  def __init__(self, seconds, *, timeout_message=os.strerror(errno.ETIME), suppress_error=False):
-    self.seconds = seconds
-    self.timeout_message = timeout_message
-    self.suppress_error = suppress_error
-
-  def _timeout_handler(self, signum, frame):
-    raise TimeoutError(self.timeout_message)
-
-  def __enter__(self):
-    signal.signal(signal.SIGALRM, self._timeout_handler)
-    signal.alarm(self.seconds)
-
-  def __exit__(self, exc_type, exc_val, exc_tb):
-    signal.alarm(0)
-    if self.suppress_error and exc_type is TimeoutError:
-      return True
-
-
-with timeout(1):
-  time.sleep(0.5)
-  print("hello")
-
-with timeout(1):
-  time.sleep(2)
-  print("heeeello")
-```
-
-
-### Race Control
-
-> <queue>
-
-* thread safe 
-
-```py
-Queue(maxsize=0)
-empty()
-get(block=True, timeout=None)
-put(item, block=True, timeout=None)
-qsize()
-
-from queue import PriorityQueue
-
-pq = PriorityQueue(maxsize=3)
-pq.put((8, 'top'))
-pq.put((1, 'sean'))
-pq.put((3, 'top'))
-while pq.size():
-    print(pq.get())
-```
-
-> subprocess
-
-```py
-run(["ls", "-l"], capture_output=True, text=True)    # simplified Popen, execute and wait 
-
-# Popen
-Popen(args)           # Execute a child program in a new process
-universal_newlines=False      # input/output is accepted as bytes, not Unicode
-p = subprocess.Popen("ls", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-out, err = p.communicate()    # out is byte -> must be encoded
-```
-
-* Example
-
-```py
-import os
-import subprocess
-import time
-from collections import deque
-
-
-def ls():
-  commands = "ls -a"
-
-  process = subprocess.Popen(commands.split(), stdout=subprocess.PIPE)
-  out, err = process.communicate()
-
-  print(out)
-  print(err)
-
-def top():
-  cpu_usages = [1]
-  while True:
-    process = subprocess.Popen("ps -a -o %cpu,%mem,cmd".split(), stdout=subprocess.PIPE)
-    out, _ = process.communicate()
-    try:
-      cpu_usages.append(int([line.split()[0] for line in out.decode('utf-8').split('\n') if "_type_" in line][0]))
-      print(cpu_usages)
-      time.sleep(0.1)
-    except Exception as e:
-      return sum(cpu_usages) / len(cpu_usages)
-
-def cpu_usage():
-  p = subprocess.Popen(['/usr/bin/time'] + ["ls"], stdout=open(os.devnull, 'wb', 0), stderr=subprocess.PIPE)
-  with p.stderr:
-    q = deque(iter(p.stderr.readline, b''), maxlen=2)
-  rc = p.wait()
-  return b''.join(q).decode().strip()
-```
-
-## Network
-
-> socket
-
-* tcp client
-
-```py
-import socket
-
-host = '127.0.0.1'
-port = 5000
-
-def tcp_client():
-  s = socket.socket()
-  s.connect((host, port))
-
-  while (message := input("->").encode()) != 'q':
-    s.send(message)
-    data = s.recv(1024)
-    print(f"Recieved from server {data}")
-  s.close()
-
-def tcp_server():
-  s = socket.socket()
-  s.bind((host, port))
-
-  s.listen(1)
-  c, addr = s.accept()
-  print(f"Connection from {addr}")
-
-  while True:
-    data = c.recv(1024)
-    if not data:
-      break
-    print(f"message {data} recieved, sending back {data.upper()}")
-    c.send(data.upper())
-  c.close()
-```
-
-* udp client
-
-```py
-import socket
-
-host, port = '127.0.0.1', 5001
-server = ('127.0.0.1',5000)
-
-def udp_client():
-  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  s.bind((host, port))
-
-  while (message := input("-> ").encode()) != 'q':
-    s.sendto(message, server)
-    data, addr = s.recvfrom(1024)
-    print(f'Received from server:{data}')
-  s.close()
-
-def udp_server():
-  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  s.bind((host,port))
-
-  print("Server Started.")
-  while True:
-    data, addr = s.recvfrom(1024)
-    print(f"message {data} recieved from {addr}, sending back {data.upper()}")
-    s.sendto(data.upper(), addr)
-  c.close()
-```
-
-* get_ip_address
-
-```py
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.8.8", 80))
-print(s.getsockname()[0])
-```
-
-> cgi
-
-* dynamically generating web pages that respond to user input
-
-> http.server.HTTPServer
-
-```sh
-python3 -m http.server
-serve_forever()
-```
-
-> urllib
-
-* Request class
-
-```py
-urllib2.Request(www.example.com)
-add_header('Referer', 'http://www.python.org/')
-urlopen(url)  k# string / Request object.  For HTTP, returns http.client.HTTPResponse object
-```
-
-* parse
-
-```py
-unquote(str)  # decode urlencoded bytes
-```
-
-* HTTPResponse
-
-```py
-content = resp.read()
-```
-
-```py
-import time
-import urllib.request
-import multiprocessing as mp
-import concurrent.futures
-
-""" Returns: total bytes from downloading all images in image_numbers list """
-def seq_download_images(image_numbers):
-  total_bytes = 0
-  for num in image_numbers:
-    total_bytes += _download_image(num)
-  return total_bytes
-
-def _download_image(image_number):
-  image_number = (abs(image_number) % 50) + 1  # force between 1 and 50
-  image_url = 'http://699340.youcanlearnit.net/image{:03d}.jpg'.format(image_number)
-  try:
-    with urllib.request.urlopen(image_url, timeout=60) as conn:
-      return len(conn.read())  # number of bytes in downloaded image
-  except Exception as e:
-    print(e)
-
-def par_download_images(image_numbers):
-  total_bytes = 0
-  with concurrent.futures.ThreadPoolExecutor() as pool:
-    futures = [pool.submit(_download_image, num) for num in image_numbers]
-    for f in concurrent.futures.as_completed(futures):
-      total_bytes += f.result()
-  return total_bytes
-
-if __name__ == '__main__':
-  IMAGE_NUMBERS = list(range(1, 50))
-
-  print('Evaluating Sequential Implementation...')
-  sequential_result = seq_download_images(IMAGE_NUMBERS)
-  sequential_time = 0
-  start = time.perf_counter()
-  seq_download_images(IMAGE_NUMBERS)
-  sequential_time += time.perf_counter() - start
-
-  print('Evaluating Parallel Implementation...')
-  parallel_result = par_download_images(IMAGE_NUMBERS)
-  parallel_time = 0
-  start = time.perf_counter()
-  par_download_images(IMAGE_NUMBERS)
-  parallel_time += time.perf_counter() - start
-
-  if sequential_result != parallel_result:
-    raise Exception('sequential_result and parallel_result do not match.')
-  print('Average Sequential Time: {:.2f} ms'.format(sequential_time*1000))
-  print('Average Parallel Time: {:.2f} ms'.format(parallel_time*1000))
-  print('Speedup: {:.2f}'.format(sequential_time | parallel_time))
-  print('Efficiency: {:.2f}%'.format(100*(sequential_time | parallel_time) | mp.cpu_count()))
-```
-
-### Web
-
-> flask
-
-* [Flask](https://www.youtube.com/watch?v=Z1RJmh_OqeA)
-* [Flask + https](https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https)
-* [Flask + Firebase](https://medium.com/firebase-developers/hosting-flask-servers-on-firebase-from-scratch-c97cfb204579)
-* [Flask + Google login](https://realpython.com/flask-google-login/)
-* [Flask + Firestore](https://medium.com/google-cloud/building-a-flask-python-crud-api-with-cloud-firestore-firebase-and-deploying-on-cloud-run-29a10c502877)
-
-* application context
-  * keeps track of the application-level data during a request, CLI command
-
-* Basic Docker
-
-```sh
-# Structure
-flask-fire (root dir)
-├── server
- | ├── src
- |    └── app.py
- |    └── templates
- |       └── index.html
- | ├── Dockerfile
-├── static
- |  └── style.css
-├── firebase.json
-├── .firebaserc
-
-# ./Dockerfile
-FROM python
-COPY . /app
-WORKDIR /app
-RUN pip install flask
-EXPOSE 5000
-CMD ["python", "app.py"]
-
-$ docker build -t flask-test .
-$ docker run -d -p 5000:5000 flask-test
-```
-
-```py
-# ./app.py
-from flask import Flask
-app = Flask(__name__)
-
-@app.route("/")
-def hello():
-  return "Hello Docker!"
-
-if __name__ == '__main__':
-  app.run(debug=True, host='0.0.0.0')
-```
-
-* Global jinja
-
-```py
-global jinja accessible by {{ stage }}
-@app.context_processor
-def inject_stage_and_region():
-    return dict(stage="alpha", region="NA")
-```
-
-* CLI
-
-```
-flask run --cert adhoc    # run in https
-
-FLASK_APP      # app.py
-FLASK_ENV      # development
-```
-
-> flask_wtf
-
-```
-FlaskForm
-
-flask_login
-
-LoginManager
-current_user
-login_required
-login_user
-logout_user
-
-flask_debugtoolbar
-
-app.config['SECRET_KEY'] = '<replace with a secret key>'
-toolbar = DebugToolbarExtension(app)
-```
-
-> django
-
-![alt](images/20210213_015930.png)
-
-* Model-view-controller
-* URL patterns to decide which view to pass the request to for handling
-* project can contain multiple apps
-* automatically reloads Python code for each request as needed
-
-> bs4
-
-```sh
-(from bs4 import BeautifulSoup)
-
-name                          # tagname
-text, attrs                   # inside text, attribute object
-next / previous_elements      # next / previous tags generator
-next / previous_siblings      # next sibling tags generator
-original_encoding
-
-# bs4.element.Tag
-string
-text
-clear()                       # removes the contents of a tag:
-decompose()                   # remove tag
-extract()                     # hide element
-find_all(tag, href=None, limit=None) → [Tags]    # find all matching tags
-find("span")                  # find tags inside
-get_text()                    # 
-insert(pos, tag)              # insert tag to position
-insert_before() / after()     # immediately before
-prettify()
-wrap(soup.new_tag("b"))       # wrap around new tags
-
-new_button = soup.new_tag('a')
-new_button.attrs["onclick"] = "toggle()"
-new_button.append('This is a new button!')
-```
-
-* Multifile gist toggle
-
-```py
-import requests
-import re
-from ..common import PATH, logger, git_credential
-from bs4 import BeautifulSoup
-from itertools import islice
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
-class Gist:
-  def __init__(self, gist_id="", h1="", h2='', h3='', li='', link='', file_names=None, html='', problem_id=''):
-    self.gist_id = gist_id
-    self.h1 = h1
-    self.h2 = h2
-    self.h3 = h3
-    self.li = li
-    self.link = link
-    self.file_names = file_names or []
-    self.html = html
-    self.problem_id = problem_id
-
-  def __repr__(self):
-    return f"{self.__dict__}"
-
-  @classmethod
-  def get_gist(cls, gist_id, h1="", h2="", h3="", li=""):
-    gist = cls(gist_id, h1, h2, h3, li, f"<a href=https://gist.github.com/SeanHwangG/{gist_id}>{gist_id}</a>")
-    result = requests.get(f'https://gist.github.com/{gist_id}.js', headers=git_credential)
-
-    if result.text.startswith("<!DOCTYPE html>"):
-      return None
-    # update with regex
-    result = result.text.replace("\\\\n", "[NEW_LINE]").replace("\\n", "\n").replace("[NEW_LINE]", "\\n")
-    result = re.sub(r"\\(/|&|\$|<|`|\"|\\|')", r"\1", result)
-    result = result.split("document.write('")[-1][:-3]
-
-    bs = BeautifulSoup(result, "html.parser")
-
-    for tag in bs.find_all(class_="gist"):
-      file_box = tag.find(class_="file-box")
-      root = tag.find(class_="file-box")
-      toggle_div = bs.new_tag('div', attrs={"class": "gist-meta"})
-
-      for i, d in enumerate(tag.find_all(class_="file")):
-        d["class"] = f"file gist-id-{gist_id}"
-        if i != 0:
-          file_box.append(d)  # combine to first table
-
-      for d in tag.find_all(class_="gist-meta"):
-        siblings = list(d.next_elements)
-        file_id, file_name = siblings[4].attrs["href"].split("#")[-1], siblings[5]
-        toggle_a = bs.new_tag('a', attrs={"id": file_id, "class": f"gist-toggler gist-id-{gist_id}", "onclick": f"toggle('gist-id-{gist_id}', '{file_id}')", "style": "padding: 0 18px"})
-        toggle_a.append(file_name)
-        toggle_div.append(toggle_a)
-        d.extract()  # remove bottom nav
-      edit_gist = bs.new_tag('a', attrs={"class": f"edit-gist", "href": f"https://gist.github.com/{gist_id}", "style": "float: right"})
-      edit_gist.append("edit")
-      toggle_div.append(edit_gist)
-
-      root.insert(0, toggle_div)
-      for d in islice(tag.find_all(class_="gist-file"), 1, None):
-        d.extract()  # remove except first
-    gist.html = str(bs)
-
-    return gist
-
-  @staticmethod
-  def get_all_gist(gist_ids, h1="", h2="", h3="", li=""):
-    logger.debug(f"get_all_gist({h1}, {h2}, {h3}, {li})")
-    futures = []
-    with ThreadPoolExecutor() as ex:
-      futures.extend([ex.submit(Gist.get_gist, gist_id, h1, h2, h3, li) for gist_id in gist_ids])
-    gists = [future.result() for future in as_completed(futures)]
-    return [gist for gist in gists if gist != None]
-```
-
-> requests
-
-```py
-json()            # convert back to
-```
-
-* Clone Gist subprocess
-
-```py
-import json
-import subprocess as sp
-import requests
-import os
-from itertools import islice
-from math import ceil
-
-def clone_all(username='seanhwangg', clone_path):
-  current_count, total_count = 0, 1000
-  git_cred = get_git_credential()
-
-  for i in range(ceil(total_count / 100)):
-    pid2popen = {}
-    result = requests.get(f'https://api.github.com/users/{username}/gists?page={i}&per_page={100}', headers=git_cred)
-    gists = json.loads(result.content)
-
-    loop_count = min(total_count - current_count, len(gists))
-    current_count += loop_count
-
-    for g in islice(gists, loop_count):
-      url, gist_path = f"https://gist.github.com/{g['id']}.git", f"{clone_path}/{g['id']}"
-      if os.path.isdir(gist_path):
-        p = sp.Popen(['git', '-C', gist_path, 'pull', url], stdout=sp.PIPE, stderr=sp.PIPE)
-      else:
-        p = sp.Popen(['git', 'clone', url, f"{clone_path}/{g['id']}"], stdout=sp.PIPE, stderr=sp.PIPE)
-      pid2popen[gist_path] = p
-    for gist_path, p in pid2popen.items():
-      out, err = p.communicate()
-      file2content = {}
-      for file in os.listdir(gist_path):
-        if not os.path.isdir(f"{gist_path}/{file}"):
-          with open(f"{gist_path}/{file}", 'r') as f:
-            file2content[file] = f.read().split('\n')
-    return file2content
-```
-
-> selenium
-
-* Multithreading
-
-```py
-import multithreading as mt
-import json
-import re
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
-
-
-def update_problems(*, update_page=None, update_level=None):
-  if update_level:
-    with mt.Pool(16) as pool:
-      levels = pool.map(get_problems_level, range(0, 31))
-    problems = [problem for level in levels for problem in level]
-  else:
-    with open(f"{PATH.DATA}/problems.json", 'r') as f:
-      problems = json.load(f)
-
-  with open(f"{PATH.DATA}/problems.json", 'w') as f:
-    json.dump(problems, f, ensure_ascii=False)
-
-
-def get_problems_level(level):
-  problems = []
-  chrome_options = Options()
-  chrome_options.add_argument('headless')
-  driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-  try:
-    level_problems = []
-    for page in range(1, 100):
-      driver.get(f"https://solved.ac/problems/level/{level}?sort=id&direction=asc&page={page}")
-      WebDriverWait(driver, 100).until(EC.presence_of_element_located((By.CLASS_NAME, 'contents')))
-      lines = driver.find_element_by_class_name('contents').text
-      if '해당하는 문제가 없습니다' in lines:
-        break
-      for line in lines.split('\n'):
-        level_problems.extend(re.findall(r'^ (\d+)', line))
-    for problem in level_problems:
-      problems.append({'id': f"BJ_{problem}", 'level': level})
-  except Exception:
-    driver.quit()
-  else:
-    driver.quit()
-  return problems
-```
-
-> Errors
-
-* DevToolsActivePort file doesn't exist
-
-```py
-chrome_options.add_argument("--single-process")  
-```
-
-> livereload
-
-```sh
-gh repo clone nathanwright1242/flask_livereload_example
-# <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-```
-
-> algolia
-
-* full-text search
-
-```py
-# client
-SearchClient.create('key', 'cred')        # create client
-
-# index
-client.init_index('page')            # create index
-clear_objects()                # remove all objects
-save_objects()
-```
-
 ## ML
 
 ### Traditional
@@ -2070,8 +2117,7 @@ hyper = lambda s: s.hypernyms()
 list(pandas.closure(hyper)
 ```
 
-
-## Media
+### Media
 
 > Pygame
 
