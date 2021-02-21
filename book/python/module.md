@@ -48,6 +48,9 @@ cache_clear() / cache_info()       # clear / print cache info for decorated func
 
 > itertool
 
+* number of iterator building blocks inspired by constructs from APL, Haskell, and SML
+* Each has been recast in a form suitable for Python
+
 ```py
 accumulate(iterable, func, *, initial)  # accumulate([1,2,3,4,5]) → 1 3 6 10 15
 chain(*iterables)                       # chain('ABC', 'DEF') → A B C D E F
