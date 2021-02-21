@@ -2,6 +2,11 @@
 
 ## Terms
 
+* Dashboard
+  * automatic data pipelines : dashboard
+  * promotes trasnparency, accountability
+  * purpose, scope, layout + flow, consistent naming structure
+
 * Lake
   * vast pool of raw data, the purpose for which is not yet defined
 
@@ -100,6 +105,35 @@
 
 * Constraints
   * PRIMARY, FOREIGN, UNIQUE, CHECK, NOT NULL
+* Query
+  * correlated query: A type of query that contains a subquery that requires information from a query one level up
+* Repeated fields
+  * Optimize repeating duplicate infromation to speed up query
+
+> Null
+
+* Null Check # A is null, A is not null
+* Arithmetic operations involving any null return null
+* Comparisons involving null return unknown new truth value
+* Aggregate will ignore null values
+* Null is treated like any other value in group-by
+
+```sql
+SELECT name FROM employee WHERE salary <= 100 OR salary > 100   -- ignore name with null salary
+SELECT count(*) FROM customer   -- Count total number of customers
+       count(credit)            -- Count number of customers who have credit
+```
+
+* Example
+
+```sql
+SELECT credit, count(credit) C FROM customer GROUP BY credit
+```
+
+| credit | C   |
+| ------ | --- |
+| 100    | 2   |
+| Null   | 3   |
 
 > Key
 
@@ -115,10 +149,11 @@
   * A set of attributes SK of R such that no two tuples in any valid
   * relation instance r\(R\) will have the same value for SK
 
-> Query
+> UDF
 
-* What is a correlated query?
-  * A type of query that contains a subquery that requires information from a query one level up
+```sql
+CREATE TEMP FUNCTION DATE_FORMAT(x STRING) AS (CAST(CONCAT(SUBSTR(x, 0, 4), '-', SUBSTR(x, 5, 2), '5', SUBSTR(x, 7)) AS DATE));
+```
 
 > MySQL
 
@@ -129,13 +164,148 @@ mysql -u user -p -e 'show databases;'
 SHOW DATABASES / SCHEMAS;
 ```
 
+> Big Query
+
+* FORMAT_TIMESTAMP("%F", timestamp, "America/Los_Angeles") AS purchase_date
+
+```sql
+CREATE OR REPLACE TABLE
+```
+
 > Relational algebra
 
 * Find directors of current movies
 
 {t: title | $$ \exists $$ s $$ \in $$ schedule [s(title) = t(title)]}
 
-### Create
+### DDL
+
+> Database
+
+```sql
+Create database
+CREATE DATABASE name
+    [ [ WITH ] [ OWNER [=] user_name ]
+           [ TEMPLATE [=] template ]
+           [ ENCODING [=] encoding ]
+           [ LC_COLLATE [=] lc_collate ]
+           [ LC_CTYPE [=] lc_ctype ]
+           [ TABLESPACE [=] tablespace ]
+           [ CONNECTION LIMIT [=] connlimit ] ]
+```
+
+> Table
+
+```sql
+CREATE TABLE DEPT
+( DNAME VARCHAR(10) NOT NULL,
+DNUMBER INTEGER NOT NULL,
+MGRSSN CHAR(9),
+MGRSTARTDATE CHAR(9),
+PRIMARY KEY (DNUMBER),
+UNIQUE (DNAME),
+FOREIGN KEY (MGRSSN) REFERENCES EMP ) ;
+
+CREATE TABLE customer (
+  name varchar(255) primary key,
+  credit integer
+);
+
+CREATE TABLE loan (
+  no varchar(255) primary key,
+  type varchar(255),
+  minCredit integer
+);
+
+CREATE TABLE borrower (
+  cname varchar(255) primary key,
+  lno varchar(255),
+  due date,
+  FOREIGN KEY (cname) REFERENCES customer(name),
+  FOREIGN KEY (lno) REFERENCES loan(no)
+);
+
+INSERT INTO customer (name, credit) VALUES
+  ('sean', 1),
+  ('tom', 2),
+  ('jason', 3);
+
+INSERT INTO loan (no, type, minCredit) VALUES
+  ('jumbo mortgage', 'student', 1),
+  ('b', 'y', 2),
+  ('c', 'z', 3);
+
+INSERT INTO borrower (cname, lno, due) VALUES
+  ('sean', 'jumbo mortgage', '1-1-1'),
+  ('tom', 'jumbo mortgage', '2-2-2'),
+  ('jason', 'c', '3-3-3');
+```
+
+> View
+
+```sql
+CREATE VIEW Berto-Movies AS SELECT title FROM Movie WHERE director = 'Berto';
+
+-- Return the teams defeated only by the leading teams
+CREATE VIEW Leaders (name) AS 
+  SELECT s.name FROM Standings s
+  WHERE NOT EXISTS
+  (SELECT * FROM Standings s1 WHERE s.points < s1.points)
+
+SELECT name FROM Teams 
+  WHERE name NOT IN
+    (SELECT t.name FROM Teams t, Matches m
+    WHERE t.name = m.aTeam AND m.aScore < m.hScore AND m.hTeam NOT IN Leaders
+           OR  t.name = m.hTeam AND m.hScore < m.aScore AND m.aTeam NOT IN Leaders)
+```
+
+> Index
+
+```sql
+CREATE INDEX index_name ON table_name (column_name);
+CREATE INDEX index_name ON table_name (column1, column2, ...);
+```
+
+> Delete
+
+```sql
+DELETE FROM table        -- Delete Everything
+```
+
+> Drop
+
+```sql
+DROP TABLE table_name;   -- Drop table
+```
+
+```sql
+-- ALL databases where the role owns anything or has any privileges
+DROP OWNED BY ryan;
+DROP USER ryan;
+```
+
+> TRUNCATE
+
+```sql
+TRUNCATE TABLE <table_name>    -- Clear Table
+```
+
+> INSERT
+
+```sql
+INSERT INTO loan (no, type, minCredit) VALUES
+  ('jumbo mortgage', 'student', 1),
+  ('b', 'y', 2),
+  ('c', 'z', 3);
+```
+
+> Alter
+
+```sql
+ALTER TABLE table_name ADD column_name d_type DEFAULT 3;  -- Add Column
+ALTER TABLE table_name RENAME TO new_table_name;          -- Change table name
+ALTER table PERSON ADD primary key (persionId,Pname,PMID) -- Add primary key
+```
 
 ### Read
 
@@ -185,6 +355,13 @@ SELECT * FROM Product_sales
 -- check range overlap
 SELECT * FROM tbl WHERE existing_start BETWEEN $newSTart AND $newEnd OR
                         $newStart BETWEEN existing_start AND existing_end
+```
+
+> Group
+
+```sql
+-- daily visit 
+SELECT date, source.medium, COUNT(DISTINCT(visiterId)) AS visits FROM table, GROUP BY 1, 2 ORDER BY 1 DESC, 2;
 ```
 
 > Sum
@@ -388,6 +565,26 @@ SELECT l.no FROM bank.loan l JOIN bank.borrower b ON l.no = b.lno
      GROUP BY l2.type HAVING l2.type = l.type) | (SELECT COUNT(*) FROM bank.loan l2 WHERE l2.type = l.type);
 ```
 
+* SQL cannot express all computable queries ⇒ Is there a way to get from CITY1 to city2
+
+```sql
+-- Way from city1 to city2 with at most 2 stop over.
+SELECT x.from z.to FROM flight x, flight y, flight z 
+WHERE x.from = 'city1' AND x.to = y.from AND y.to = z.from AND z.to = 'city2'
+
+-- Way from city1 to city with at most k stopovers.
+-- Intuition : (SELECT * FROM T_{k-1}) UNION (SELECT x.A, y.B FROM G x, T_{k - 1} y WHERE x.B = y.A)
+WITH recursive T as (SELECT * FROM G) UNION 
+(SELECT x.A, y.B FROM G x, T y WHERE x.B = y.A) SELECT * FROM T; 
+
+-- Find transitive closure of friend (drinkers who frequent the same bar) / frequent = (frequents, drinker, bar)
+CREATE RECURSIVE VIEW T as 
+  (SELECT f1.drinker AS drinker1, f2.drinker AS drinker2 FROM frequent f1, frequent f2 
+WHERE f1.bar = f2.bar) UNION 
+  (SELECT t1.drinker1, f2.drinker AS drinker2 FROM T t1, frequents f1, frequents f2 
+WHERE t1.drinker2 = f1.drinker AND f1.bar = f2.bar)
+```
+
 ### Union
 
 ```sql
@@ -428,9 +625,6 @@ WHERE type = 'jumbo' OR type = 'student';
 | ---- | --------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
 | pros | Simple, Easy <br> Three recently visited chat | Size of Parent same <br> Create users within chat | Many to many relation one for users and another for rooms and messages |
 | cons | Not scalable                                  | Hard to delete subcollection                      | Getting data that is naturally hierarchical increase complexity        |
-
- 
-
 
 > Type
 
@@ -555,6 +749,62 @@ user_cl.update({ _id: 1 }, { $set: { rating: 4}});            // Only update wit
 user_cl.update({ _id: 1 }, { $inc : { rating: 10 } })         // Increment
 user_cl.update({ _id: 1 }, { $rename : { rating: 'rate'} })   // rename
 ```
+
+### Spark
+
+* Driver Program creates Resilient distributed datasets (RDDs)
+* Low-latency for small micro-batch size
+* Batch and stream processing using disk or memory storage
+* SparkSQL, Spark streaming, MLlib, GraphX
+
+> Commands
+
+* lazy evaluation → transformations are not executed until the action stage
+* Narrow: processing logic depends only on data, residing in the partition → no data shuffling necessary
+* Wide : transformation that requires data shuffling across node partitions
+
+```py
+collect()    # copy all elements to the driver 
+take(n)      # copy first n elements 
+reduce(func) # aggregate elements with func 
+saveAsTextFile(filename) # Save to local file or HDFS
+```
+
+* Narrow Transformation
+
+```py
+coalesce()    # reduce number of partitions
+filter(func)  # keep only elements where function is true
+flatMap(func) # map then aggregate
+map(func)     # apply function to each element of RDD
+```
+
+* Wide Transformation
+
+```py
+groupbykey
+reducebykey
+```
+
+* MLlib
+
+```py
+from pyspark.mllib.stat import Statistics 
+dataMatrix = sc.parallelize([[1,2,3],[4,5,6], [7,8,9],[10, 11, 12]]) 
+summary = Statistics.colStats(dataMatrix)
+```
+
+```py
+from pyspark.mllib.clustering import KMeans, KMeansModel 
+import numpy as np
+data = sc.textFile("data.txt") 
+parsedData = data.map(lambda line: np.array([float(x) for x in line.split(' ')]))
+clusters = Kmeans.train(parsedData, k=3)
+```
+
+* GraphX
+  * Uses property graph model → both nodes and edges can have attributes and values
+  * triplet view → logically joins vortex and edge properties.
 
 ### Hadoop
 

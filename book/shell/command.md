@@ -1,6 +1,6 @@
 # command
 
-## Error
+> Error
 
 * Connection to _ closed by remote host  
   * Administrator Disconnect
@@ -39,6 +39,9 @@ Keyboard-interactive authentication is disabled to avoid man-in-the-middle attac
 * device or resource busy (when rm file)
   * lsof +D /path and kill
   * umount /path
+
+* ~ doesn't give correct value
+  * Tilda must be first character of word and not quoted
 
 ## File
 
@@ -426,6 +429,14 @@ key * \c
 -n            # Show matching line numbers
 -v            # Reversing the meaning of a grep search
 -o            # Output only matched substrings
+```
+
+> egrep
+
+* extended grep
+
+```sh
+'19|20|25' calendar # grep multiple patterns
 ```
 
 > sed
@@ -1294,6 +1305,7 @@ Host any_name
 
 ```sh
 /usr/sbin/sshd
+-T              # Extended test mode.  Check the validity of the configuration file
 ```
 
 ### httpd
@@ -1372,21 +1384,20 @@ sudo pip3 install speedtest-cli
 $0      # Which shell am I using
 ```
 
-> bash
+> Type
 
-* born again shell
+* bash
+  * born again shell
 
-> csh
+* csh
+  * c shell
 
-* c shell
+* zsh
+  * Recursive path expansion → For example “/u/lo/b” expands to “/usr/local/bin”
+  * Spelling correction and approximate completion: If you make a minor mistake typing a directory name, ZSH will fix it for you
+  * Plugin and theme support: ZSH includes many different plugin frameworks
 
-> zsh
-
-* Recursive path expansion → For example “/u/lo/b” expands to “/usr/local/bin”
-* Spelling correction and approximate completion: If you make a minor mistake typing a directory name, ZSH will fix it for you
-* Plugin and theme support: ZSH includes many different plugin frameworks
-
-> event designators
+* event designators
 
 ```sh
 !n              # n th command

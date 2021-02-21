@@ -82,13 +82,24 @@ cout << "p_bool \t" << sizeof(p_bool) << endl;
 
 ### Keywords
 
-* auto
+> auto
 
 ```cpp
 auto gamma = {1, 2, 3};  // initializer_list<int>
 auto delta = vector<int>{1, 2, 3};
 cout << (vector<int>)gamma << "\n";
 cout << delta << "\n\n";
+```
+
+* Doesn’t preserve const / convert array to pointer
+
+```cpp
+int i = 4;
+auto j = i;         // int j = i;
+
+int arr[10];
+auto arr2 = arr;    // int* arr2 = arr;
+decltype(arr) arr3; // int arr3[10];
 ```
 
 > namespace
@@ -124,20 +135,218 @@ int main() {
 * noexcept
   * If expression evaluates to true, the function is declared not to throw any exceptions
 
-### Casting
+> const
 
-> static_cast
+* compile time constraint / self documenting, compile optimization, can put in ROM (embedded)
+* cannot modify anything that exists outside of the const function
+* const applies to the thing left of it. If there is nothing on the left then it applies to the right of it.
+* pointers / references to that data must be as restrictive of how they allow data to be changed.
 
-* convert pointer / reference from one type to a related type (down / up cast)
+```cpp
+const int * p = &f;              # data is const, pointer is not
+int * const p = &f;             # data is not, pointer is const
+const int * const p = &f;        # data is const, pointer is const
+const int i = 9;
+const_cast<int&>(i) = 6;        # cast away const
+int j;
+static_cast<const int &>(j) = 7;    # set data into const
+void setName(const string& name)    # const parameters
+const string& getName() {}        # const return value
+void getName() const {}        # cannot change member variable (only call const function) 
+void getName() {}            # non const object call this function
+```
+
+> constexpr
+
+* can be used unless goto / try (after C++ 20) / uninitialized, non-literal variable / non constexpr function
+* if constexpr should be boolean (true → else won’t compile, vice versa)
+* rhs of constexpr must be number
+
+```cpp
+int a;
+constexpr int b = a;            # Error
+```
+
+* can be used in template
+
+```cpp
+template <int N>
+struct A {
+  int operator()() { return N; }
+};
+
+int main() {
+    constexpr int size = 3;
+    int arr[size];
+    constexpr int N = 10;
+    A<N> a;
+    cout << a() << std::endl;        # 10
+    constexpr int number = 3;
+    enum B { x = number, y, z };      
+    cout << B::x << std::endl;        # 3
+}
+```
+
+* constexpr function
+
+```cpp
+constexpr int Factorial(int n) {
+    int total = 1;
+    for (int i = 1; i <= n; i++)
+        total *= i;
+    return total;
+}
+```
+
+> sizeof
+
+```cpp
+int arr[6] = {1, 2, 3, 4, 5, 6};
+int* parr = arr;
+printf("Sizeof(arr) : %d \n", sizeof(arr));    # 24
+printf("Sizeof(parr) : %d \n", sizeof(parr));    # 8 (size of pointer)
+```
+
+> delete
+
+```cpp
+=delete       // ensure not automatically provided by the compiler
+```
+
+> volatile
+
+* remove compiler optimization
+
+```cpp
+#include <stdio.h>
+typedef struct SENSOR {
+  int sensor_flag;    // if detected 1
+  int data;
+} SENSOR;
+
+int main() {
+  volatile SENSOR *sensor;
+  while (!(sensor->sensor_flag)) {}
+  printf("Data : %d \n", sensor->data);
+}
+```
+
+> decltype
+
+```cpp
+typedef decltype(1) myint;
+cout << typeid(myint).name();     # i
+myint a = 5;
+cout << a;
+```
+
+* Attract return type in function
+
+```cpp
+template <typename T, typename U>
+auto add(T t, U u) -> decltype(t + u) {
+  return t + u;
+}
+```
+
+* Don’t get run in runtime
+
+```cpp
+struct A {
+  int f() { return 0; }
+};
+decltype(A().f()) ret_val;
+```
+
+> typedef
+
+* limited to giving symbolic names to types only.
+* interpretation is performed by the compiler.
+
+```cpp
+#include <stdio.h>
+#include <iostream>
+
+using namespace std;
+
+int add(int a, int b) { return a + b; }
+typedef int CAL_TYPE;
+typedef int (*Padd)(int, int);
+typedef int Arrays[10];
+
+typedef struct Books {
+  char title[50];
+  int book_id;
+} Book;
+
+int main() {
+  CAL_TYPE a = 10;
+  Arrays arr = {1, 2, 3};
+  Padd ptr = add;
+  cout << a << endl;       // 10
+  cout << arr[2] << endl;  // 3
+  cout << ptr(3, 5);       // 8
+
+  Books b;
+  return 0;
+}
+```
+
+> explicit
+
+* Prevent implicit conversion when compilers try to resolve the parameters to a function
+
+```cpp
+class String {
+public:
+    String(int n);         # allocate n bytes to the String object
+    String(const char *p);     # initializes object with char *p
+};
+
+String mystring = 'x';         # It is not possible if string(int n) was explicit
+```
+
+> mutable
+
+* Can be changed in const function → useful for cache
+
+```cpp
+class A {
+  mutable int data_;
+
+ public:
+  A(int data) : data_(data) {}
+  void DoSomething(int x) const {
+    data_ = x;
+  }
+
+  void PrintData() const { std::cout << "data: " << data_ << std::endl; }
+};
+
+int main() {
+  A a(10);
+  a.DoSomething(3);
+}
+```
+
+### Types
+
+![Types](images/20210221_183333.png)
+
+* type(auto_var).name()
+
+> Cast
+
+* static_cast
+  * convert pointer / reference from one type to a related type (down / up cast)
 
 ```cpp
 static_cast<int> // Equivalent to (int)
 ```
 
-> reinterpret_cast
-
-* doesn’t check if pointer type and data pointed by pointer is same or not. (down)
-* requires 2 types to be polymorphic (have virtual function)
+* reinterpret_cast
+  * doesn’t check if pointer type and data pointed by pointer is same or not. (down)
+  * requires 2 types to be polymorphic (have virtual function)
 
 ```cpp
 data_type *var_name = reinterpret_cast<data_type *>(pointer_variable);
@@ -152,14 +361,49 @@ void show_binrep(const T& a) {
 }
 ```
 
-> const_cast
+* const_cast
+  * only works on pointer / reference (same)
+  * cast away constness of the object
 
-* only works on pointer / reference (same)
-* cast away constness of the object
+* reinterpret_cast
+  * reinterpret bits of the object pointed
 
-> reinterpret_cast
+> Number
 
-* reinterpret bits of the object pointed
+* Binary
+
+```cpp
+bitset<32>(153).to_string()
+bitset<32> bin(52);
+bin[1] = 1;
+cout << bin.count();                    // return the number of set bit
+cout << hex << n;
+```
+
+* Char
+
+```cpp
+isdigit / isalpha / isalnum(‘1’)
+islower(‘A’)
+scanf("%c", &c);
+```
+
+* size_t
+  * basic unsigned integer → depends on system
+  * improve code's portability and efficiency → indexing containers should use
+
+* long
+  * 0LL for constant
+  * right shift checks whether the data is signed or not
+
+```cpp
+int a = INT_MIN;
+a>>=1;
+cout << bitset<32>(a).to_string() << endl;
+unsigned int b = INT_MIN;
+b>>=1;
+cout << bitset<32>(b).to_string() << endl;
+```
 
 ### Error
 
@@ -489,6 +733,32 @@ int main() {
 using namespace std;
 
 int main() {
+  cout << sizeof(bool) << endl;        // 1
+  cout << typeid(true).name() << endl; // b
+
+  cout << sizeof(char) << endl;        // 1
+  cout << typeid('a').name() << endl;  // c
+
+  cout << sizeof(int) << endl;       // 4
+  cout << typeid(1).name() << endl;  // i
+
+  cout << sizeof(float) << endl;       // 4
+  cout << typeid(1.5f).name() << endl; // f
+
+  cout << sizeof(long) << endl;       // 8
+  cout << typeid(1l).name() << endl;  // l
+
+  cout << sizeof(long long) << endl;   // 8
+  cout << typeid(1ll).name() << endl;  // x
+
+  cout << sizeof(double) << endl;      // 8
+  cout << typeid(1.5).name() << endl;  // d
+
+  cout << sizeof(long double) << endl; // 16
+
+  bool *p_bool;
+  cout << sizeof(p_bool) << endl;  // 8
+
   float a = 3.5;
   int b = static_cast<int>(a);
   b = 3;
@@ -543,9 +813,335 @@ int main() {
 }
 ```
 
+### String
+
+> string
+
+* Basic
+
+```cpp
+string& erase (size_t pos = 0, size_t len = npos);
+size_t find_first_not_of (string/char str, size_t pos = 0);    // if no result return string::npos
+
+string& replace (size_t pos,  size_t len,  const string& str);
+string substr (size_t pos = 0, size_t len = npos) const;
+
+// emplace_back
+vector<vector<int>> v(1);
+v[0] = {1};
+v.emplace_back(10);
+```
+
+* Construct
+
+```cpp
+printf("%s", str.c_str());              # print string
+cout << setw(5) << setfill('0')         # leading string
+
+string(1, 'c');                         # char to string
+to_string(3.1415926);                   # number to string
+
+vector<int> v(make_move_iterator(q.begin()), make_move_iterator(q.end()));  # from deque
+```
+
+* Trim string
+
+```cpp
+void trimLeftTrailingSpaces(string &input) {
+    input.erase(input.begin(), find_if(input.begin(), input.end(), [](int ch) {return !isspace(ch);}));
+}
+
+void trimRightTrailingSpaces(string &input) {
+    input.erase(find_if(input.rbegin(), input.rend(), [](int ch) { return !isspace(ch);}).base(), input.end());
+}
+```
+
+* Split string
+
+```cpp
+#include <iostream>
+#include <iterator>
+#include <sstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+using namespace std;
+template <typename T>
+ostream &operator<<(ostream &out, const vector<T> &v) {
+  if (!v.empty()) {
+    out << '[';
+    std::copy(v.begin(), v.end(), ostream_iterator<T>(out, ", "));
+    out << "\b\b]";
+  }
+  return out;
+}
+auto SplitString = [](const string &s, char delim = ' ') {
+  vector<string> splitteds;
+
+  stringstream ss(s);
+  string item;
+  while (getline(ss, item, delim)) {
+    splitteds.push_back(item);
+  }
+
+  return splitteds;
+};
+
+int main() { cout << SplitString("ABC BC E") << "\n\n"; }
+```
+
+* print in hexadecimal
+
+```cpp
+string toHex(string s) {
+    stringstream ss;
+    for (char ch : s)
+        ss << hex << (int)ch;
+    return ss.str();
+}
+
+to_string(i);                # int to string
+```
+
+> sstream
+
+```cpp
+#include <sstream>
+using namespace std;
+
+int main() {
+  // ASCII number to string
+  stringstream ss;
+  unsigned char num = (unsigned char)205;
+  ss.write((char*)&num, sizeof(num)) ;
+  cout << ss.str();
+}
+```
+
+> stringview
+
+```cpp
+#include <cwchar>
+#include <iostream>
+#include <string>
+#include <string_view>
+
+using namespace std;
+
+int main() {
+  wchar_t wcstr_v[2] = L"A";
+
+  char array[3] = {'B', 'a', 'r'};
+  string_view array_v(array, size(array));
+
+  string cppstr = "Foo";
+  string_view cppstr_v(&cppstr[0], cppstr.size());
+
+  cout << cppstr_v << '\n' << array_v << '\n' << *wcstr_v;  // Foo \n Bar \n 65
+}
+```
+
+> regex
+
+```cpp
+#include <regex>
+using namespace std;
+
+int main() {
+  // Regex match
+  string a = "GeeksForGeeks"; 
+  regex b("(Geek)(.*)");
+  regex_match(a, b);
+  
+  // replace string
+  string defangIPaddr(string address) {
+    return regex_replace(address, regex("[.]"), "[.]");     // regex(“\\.”) 
+  }
+}
+```
+
+### Pointer
+
+* prefix p, 0 if not defined
+* variable that stores an address location → faster when working with array
+* provide functions access to large blocks of data
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+int main() {
+  int num = 240;
+  int *p_num = nullptr;                  // can't assign to address of double
+  cout << "before \t" << p_num << "\n";  // before  0x0
+  p_num = &num;
+  cout << "after \t" << p_num << "\n";  // after 0x7ffee6412588
+
+  char const *p_char = "ABC";
+  // char A ABC 0x1097f0f52
+  // char B BC 0x1097f0f53
+  // char C C 0x1097f0f54
+  for (int i = 0; i < 3; i++)
+    cout << "char \t" << p_char[i] << "\t" << (p_char + i) << "\t" << (void *)(p_char + i) << "\n\n";
+
+  const int a = 1;
+  const int *p_a = &a;  // pointer to const int type
+  // (*p_a)++; WRONG
+  p_a++;
+
+  int b = 10;
+  int *const p_b = &b;  // const pointer to int
+  // p_b++; WRONG
+  (*p_b)++;
+}
+```
+
+> Array
+
+![2D array](images/20210221_182928.png)
+
+* Array name in C is implemented by a constant pointer
+
+```cpp
+#include <array>
+#include <iostream>
+
+using namespace std;
+
+int main() { 
+  array<int, 3> a = {1, 2, 3};
+
+  for (int i : a) cout << i;  // 123
+  cout << endl;
+  array<int, 3> b = a;
+
+  b = a;
+  a[0] = 0;
+
+  cout << b.front() << endl;  // 1
+
+  try {
+    b.at(3) = 666;
+  } catch (out_of_range const &exc) {
+    cout << exc.what() << '\n';  // array::at
+  }
+}
+```
+
+```cpp
+#include <vector>
+using namespace std;
+
+int main() {
+  // 1. create array
+  new int[3] {0, 2, 0}
+      int bar [5] = { 10, 20, 30 };       // 10 20 30 0 0
+  int arr[][2] = {{1, 2}, {3, 4}, {5}};   // 1 2 3 4 5 0 / first can be omitted
+  int arr[2][] = {{4, 5, 6}, {7, 8, 9}};  // ERROR
+
+  // 2. Size of array
+  int N = sizeof(bar) / sizeof(bar[0]);
+  int arr[5];                             // Assume base address of arr is 2000 and int size is 32 bit
+  printf("%u %u", arr + 1, &arr + 1);     // 2004 2020
+
+  // 3. vector of array
+  vector<int> v[2] = {vector<int>(), vector<int>()};
+}
+```
+
+> Reference
+
+* return value is extended only when accepted as const reference
+
+```cpp
+int function() {
+  int a = 5;
+  return a;
+}
+
+int main() {
+  const int& c = function();
+}
+```
+
+* Do not return reference of local variable → dangling reference
+
+```cpp
+int& function() {
+  int a = 2;
+  return a;
+}
+```
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+void pointer_basic() {
+  int num = 240;
+  int *p_num = nullptr;  // can't assign to address of double
+  cout << "before \t" << p_num << "\n";
+  p_num = &num;
+  cout << "after \t" << p_num << "\n\n";
+
+  char const *p_char = "ABC";
+  for (int i = 0; i < 3; i++)
+    cout << "char \t" << p_char[i] << "\t" << (p_char + i) << "\t" << (void *)(p_char + i) << "\n\n";
+
+  const int a = 1;
+  const int *p_a = &a;  // pointer to const int type
+  // (*p_a)++; WRONG
+  p_a++;
+
+  int b = 10;
+  int *const p_b = &b;  // const pointer to int
+  // p_b++; WRONG
+  (*p_b)++;
+}
+```
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+int &func1(int &a) { return a; }
+int func2(int b) { return b; }
+int main() {
+  const int &ref = 3;
+
+  int x = ref;
+  int &y = x;
+  int &z = y;
+
+  cout << "x, y, z \t" << x << " " << y << " " << z << endl;  // x, y, z         3 3 3
+  y = 2;
+  cout << "x, y, z \t" << x << " " << y << " " << z << endl;  // x, y, z         2 2 2
+  z = 3;
+  cout << "x, y, z \t" << x << " " << y << " " << z << "\n\n";  // x, y, z         3 3 3
+
+  int arr[3][2] = {{1, 2}, {3, 4}, {5, 6}};
+  int(&ref_arr)[3][2] = arr;
+  ref_arr[0][0] = 9;
+  cout << arr[0] << "\t" << ref_arr[0] << "\n";        // 0x7ffee4d4c570  0x7ffee4d4c570
+  cout << arr[0][0] << "\t" << ref_arr[0][0] << "\n";  // 9       9
+
+  int a = 3;
+  func1(a) = 4;
+  cout << func1(a) << "\t" << &func1(a) << endl;  // 4       0x7ffee4d4c544
+
+  a = func2(2);
+  cout << func1(a) << "\t" << &func1(a) << endl;  // 2       0x7ffee4d4c544
+}
+```
+
 ### Iterable
 
-> memory
+> `<memory>`
 
 * use smart pointer unique, shared, weak using
 
@@ -636,112 +1232,6 @@ int main() {
 }
 ```
 
-> string
-
-* Basic
-
-```cpp
-string& erase (size_t pos = 0, size_t len = npos);
-size_t find_first_not_of (string/char str, size_t pos = 0);    // if no result return string::npos
-
-string& replace (size_t pos,  size_t len,  const string& str);
-string substr (size_t pos = 0, size_t len = npos) const;
-
-// emplace_back
-vector<vector<int>> v(1);
-v[0] = {1};
-v.emplace_back(10);
-cout << v << "\n\n";
-```
-
-* Construct
-
-```cpp
-printf("%s", str.c_str());              # print string
-cout << setw(5) << setfill('0')         # leading string
-
-string(1, 'c');                         # char to string
-to_string(3.1415926);                   # number to string
-
-vector<int> v(make_move_iterator(q.begin()), make_move_iterator(q.end()));  # from deque
-```
-
-* Trim string
-
-```cpp
-void trimLeftTrailingSpaces(string &input) {
-    input.erase(input.begin(), find_if(input.begin(), input.end(), [](int ch) {return !isspace(ch);}));
-}
-
-void trimRightTrailingSpaces(string &input) {
-    input.erase(find_if(input.rbegin(), input.rend(), [](int ch) { return !isspace(ch);}).base(), input.end());
-}
-```
-
-* Split string
-
-```cpp
-#include <iostream>
-#include <iterator>
-#include <sstream>
-#include <string>
-#include <vector>
-
-using namespace std;
-
-using namespace std;
-template <typename T>
-ostream &operator<<(ostream &out, const vector<T> &v) {
-  if (!v.empty()) {
-    out << '[';
-    std::copy(v.begin(), v.end(), ostream_iterator<T>(out, ", "));
-    out << "\b\b]";
-  }
-  return out;
-}
-auto SplitString = [](const string &s, char delim = ' ') {
-  vector<string> splitteds;
-
-  stringstream ss(s);
-  string item;
-  while (getline(ss, item, delim)) {
-    splitteds.push_back(item);
-  }
-
-  return splitteds;
-};
-
-int main() { cout << SplitString("ABC BC E") << "\n\n"; }
-```
-
-> print in hexadecimal
-
-```cpp
-string toHex(string s) {
-    stringstream ss;
-    for (char ch : s)
-        ss << hex << (int)ch;
-    return ss.str();
-}
-
-to_string(i);                # int to string
-```
-
-> sstream
-
-```cpp
-#include <sstream>
-using namespace std;
-
-int main() {
-  // ASCII number to string
-  stringstream ss;
-  unsigned char num = (unsigned char)205;
-  ss.write((char*)&num, sizeof(num)) ;
-  cout << ss.str();
-}
-```
-
 > vector
 
 * Member functions
@@ -773,50 +1263,79 @@ vector<int> stringToVector(string input) {
 vector<int> vect{ 10, 20, 30 };
 ```
 
-> chrono
-
-* sleep
+> deque
 
 ```cpp
-this_thread::sleep_for(milliseconds(x));  # Pause
+push_front() /push_back()
+pop_front() / pop_back()
+front() / back()
 ```
 
-* current time
+> queue
 
 ```cpp
-#include <iostream>
-#include <chrono>
-#include <ctime>    
-
-int main()
-{
-    std::time_t end_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-
-    std::cout << std::ctime(&end_time); // Mon Oct  2 00:59:08 2017
-}
+size() / empty()
+front()
+pop()
+push()
 ```
 
-* Measure time
+> stack
 
 ```cpp
-#include <chrono>
+stack<int> s ({1, 2, 3});
+```
+
+> list
+
+```cpp
+assign()
+clear()
+emplace()
+emplace_front() / emplace_back()
+erase()
+insert()
+merge()
+methods()
+pop_front() / pop_back()            # pop element from front / back
+push_front() / push_back()            # add element to front / back
+size()
+swap()
+resize()
+```
+
+> tuple
+
+```cpp
+tuple<int, double, std::string> t(7, 9.8, "text");
+double d = get<1>(t);
+
 #include <iostream>
-#include <thread>
+#include <string>
+#include <tuple>
 
 using namespace std;
-using namespace std::chrono;
+
+template <class TupType, size_t... I>
+void print(const TupType& _tup, index_sequence<I...>) {
+  cout << "(";
+  (..., (cout << (I == 0 ? "" : ", ") << get<I>(_tup)));
+  cout << ")\n";
+}
+
+template <class... T>
+void print(const tuple<T...>& _tup) {
+  print(_tup, make_index_sequence<sizeof...(T)>());
+}
 
 int main() {
-  auto start_time = system_clock::to_time_t(system_clock::now());
-  cout << start_time << endl;  // 1606398149
-  this_thread::sleep_for(chrono::seconds(1));
-  auto end_time = system_clock::to_time_t(system_clock::now());
-  cout << end_time - start_time << " second passed" << endl;  // 1 second passed
-
-  auto start = std::chrono::high_resolution_clock::now();
-  this_thread::sleep_for(chrono::seconds(1));
-  auto finish = std::chrono::high_resolution_clock::now();
-  std::cout << duration_cast<milliseconds>(finish - start).count() << "ms\n";  // 1001ms
+  auto abc = make_tuple(5, "Hello", -0.1);
+  print(abc);
+  int a;
+  string b;
+  double c;
+  tie(a, b, c) = abc;
+  cout << a << ", " << b << ", " << c << endl;
 }
 ```
 
@@ -883,6 +1402,29 @@ void quickSort(int arr[], int low, int high) {
         quickSort(arr, pi + 1, high); 
     } 
 }
+```
+
+> priority_queue
+
+```cpp
+top()
+push()
+pop()
+```
+
+* own comparator
+
+```cpp
+priority_queue<int, std::vector<int>, std::greater<int> > my_min_heap;
+priority_queue<int*, vector<int*>, cmp> queue;
+struct cmp {
+  bool operator() (int a, int b) const {
+    return ...
+  }
+};
+
+auto comp = [](Node a, Node b){ return a.val < b.val };
+priority_queue<Node, vector<Node>, decltype(comp)> pq;
 ```
 
 ### Hashable
@@ -1023,6 +1565,70 @@ void complex_() {
 }
 ```
 
+> pimple
+
+* [+] Binary interface is independent of private fields. changes doesn’t break dependent code.
+* [+] Compilation time drops because only the implementation file needs to be rebuilt
+* [+] Hide certain internal details such as implementation techniques
+* [-] increase in memory usage due to more memory allocation critical in embedded software
+* [-] maintenance is complex due to additional class in order to use pimpl, additional pointer indirection
+* [-] Hidden implementation cannot be inherited, although a class PImpl can.
+
+```cpp
+#include "user.h"
+
+#include <iostream>
+using namespace std;
+
+struct User::Impl {
+  Impl(string name) : name(name){};
+
+  ~Impl();
+
+  void welcomeMessage() { cout << "Welcome, " << name << endl; }
+  string name;
+  int salary = -1;
+};
+
+// Constructor connected with our Impl structure
+User::User(string name) : pimpl(new Impl(name)) { pimpl->welcomeMessage(); }
+User::~User() = default;
+User::User(const User& other) : pimpl(new Impl(*other.pimpl)) {}
+User& User::operator=(User rhs) {
+  swap(pimpl, rhs.pimpl);
+  return *this;
+}
+
+int User::getSalary() { return pimpl->salary; }
+void User::setSalary(int salary) {
+  pimpl->salary = salary;
+  cout << "Salary set to " << salary << endl;
+}
+```
+
+```cpp
+#pragma once
+#include <memory>
+#include <string>
+using namespace std;
+
+class User {
+ public:
+  ~User();
+  User(string name);
+
+  User(const User& other);
+  User& operator=(User rhs);
+
+  int getSalary();
+  void setSalary(int);
+
+ private:
+  class Impl;
+  unique_ptr<Impl> pimpl;
+};
+```
+
 ### Inheritance
 
 ```cpp
@@ -1062,11 +1668,61 @@ void inheritance() {
 }
 ```
 
+> struct
+
+* members and base classes are public by default in structs
+
+```cpp
+struct Node {
+  int value;
+  Node(int value) {
+    this->value = value;
+  }
+};
+```
+
 ## Pattern
 
 ### Creational
 
 * [Creational Theory](../cs/cs.md#Creational)
+
+> Resource acquisition is in initialization (RAII)
+
+* resource is acquired in constructor (optional) / relinquished in destructor (e.g. file io)
+* Instances of the class are stack allocated
+* shared_ptr is one example
+* Resources (heap memory, file handles, sockets) should be owned by an object
+
+```cpp
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+using namespace std;
+class OpenFile {
+ public:
+  OpenFile(const char* filename) {
+    // throws an exception on failure
+    _file.open(filename);
+  }
+
+  ~OpenFile() { _file.close(); }
+
+  string readLine() {
+    string line;
+    getline(_file, line);
+    return line;
+  }
+
+ private:
+  ifstream _file;
+};
+int main() {
+  OpenFile f("Makefile");
+  cout << f.readLine();
+}
+```
 
 > Factory
 
@@ -1077,55 +1733,276 @@ void inheritance() {
 using namespace std;
 
 class Coffee {
-   protected:
-    string _type;
+  protected:
+  string _type;
 
-   public:
-    Coffee(string type) : _type(type) {}
-    string getType() { return _type; }
+  public:
+  Coffee(string type) : _type(type) {}
+  string getType() { return _type; }
 };
 
 class Espresso : public Coffee {
-   public:
-    Espresso() : Coffee("Espresso") { cout << endl << "Making a cup of espresso" << endl; }
+  public:
+  Espresso() : Coffee("Espresso") { cout << endl << "Making a cup of espresso" << endl; }
 };
 
 class Cappuccino : public Coffee {
-   public:
-    Cappuccino() : Coffee("Cappuccino") { cout << endl << "Making a cup of cappuccino." << endl; }
+  public:
+  Cappuccino() : Coffee("Cappuccino") { cout << endl << "Making a cup of cappuccino." << endl; }
 };
 
 class CoffeeMakerFactory {
-   private:
-    Coffee* _coffee;
+  private:
+  Coffee* _coffee;
 
-   public:
-    Coffee* GetCoffee() {
-        int choice;
+  public:
+  Coffee* GetCoffee() {
+    int choice;
 
-        cout << "Select type of coffee to make: " << endl;
-        cout << "1: Espresso" << endl;
-        cout << "2: Cappuccino" << endl;
-        cout << "Selection: " << endl;
-        cin >> choice;
+    cout << "Select type of coffee to make: " << endl;
+    cout << "1: Espresso" << endl;
+    cout << "2: Cappuccino" << endl;
+    cout << "Selection: " << endl;
+    cin >> choice;
 
-        switch (choice) {
-            case 1:
-                return new Espresso;
-            case 2:
-                return new Cappuccino;
-            default:
-                cout << "Invalid Selection" << endl;
-                return NULL;
-        }
+    switch (choice) {
+      case 1: return new Espresso;
+      case 2: return new Cappuccino;
+      default:
+        cout << "Invalid Selection" << endl;
+        return NULL;
     }
+  }
 };
 
 int main() {
-    CoffeeMakerFactory coffeeMachine;
-    Coffee* cup;
-    cup = coffeeMachine.GetCoffee();
-    cout << endl << "Ordered " << cup->getType() << endl;
+  CoffeeMakerFactory coffeeMachine;
+  Coffee* cup;
+  cup = coffeeMachine.GetCoffee();
+  cout << endl << "Ordered " << cup->getType() << endl;
+}
+```
+
+> Abstract factory
+
+```cpp
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Door {
+  public:
+    Door() {}
+    virtual void Open() = 0;
+};
+
+class GasCarDoor : public Door {
+  public:
+    GasCarDoor() {}
+    void Open() { cout << "click" << endl; }
+};
+
+class ElectricCarDoor : public Door {
+  public:
+    ElectricCarDoor() {}
+    void Open() { cout << "shhhhh" << endl; }
+};
+
+class Engine {
+  protected:
+    string _sound;
+
+  public:
+    Engine(string sound) : _sound(sound) {}
+    virtual void Run() = 0;
+};
+
+class GasEngine : public Engine {
+   public:
+    GasEngine() : Engine("vroom") {}
+    void Run() { cout << _sound << endl; }
+};
+
+class ElectricEngine : public Engine {
+   public:
+    ElectricEngine() : Engine("shh") {}
+    void Run() { cout << _sound << endl; }
+};
+
+class CarFactory {
+   public:
+    virtual Door* BuildDoor() = 0;
+    virtual Engine* BuildEngine() = 0;
+};
+
+class GasCarFactory : public CarFactory {
+   public:
+    Door* BuildDoor() { return new GasCarDoor(); }
+    Engine* BuildEngine() { return new GasEngine(); }
+};
+
+class ElectricCarFactory : public CarFactory {
+   public:
+    Door* BuildDoor() { return new ElectricCarDoor(); }
+    Engine* BuildEngine() { return new ElectricEngine(); }
+};
+
+int main() {
+  CarFactory* CarPlant;
+  int choice;
+
+  cout << "Select a car type: " << endl;
+  cout << "1: Gasoline" << endl;
+  cout << "2: Electric" << endl;
+  cout << "Selection: ";
+  cin >> choice;
+  cout << endl;
+
+  switch (choice) {
+    case 1:
+      CarPlant = new GasCarFactory;
+      break;
+    case 2:
+      CarPlant = new ElectricCarFactory;
+      break;
+  }
+
+  Door* myDoor = CarPlant->BuildDoor();
+  Engine* myEngine = CarPlant->BuildEngine();
+  myDoor->Open();
+  myEngine->Run();
+}
+```
+
+### Structural
+
+> Adoptor
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Int {
+  int data;
+
+ public:
+  Int(int data) : data(data) {}
+  Int(const Int &i) : data(i.data) {}
+  operator int() { return data; }  // Use all default int operators
+  friend ostream &operator<<(ostream &os, const Int &i) {
+    return os << "data = " << i.data;  // can access private
+  }
+};
+int main() {
+  Int x = 3;
+  int a = x + 4;
+
+  x = a * 2 + x + 4;
+  std::cout << x << std::endl;  // data = 21
+}
+```
+
+### Behavior
+
+> mediator
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <set>
+#include <sstream>
+using namespace std;
+// Without graph, it’s coupled and cannot be tested alone
+
+class Nodes {
+ public:
+  set<int> nodes = set<int>();
+  void addNode(int n) { nodes.insert(n); }
+  void remNode(int n) { nodes.erase(n); }
+  int size() { return nodes.size(); }
+};
+class Edges {
+ public:
+  set<pair<int, int>> edges;
+  void addEdge(int n1, int n2) { edges.insert(std::make_pair(n1, n2)); }
+  void remNode(int n) {
+    for (set<pair<int, int>>::iterator itr = edges.begin(); itr != edges.end();) {
+      if (itr->first == n || itr->second == n)
+        edges.erase(itr++);
+      else
+        ++itr;
+    }
+  }
+  int size() { return edges.size(); }
+};
+class Graph {
+ public:
+  Nodes nodes;
+  Edges edges;
+  void remNode(int n) {
+    edges.remNode(n);
+    nodes.remNode(n);
+  }
+  void addEdge(int n1, int n2) {
+    nodes.addNode(n1);
+    nodes.addNode(n2);
+    edges.addEdge(n1, n2);
+  }
+  string info() {
+    stringstream ss;
+    ss << "# nodes" << nodes.size() << ", # edges" << edges.size();
+    return ss.str();
+  };
+};
+
+int main() {
+  Graph g;
+  g.addEdge(1, 2);
+  g.addEdge(3, 2);
+  cout << g.info() << endl;
+  g.remNode(2);
+  cout << g.info();
+}
+```
+
+### Functional
+
+> functor
+
+* is a function that can be manipulated as an object, or an object representing a single, generic function.
+* Functors support and encourage a number of powerful programming techniques including:
+  * programming in a functional style
+  * higher order functions
+  * internal iterators
+  * reuse and specialization through composition rather than inheritance and overloading
+  * generic "callback" or "extension point" APIs
+  * generic "filters" or predicate APIs
+  * many "behavioral" design patterns, such as Visitor, Strategy, Chain of Responsibility, etc.
+
+```cpp
+// g++ functors.cpp && ./a.out
+#include <iostream>
+#include <string>
+using namespace std;
+
+/**
+ * struct is public by default
+ */
+int main() {
+  class Tagger {
+    string tag;
+    Tagger();
+
+   public:
+    Tagger(string tag) : tag(tag) {}
+    string operator()(string contents) const { return "<" + tag + ">" + contents + "</" + tag + ">"; }
+  };
+
+  const Tagger pTagger("p");
+  const Tagger h1Tagger("h1");
+  cout << "pTagger \t" << pTagger("hello") << endl;
+  cout << "h1Tagger \t" << h1Tagger("hello") << endl;
 }
 ```
 
@@ -1158,6 +2035,88 @@ void count_n_million() {
 int main() { count_n_million(); }
 ```
 
+> thread
+
+```cpp
+// g++ --std=c++11 merge_sort.cpp && ./a.out
+#include <algorithm>
+#include <chrono>
+#include <cstdlib>
+#include <thread>
+#include <vector>
+
+using namespace std;
+void merge(int *array, int l, int m, int r) {
+  int n_left = m - l + 1, n_right = r - m;
+  int lefts[n_left], rights[n_right];
+
+  copy(&array[l], &array[m + 1], lefts);
+  copy(&array[m + 1], &array[r + 1], rights);
+
+  int left_i = 0, right_i = 0, insert_i = l;
+
+  while ((left_i < n_left) || (right_i < n_right)) {
+    if (left_i < n_left && (right_i >= n_right || lefts[left_i] <= rights[right_i])) {
+      array[insert_i] = lefts[left_i];
+      left_i++;
+    } else {
+      array[insert_i] = rights[right_i];
+      right_i++;
+    }
+    insert_i++;
+  }
+}
+void sequential_merge_sort(int *array, int l, int r) {
+  if (l < r) {
+    int m = (l + r) / 2;
+    sequential_merge_sort(array, l, m);
+    sequential_merge_sort(array, m + 1, r);
+    merge(array, l, m, r);
+  }
+}
+
+void parallel_merge_sort(int *array, int l, int r, int depth = 0) {
+  if (depth >= log(thread::hardware_concurrency()))
+    sequential_merge_sort(array, l, r);
+  else {
+    int m = (l + r) / 2;
+    thread left_thread = thread(parallel_merge_sort, array, l, m, depth + 1);
+    parallel_merge_sort(array, m + 1, r, depth + 1);
+    left_thread.join();
+    merge(array, l, m, r);
+  }
+}
+
+int main() {
+  const int N = 10000;
+  int original_array[N], sequential_result[N], parallel_result[N];
+  for (int i = 0; i < N; i++) original_array[i] = rand();
+
+  printf("Evaluating Sequential Implementation...\n");
+  chrono::duration<double> sequential_ns(0);
+  for (int eval = 0; eval < 10; eval++) {
+    copy(&original_array[0], &original_array[N - 1], sequential_result);
+    auto start_time = chrono::high_resolution_clock::now();
+    sequential_merge_sort(sequential_result, 0, N - 1);
+    sequential_ns += (chrono::high_resolution_clock::now() - start_time) / 10.0;
+  }
+
+  printf("Evaluating Parallel Implementation...\n");
+  chrono::duration<double> parallel_ns(0);
+  for (int eval = 0; eval < 10; eval++) {
+    copy(&original_array[0], &original_array[N - 1], parallel_result);
+    auto start_time = chrono::high_resolution_clock::now();
+    parallel_merge_sort(parallel_result, 0, N - 1);
+    parallel_ns += (chrono::high_resolution_clock::now() - start_time) / 10.0;
+  }
+
+  printf("Average Sequential Time: %.2f ms\n", sequential_ns.count() * 1000);
+  printf("Average Parallel Time: %.2f ms\n", parallel_ns.count() * 1000);
+  printf("Speedup: %.2f\n", sequential_ns / parallel_ns);
+  printf("Efficiency %.2f%%\n", 100 * (sequential_ns / parallel_ns) / thread::hardware_concurrency());
+}
+```
+
 > mutex
 
 ```cpp
@@ -1188,6 +2147,102 @@ int main(){
   for(auto& thread : threads) thread.join();
   cout << counter.value << endl;
   return 0;
+}
+```
+
+### Time
+
+ chrono
+
+* sleep
+
+```cpp
+this_thread::sleep_for(milliseconds(x));  # Pause
+```
+
+* current time
+
+```cpp
+#include <iostream>
+#include <chrono>
+#include <ctime>    
+
+int main()
+{
+    std::time_t end_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+    std::cout << std::ctime(&end_time); // Mon Oct  2 00:59:08 2017
+}
+```
+
+* Measure time
+
+```cpp
+#include <chrono>
+#include <iostream>
+#include <thread>
+
+using namespace std;
+using namespace std::chrono;
+
+int main() {
+  auto start_time = system_clock::to_time_t(system_clock::now());
+  cout << start_time << endl;  // 1606398149
+  this_thread::sleep_for(chrono::seconds(1));
+  auto end_time = system_clock::to_time_t(system_clock::now());
+  cout << end_time - start_time << " second passed" << endl;  // 1 second passed
+
+  auto start = std::chrono::high_resolution_clock::now();
+  this_thread::sleep_for(chrono::seconds(1));
+  auto finish = std::chrono::high_resolution_clock::now();
+  std::cout << duration_cast<milliseconds>(finish - start).count() << "ms\n";  // 1001ms
+}
+```
+
+> chrono
+
+* sleep
+
+```cpp
+this_thread::sleep_for(milliseconds(x));  # Pause
+```
+
+* current time
+
+```cpp
+#include <iostream>
+#include <chrono>
+#include <ctime>    
+
+int main()
+{
+    std::time_t end_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+    std::cout << std::ctime(&end_time); // Mon Oct  2 00:59:08 2017
+}
+```
+
+* Measure time
+
+```cpp
+#include <chrono>
+#include <iostream>
+#include <thread>
+
+using namespace std;
+using namespace std::chrono;
+
+int main() {
+  auto start_time = system_clock::to_time_t(system_clock::now());
+  cout << start_time << endl;  // 1606398149
+  this_thread::sleep_for(chrono::seconds(1));
+  auto end_time = system_clock::to_time_t(system_clock::now());
+  cout << end_time - start_time << " second passed" << endl;  // 1 second passed
+
+  auto start = std::chrono::high_resolution_clock::now();
+  this_thread::sleep_for(chrono::seconds(1));
+  auto finish = std::chrono::high_resolution_clock::now();
+  std::cout << duration_cast<milliseconds>(finish - start).count() << "ms\n";  // 1001ms
 }
 ```
 
@@ -1337,59 +2392,59 @@ int main() {
 using namespace std;
 
 struct Foo {
-    Foo(int num) : num_(num) {}
-    void print_add(int i) const { std::cout << num_+i << '\n'; }
-    int num_;
+  Foo(int num) : num_(num) {}
+  void print_add(int i) const { std::cout << num_+i << '\n'; }
+  int num_;
 };
  
 void print_num(int i)
 {
-    std::cout << i << '\n';
+  std::cout << i << '\n';
 }
 
 struct PrintNum {
-    void operator()(int i) const
-    {
-        std::cout << i << '\n';
-    }
+  void operator()(int i) const
+  {
+    std::cout << i << '\n';
+  }
 };
  
 int main()
 {
-    // store a free function
-    std::function<void(int)> f_display = print_num;
-    f_display(-9);
- 
-    // store a lambda
-    std::function<void()> f_display_42 = []() { print_num(42); };
-    f_display_42();
+  // store a free function
+  std::function<void(int)> f_display = print_num;
+  f_display(-9);
 
-    // store the result of a call to std::bind
-    std::function<void()> f_display_31337 = std::bind(print_num, 31337);
-    f_display_31337();
- 
-    // store a call to a member function
-    std::function<void(const Foo&, int)> f_add_display = &Foo::print_add;
-    const Foo foo(314159);
-    f_add_display(foo, 1);
-    f_add_display(314159, 1);
- 
-    // store a call to a data member accessor
-    std::function<int(Foo const&)> f_num = &Foo::num_;
-    std::cout << "num_: " << f_num(foo) << '\n';
- 
-    // store a call to a member function and object
-    using std::placeholders::_1;
-    std::function<void(int)> f_add_display2 = std::bind( &Foo::print_add, foo, _1 );
-    f_add_display2(2);
- 
-    // store a call to a member function and object ptr
-    std::function<void(int)> f_add_display3 = std::bind( &Foo::print_add, &foo, _1 );
-    f_add_display3(3);
- 
-    // store a call to a function object
-    std::function<void(int)> f_display_obj = PrintNum();
-    f_display_obj(18);
+  // store a lambda
+  std::function<void()> f_display_42 = []() { print_num(42); };
+  f_display_42();
+
+  // store the result of a call to std::bind
+  std::function<void()> f_display_31337 = std::bind(print_num, 31337);
+  f_display_31337();
+
+  // store a call to a member function
+  std::function<void(const Foo&, int)> f_add_display = &Foo::print_add;
+  const Foo foo(314159);
+  f_add_display(foo, 1);
+  f_add_display(314159, 1);
+
+  // store a call to a data member accessor
+  std::function<int(Foo const&)> f_num = &Foo::num_;
+  std::cout << "num_: " << f_num(foo) << '\n';
+
+  // store a call to a member function and object
+  using std::placeholders::_1;
+  std::function<void(int)> f_add_display2 = std::bind( &Foo::print_add, foo, _1 );
+  f_add_display2(2);
+
+  // store a call to a member function and object ptr
+  std::function<void(int)> f_add_display3 = std::bind( &Foo::print_add, &foo, _1 );
+  f_add_display3(3);
+
+  // store a call to a function object
+  std::function<void(int)> f_display_obj = PrintNum();
+  f_display_obj(18);
 }
 ```
 
@@ -1400,4 +2455,71 @@ int main()
 ```cpp
 function<const int&()> F([]{ return 42; });
 int x = F(); 
+```
+
+> unistd.h
+
+```cpp
+char cwd[1024];
+getcwd(cwd, sizeof(cwd));
+printf("Current working dir: %s\n", cwd);
+```
+
+> variant
+
+```cpp
+#include <iostream>
+#include <memory>
+#include <variant>
+
+using namespace std;
+
+class A {
+ public:
+  void a() { cout << "I am A" << endl; }
+};
+
+class B {
+ public:
+  void b() { cout << "I am B" << endl; }
+};
+
+variant<A, B> GetDataFromDB(bool is_a) {
+  if (is_a) {
+    return A();
+  }
+  return B();
+}
+
+int main() {
+  auto v = GetDataFromDB(true);
+
+  cout << v.index() << endl;  // 0
+  get<A>(v).a();              // I am A  // same as get<0>(v).a()
+}
+```
+
+> gnome
+
+* g_print("%s", ...);
+  * print
+
+* g_strdup_printf("%s", line);
+  * Similar to the standard C sprintf() function but safer
+  * calculates the maximum space required and allocates memory to hold the result
+  * returned string should be freed with g_free() when no longer needed.
+  * The returned string is guaranteed to be non-NULL
+
+### Test
+
+> gtest
+
+```sh
+gtest
+
+test fixtures allows for common setup and teardown between tests (::testing::Test)
+
+ASSERT_TRUE                # break test if not true
+EXPECT_TRUE
+EXPENCT_EQ/NE/LT/LE/GT(A, B); # A and B should be same
 ```

@@ -1,19 +1,29 @@
 # Cpp
 
 * https://modoocode.com/134 
-* C with class Bjarne Stroustrup developed 
+* C with class Bjarne Stroustrup developed
+
+> Version
+
+* C++98
+  * firht standard
+* C++11
+  * lambdas, auto type deduction, list initialization, smart pointers, move semantics 
+* C++14
+  * return type deduction, binary literals, generic lambda expressions 
+* C++17
+  * binding, nested namespaces, inline variables, constexpr lambda
 
 ## Terms
 
-> Identifier
+* Identifier
+  * can be used to name objects, references, functions, enumerators, types, class members, namespaces, templates, template specializations, parameter packs, goto labels, and other entities
+  * keywords cannot be used for other purposes
+  * a double underscore anywhere are reserved
+  * begin with an underscore followed by an uppercase letter are reserved
+  * begin with an underscore are reserved in the global namespace
 
-* can be used to name objects, references, functions, enumerators, types, class members, namespaces, templates, template specializations, parameter packs, goto labels, and other entities
-* keywords cannot be used for other purposes
-* a double underscore anywhere are reserved
-* begin with an underscore followed by an uppercase letter are reserved
-* begin with an underscore are reserved in the global namespace
-
-> IEEE
+* IEEE
 
 $$
 10010.101_{(2)}=2^{4}+2^{1}+2^{-1}+2^{-3}=18.6875 \\
@@ -32,44 +42,39 @@ void main() {
 }
 ```
 
-> Variable
+* Variable
+  * a variable that directly references (mutable) data, const will prevent that data from being changed
+  * demoting variable works without cast
+  * uninitialized local variable will not throw error but gives you unexpected value
+  * global variables can be declared outside of functions and classes
+  * global variable always initialized to zero
 
-* a variable that directly references (mutable) data, const will prevent that data from being changed
-* demoting variable works without cast
-* uninitialized local variable will not throw error but gives you unexpected value
-* global variables can be declared outside of functions and classes
-* global variable always initialized to zero
-
-> Lvalue
+* Lvalue
+  * addressable (&) and assignable (=) (ex. variable)
 
 ![alt](images/20210214_022103.png)
-
-* addressable (&) and assignable (=) (ex. variable)
 
 ```cpp
 int i = 42;    // i = 43; int* p = &i;
 int& foo();    // foo() = 42; int* p1 = &foo(); works
 ```
 
-> non-modifiable lvalue
+* non-modifiable lvalue
+  * addressable, but not assignable. (ex. const)
 
-* addressable, but not assignable. (ex. const)
-
-> rvalue
-
-* neither addressable nor assignable. (ex. literal)
-* can take the address of a const object
-* prvalue (“pure” rvalue) is an rvalue that is not a xvalue.
-* glvalue (“generalized” lvalue) is an lvalue or a xvalue.
-* An xvalue (an “eXpiring” value) also refers to an object, usually near the end of its lifetime
-* prvalue (“pure” rvalue) is an rvalue that is not an xvalue
+* rvalue
+  * neither addressable nor assignable. (ex. literal)
+  * can take the address of a const object
+  * prvalue (“pure” rvalue) is an rvalue that is not a xvalue.
+  * glvalue (“generalized” lvalue) is an lvalue or a xvalue.
+  * An xvalue (an “eXpiring” value) also refers to an object, usually near the end of its lifetime
+  * prvalue (“pure” rvalue) is an rvalue that is not an xvalue
 
 
-> Right left rule
-
-* Find identifier
-* Move right until out of symbols or hit right parenthesis.
-* Move left until you run out of symbols or hit a left parenthesis.
+* Right left rule
+  * Find identifier
+  * Move right until out of symbols or hit right parenthesis.
+  * Move left until you run out of symbols or hit a left parenthesis.
 
 ```cpp
 // []() - cannot have an array of functions
@@ -105,7 +110,7 @@ int fa()[];     // function returning an array of ints (ILLEGAL)
 int ff()();     // function returning a function returning an int (ILLEGAL)
 ```
 
-> Twos complement
+* Twos complement
 
 ![alt](images/20210214_022312.png)
 
@@ -118,20 +123,31 @@ unsigned int b = -1;
 printf("b  : %u \n", b);  // 4294967295
 ```
 
-> Translation unit
+* Translation unit
+  * the ultimate input to a C or C++ compiler from which an object file is generated
+  * In casual usage it is sometimes referred to as a compilation unit
 
-* the ultimate input to a C or C++ compiler from which an object file is generated
-* In casual usage it is sometimes referred to as a compilation unit
-
-> Module
-
-* header that is also a translation unit
-* compiled separately and only once
-* plugins or optional components that user may choose to be loaded or not
+* Module
+  * header that is also a translation unit
+  * compiled separately and only once
+  * plugins or optional components that user may choose to be loaded or not
 
 ## Memory
 
 * low memory address as chart goes down
+* Endian
+![alt](images/20210207_125805.png)
+
+* Floating point
+![alt](images/20210207_125837.png)
+* float     # 1 / 8 / 23
+* double    # 1 / 11 / 52
+
+$$
+10010.101_{(2)}=2^{4}+2^{1}+2^{-1}+2^{-3}=18.6875
+$$
+
+> Version
 
 ![alt](images/20210214_024443.png)
 
@@ -142,30 +158,25 @@ int main() {
   int i;
   char *str = "Hello";
   char arr[2] = "Hi";
-  printf("global : %p \n", &global);	// 0x3e2300 
-  printf("i : %p \n", &i);			      // 0x7fff9ebe5740 
-  printf("str : %p \n", str);		      // 0x2339c0 → literal
-  printf("arr : %p \n", arr);	      	// 0x7fff9ebe5750
+  printf("global : %p \n", &global);  // 0x3e2300 
+  printf("i : %p \n", &i);            // 0x7fff9ebe5740 
+  printf("str : %p \n", str);         // 0x2339c0 → literal
+  printf("arr : %p \n", arr);         // 0x7fff9ebe5750
 }
 ```
 
+* Heap
+  * Large free pool of memory
+  * Must allocate and deallocate
 
-> Heap 
-
-* Large free pool of memory
-* Must allocate and deallocate
-
-> Stack
-
-* local variables declared inside a function lives until terminates
-* size of stack-frame is calculated when compiling
-
-
+* Stack
+  * local variables declared inside a function lives until terminates
+  * size of stack-frame is calculated when compiling
 
 ## Convention
 
 * filename all lowercase
-* functions, variables a lowercase + camel case 
+* functions, variables a lowercase + camel case
 * classes, structs, and typedefsStart  a capital letter + camelcase
 * clang format
 
@@ -182,37 +193,10 @@ ColumnLimit: 100          # break line after 100 char
 
 > cppcheck
 
-```
+```sh
 --enable=all 
 --suppress=missingIncludeSystem 00_pointer.cpp
 ```
-
-
-## Memory
-
-* Endian
-![alt](images/20210207_125805.png)
-
-* Floating point
-![alt](images/20210207_125837.png)
-* float     # 1 / 8 / 23
-* double    # 1 / 11 / 52
-
-
-$$
-10010.101_{(2)}=2^{4}+2^{1}+2^{-1}+2^{-3}=18.6875
-$$
-
-> Version
-
-* C++98
-    * firht standard
-* C++11
-    * lambdas, auto type deduction, list initialization, smart pointers, move semantics 
-* C++14
-    * return type deduction, binary literals, generic lambda expressions 
-* C++17
-    * binding, nested namespaces, inline variables, constexpr lambda
 
 ## Run
 
@@ -265,7 +249,6 @@ Linking      # .o / .obj (+ .lib / .a / static library) → .exe (default a.out)
 * use objdump and nm in terminal
 * Headers tells which (shared lib, exe, *.o file) and give location of the section / program headers
 
-
 ## Link
 
 * #include <fn> preprocessor searches directories pre-designated by the compiler/IDE (std library)
@@ -275,7 +258,7 @@ Linking      # .o / .obj (+ .lib / .a / static library) → .exe (default a.out)
 * added by the linking process 
 * starts with lib followed by name 
 
-```
+```sh
 /usr/lib
 /usr/local/lib                # custom library
 ```
@@ -285,9 +268,9 @@ Linking      # .o / .obj (+ .lib / .a / static library) → .exe (default a.out)
 ![alt](images/20210214_022603.png)
 
 * static library
-    * set of routines, external functions and variables which are resolved in a caller at compile-time 
-    * copied into a target application by a compiler, linker, or binder
-    * produce an object file and a stand-alone executable.
+  * set of routines, external functions and variables which are resolved in a caller at compile-time
+  * copied into a target application by a compiler, linker, or binder
+  * produce an object file and a stand-alone executable.
 
 ```cpp
 // g++ -shared -o librandom.so random.cpp
@@ -346,16 +329,15 @@ __declspec(dllexport) void moo() {
 
 ## Error
 
-
 > Compile Error
 
-* starts with C 
+* starts with C
 
 > gdb
 
-* must be compiled using -g flags to see 
+* must be compiled using -g flags to see
 
-```
+```js
 # Breakpoints
 d N                    # Delete Nth breakpoint
 enable / disable br    # enable / disable all br
@@ -740,11 +722,11 @@ clean:
   rm -r $(BIN_DIR) $(OBJ_DIR)
 ```
 
-# Cmake
+## Cmake
 
 * https://www.youtube.com/watch?v=wP4cwAtU-g8
 
-```
+```sh
 CXX=clang++ cmake ..  # pick compiler only once
 
 --help                # help
@@ -782,7 +764,7 @@ cmake -B build -DCMAKE_BUILD_TYPE=RELEASE \
 
 * lower case for function, Upper case is for variables → case insensitive
 
-```
+```sh
 # Hello cpp
 ├── CMakeLists.txt
 cmake_minimum_required(VERSION 3.0)

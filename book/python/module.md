@@ -579,7 +579,7 @@ Options:
 
 ### Time
 
-> <datetime>
+> `<datetime>`
 
 ```py
 from datetime import date, datetime, timedelta
@@ -592,6 +592,8 @@ print(f"timedelta \t {d - timedelta(days=1, hours=0, minutes=50)}")
 
 ```py
 datetime(year, month, day[, hour[, minute[, second[, microsecond[, tzinfo]]]]])
+
+end_date = date_1 + datetime.timedelta(days=10)   # add date to datetime
 ```
 
 * date
@@ -613,7 +615,7 @@ min    # time(0, 0, 0, 0)
 max    # time(23, 59, 59, 999999)
 ```
 
-> <time>
+> `<time>`
 
 ```py
 time.perf_counter() / _ns      # clock with highest available resolution to measure a short duration
@@ -662,7 +664,7 @@ complex()       # Took 0.111s
 
 ### Network
 
-> socket
+> `<socket>`
 
 * tcp client
 
@@ -769,6 +771,8 @@ unquote(str)  # decode urlencoded bytes
 ```py
 content = resp.read()
 ```
+
+* Multithreading image download
 
 ```py
 import time
@@ -1451,12 +1455,123 @@ with timeout(1):
   print("heeeello")
 ```
 
+> Multiprocessing
+
+* Matrix multiplication
+
+```py
+import random
+import multiprocessing as mp
+import math
+
+
+def par_matrix_multiply(M1, M2):
+  # Multiply two 2d array (Efficient after 300 x 300)
+  n1, m1, n2, m2 = len(M1), len(M1[0]), len(M2), len(M2[0])
+
+  num_workers = mp.cpu_count()
+  chunk_size = math.ceil(n1 / num_workers)
+  C_1D = mp.RawArray('d', n1 * m2)  # flat version of matrix C
+  workers = []
+  for w in range(num_workers):
+    row_start_C = min(w * chunk_size, n1)
+    row_end_C = min((w + 1) * chunk_size, n1)
+    workers.append(mp.Process(target=_par_worker, args=(M1, M2, C_1D, row_start_C, row_end_C)))
+  for w in workers:
+    w.start()
+  for w in workers:
+    w.join()
+
+  C_2D = [[0] * m2 for i in range(n1)]
+  for i in range(n1):
+    for j in range(m2):
+      C_2D[i][j] = C_1D[i*m2 + j]
+  return C_2D
+
+
+def _par_worker(M1, M2, C_1D, row_start_C, row_end_C):
+  for i in range(row_start_C, row_end_C):  # subset of rows in M1
+    for j in range(len(M2[0])):
+      for k in range(len(M1[0])):
+        C_1D[i*len(M2[0]) + j] += M1[i][k] * M2[k][j]
+
+
+if __name__ == '__main__':
+  A = [[random.random() for i in range(200)] for j in range(200)]
+  B = [[random.random() for i in range(200)] for j in range(200)]
+  par_matrix_multiply(A, B)
+```
+
+* Paralle merge sort
+
+```py
+import math
+import multiprocessing
+import random
+import sys
+import time
+
+def merge(*args):
+  # Support explicit left/right args, as well as a two-item tuple which works more cleanly with multiprocessing.
+  left, right = args[0] if len(args) == 1 else args
+  left_length, right_length = len(left), len(right)
+  left_index, right_index = 0, 0
+  merged = []
+  while left_index < left_length and right_index < right_length:
+    if left[left_index] <= right[right_index]:
+      merged.append(left[left_index])
+      left_index += 1
+    else:
+      merged.append(right[right_index])
+      right_index += 1
+  if left_index == left_length:
+    merged.extend(right[right_index:])
+  else:
+    merged.extend(left[left_index:])
+  return merged
+
+
+def merge_sort(data):
+  length = len(data)
+  if length <= 1:
+    return data
+  middle = length // 2
+  left = merge_sort(data[:middle])
+  right = merge_sort(data[middle:])
+  return merge(left, right)
+
+
+def merge_sort_parallel(data):
+  # Split the initial data into partitions, sized equally per worker, and perform a regular merge sort across each partition.
+  processes = multiprocessing.cpu_count()
+  pool = multiprocessing.Pool(processes=processes)
+  size = int(math.ceil(float(len(data)) / processes))
+  data = [data[i * size:(i + 1) * size] for i in range(processes)]
+  data = pool.map(merge_sort, data)
+  # Each partition is now sorted - merge pairs of these together using worker pool, until partitions are reduced down to a single sorted result.
+  while len(data) > 1:
+    # If partitions remaining is odd, pop off last one and append it back after one iteration of this loop, since pairs need to merge.
+    extra = data.pop() if len(data) % 2 == 1 else None
+    data = [(data[i], data[i + 1]) for i in range(0, len(data), 2)]
+    data = pool.map(merge, data) + ([extra] if extra else [])
+  return data[0]
+
+
+if __name__ == "__main__":
+  size = int(sys.argv[-1]) if sys.argv[-1].isdigit() else 1000
+  data_unsorted = [random.randint(0, size) for _ in range(size)]
+  for sort in merge_sort, merge_sort_parallel:
+    start = time.time()
+    data_sorted = sort(data_unsorted)
+    end = time.time() - start
+    print(sort.__name__, sorted(data_unsorted) == data_sorted)
+```
 
 ### Race Control
 
-> <queue>
+> queue
 
-* thread safe 
+* thread safe
 
 ```py
 Queue(maxsize=0)
@@ -1531,7 +1646,7 @@ def cpu_usage():
 
 > pickle
 
-```
+```py
 dump(obj, file)
 load(file)
 ```
@@ -1540,7 +1655,7 @@ load(file)
 
 * encoding Python Objects into JSON is called Serialization
 
-```
+```py
 python -m json.tool file.json  # validate file.json
 dumps()    # encode JSON Data into native Python String
 dump()     # encode and store JSON Data into a file
@@ -2013,7 +2128,6 @@ except:
   pass
 db = firestore.client()
 
-
 def recommend_problems(*, kr_names=""):
   with open(f"{PATH.DATA}/problems.json", 'r') as f:
     problems = json.load(f)
@@ -2079,7 +2193,6 @@ def enroll_class(class_id, user_id):
 
 
 if __name__ == "__main__":
-  import multiprocessing as mp
   log.basicConfig(level=log.DEBUG)
   # update
   with mp.Pool(16) as pool:

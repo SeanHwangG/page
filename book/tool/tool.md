@@ -275,6 +275,14 @@ $HOME/Library/Application Support/Code/User/settings.json
 
 ### Extension
 
+> code runnero
+
+```sh
+{
+  "code-runner.ignoreSelection": true       # don't create tempCodeRunnerFile 
+}
+```
+
 > vim
 
 * Well integrated with vscode (:vs)
@@ -282,6 +290,12 @@ $HOME/Library/Application Support/Code/User/settings.json
 > docker
 
 * show all images and containers
+
+> Remote - Containers
+
+```sh
+export PATH="$PATH:$HOME/.vscode-server/bin/<directory with a hash-like name>/bin/"   # to run code inside docker container
+```
 
 > gitlens
 

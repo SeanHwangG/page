@@ -48,6 +48,33 @@
 * X Window System
   * xAuthority file is in ~, stores credentials in cookies used by xauth for authentication of X sessions
 
+> Flynn's Taxonomy
+
+![Flynn's Taxonomy](images/20210221_221714.png)
+
+![Flynn's Taxonomy 2](images/20210221_221756.png)
+
+* SISD
+  * A sequential computer which exploits no parallelism in either the instruction or data streams
+  * Single control unit (CU) fetches single instruction stream (IS) from memory
+
+* MISD
+  * Not a commonly used architecture → fault tolerance
+
+* SIMD
+  * Image processing, GPU
+
+* MIMD
+  * Multicore PC
+
+  * SPMD
+
+  ![SPMD](images/20210221_222208.png)
+
+  * MPMD
+
+  ![MPMD](images/20210221_222220.png)
+
 > Encodings
 
 * Rules for translating a Unicode string into a sequence of bytes are called an encoding
@@ -233,12 +260,19 @@ y|Y|yes|Yes|YES|n|N|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|O
 
 ![vpn](images/20210220_233545.png)
 
-### Parallel programming
+## Conccurent
 
 * Simultaneous execution doing multiple things at once
 * Concurrence is a program structure dealing with multiple things at once
 
 > Terms
+
+* Race Condition
+  * order in which two threads execute their respective operations will change the output
+  * Mutex, Barrier
+
+* Starvation
+  * a process/thread is perpetually denied necessary resources to process its work
 
 * Concurrency
   * ability of an algorithm or program to be broken into different parts that can be executed out of order
@@ -246,6 +280,208 @@ y|Y|yes|Yes|YES|n|N|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|O
   * Sequence of project network activities which add up to the longest overall duration
 * Span
   * length of the longest series of operations (critical path) to be performed sequentially due to dependencies
+
+* Liveness
+  * properties that require a system to make progress
+  * members may have to take turns in critical sections
+
+* Spinning (Busy waiting)
+  * process repeatedly checks if a condition is true, such as whether keyboard input or a lock is available
+
+* Lock
+  * Lock can be released by different thread than was used to acquire it
+  * Releasing a lock before lock will cause problem
+
+* RLock
+  * can be acquired multiple times by the same thread → needs to be released the same number of times
+  * RLock must be released by the same thread that acquired it → should be used for nested lock
+
+* Strong scaling
+  * Variable number of processors with fixed total problem size
+  * Finish same work in less time
+
+* Weak scaling
+  * Variable number of processors with fixed problem size per processor
+  * finish more work in the same time
+
+> Thread
+
+![Thread](images/20210221_221853.png)
+
+* Independent path of execution
+* A subset of a process
+* Operating system schedules threads for execution
+* Threads are lightweight → require less overhead to create and terminate
+* Threads that belong to the same process share that process's address space
+
+* Daemon threads
+  * a low priority thread (in JVM) that runs in the background to perform tasks (e.g. garbage collection) 
+  * can exit JVM (if daemon thread is running) when all non-daemon threads finish their execution
+  * Threads that should be properly terminated (Writing to file) shouldn’t be Daemon
+* Detached threads
+* Joinable threads
+  * Doesn’t get destroyed when it terminates
+
+> Process
+
+* Includes code, data, and state information
+* Independent instance of a running program
+* Separate address space
+* Knife
+
+* Inter-process communication
+  * operating system provides to allow the processes to manage shared data
+  * sockets and pipes
+  * shared memory
+  * remote procedure calls
+
+> Metric
+
+* Amdahls’s Law
+
+![Amdahls's Law](images/20210221_221220.png)
+
+* Speedup
+  * 1 / (1 - P  + P/S)
+  * P (Portion of program that's parallelizable)
+  * S (Speedup of the parallelized portion)
+
+* Efficiency
+  * How well additional resources are utilized
+  * efficiency = speedup / # processors
+
+* Speedup
+  * sequential execution time / parallel execution time with N workers
+
+* Granularity
+  * computation / communication
+
+* Overhead
+  * Compute time / resources spent on communication
+
+* Bandwidth
+  Amount to data communication per seconds (GB/s)
+
+* Latency
+  * time / task
+
+* Throughput
+  * tasks / time
+
+> Design
+
+![process](images/20210221_220939.png)
+
+* Partitioning
+  * Domain decomposition : Block decomposition, Cyclic decomposition
+  * Functional decomposition : Task parallelism, processes are assigned pieces of code, each works on same data and is assigned to exactly one process
+
+* Communication
+  * Point to point communication : sender → receiver
+  * collective communication : broadcast, scalability
+  * Synchronous blocking communication : tasks wait until entire communication is complete cannot do other work while in progress
+  * Asynchronous non blocking communication : tasks do not wait for communication to complete.
+
+* Agglomeration
+  * Fine-grained parallelism
+    * Large number of small tasks
+    * Pros: good distribution of workload (load balancing)
+    * Cons: low computation to communication ratio
+  * Coarse-grained parallelism
+    * Small number of large tasks 
+    * Pros: High computation-to-communication ratio
+    * Cons: Inefficient load balancing
+
+> Mapping
+
+* Only for distributed system → not Single-core processors / automated task scheduling
+
+### Lock
+
+![Lock](images/20210221_221603.png)
+
+* Aka Mutex / Mutual Exclusion
+* Critical Section accesses shared variables, must be executed as an atomic action → ASAP
+* Atomic operations execute as a single action, relative to other threads
+* Can only be acquired/released by the same thread
+
+> Types
+
+* Abandoned lock
+  * Unexpectedly exit after acquiring thread
+  * Put codes try / finally or with
+
+* Deadlock
+  * processes / threads are unable to continue executing
+  * Prioritize locks to acquire in same relative order
+
+* Livelock
+  * many processes continuously change states in response to changes in other process without any work
+  * Use Resource Monitor to investigate the program's CPU usage to determine whether it’s a livelock or deadlock 
+
+* Reentrant
+  * can be locked multiple times by the same thread
+  * must be unlocked the same amount of times needed for recursive section
+
+* Try
+  * Non-blocking lock/acquire methods for a mutex
+  * If the mutex is available, lock it and return True
+  * if the mutex is unavailable, immediately return False
+
+* Reader-Writer
+  * Shared read - multiple threads at once
+  * Exclusive write - only one thread at a time
+  * When many threads need to read a shared variable, but a few threads need to modify its value.
+
+> Conditional Variable
+
+```cpp
+int is_done; 
+mutex_t done_lock; 
+cond_t done_cond; 
+
+// Thread A 
+mutex_lock(&done_lock); 
+is_done = 1; 
+cond_signal(&done_cond); 
+mutex_unlock(&done_lock); 
+
+// Thread B 
+mutex_lock(&done_lock); 
+if (!is_done) 
+  cond_wait(&done_cond, &done_lock); 
+mutex_unlock(&done_lock);
+```
+
+* Wait
+  * Automatically release lock on the mutex
+  * go to sleep and enter waiting queue → reacquire lock when woken up
+
+* Signal (Notify)
+  * Wake up one thread from condition variable queue → only one thread doesn’t matter which one
+
+* Broadcast (NotifyAll)
+  * Wake up all thread from condition variable queue
+
+* Semaphore
+  * Can be used by multiple threads at the same time
+  * includes a counter to track availability
+  * Can be acquired/released by different threads
+
+```sh
+Acquire  # if counter is positive, decrement counter, otherwise wait until available
+Release  #  increment the counter's value and signal another thread waiting to acquire the semaphore
+```
+
+* Barrier
+  * The order in which the OS schedules threads to execute is non-deterministic
+  * Used to control the relative order in which threads execute certain operations
+  * Threads execute a code before the barrier should call the wait method after executing the code. 
+
+* Future
+  * Placeholder for a result that will be available later 
+  * Mechanism to access the result of an asynchronous operation
+
 
 ## Pattern
 
@@ -432,7 +668,7 @@ y|Y|yes|Yes|YES|n|N|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|O
 * A constructor, setter, or Factory binds the field with the desired variant.
 * Composition over inheritance
 
-### Behavioral 
+### Behavioral
 
 * Best practices of objects interaction → define protocols
 * methods and signatures
@@ -440,6 +676,20 @@ y|Y|yes|Yes|YES|n|N|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|O
 > Iterator
 
 * used to traverse a container and access the container's elements.
+
+### Functional
+
+> functor
+
+* a function that can be manipulated as an object, or an object representing a single, generic function.
+* Functors support and encourage a number of powerful programming techniques including:
+  * programming in a functional style
+  * higher order functions
+  * internal iterators
+  * reuse and specialization through composition rather than inheritance and overloading
+  * generic "callback" or "extension point" APIs
+  * generic "filters" or predicate APIs
+  * many "behavioral" design patterns, such as Visitor, Strategy, Chain of Responsibility, etc.
 
 ## Hardware
 
@@ -490,7 +740,6 @@ Burst Mode            # Block level data
   * In order to access a particular byte, track #, sector #, offset needed.
   * Each block usually contains 512 bytes.
   * Data must be brought to main memory (RAM)
-
 
 ![Disc](images/20210220_233025.png)
 

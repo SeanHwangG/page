@@ -86,7 +86,7 @@ got reset --hard origin/main
 !.gitignore
 ```
 
-> .gitconfig
+* .gitconfig
 
 ```sh
 [user]
@@ -96,16 +96,23 @@ got reset --hard origin/main
     helper = cache --timeout=360000        # timeout for password
 ```
 
-> .gitcredentials
+* .gitcredentials
 
 ```sh
 Username: sean
 Password: ss
 ```
 
-> .gitmodules
+* .gitmodules
+  * config file that stores mapping between project’s URL and local subdir
 
-* config file that stores mapping between project’s URL and local subdir
+* .gitmessage
+  * default commit message
+
+```sh
+Fix Issue #{number}: {description}
+R+: {reviewer}
+```
 
 ## Command
 
@@ -139,12 +146,14 @@ git update-ref -d refs/remotes/origin/development
 > config
 
 ```sh
---global --edit                # Configure user name, email
---list                        # Print current configuration
---bool core.bare true        # Create bare repository
---global diff.submodule log    # show changes in submodule 
-credential.helper store        # save id / pw in .gitcredentials
-core.editor "nano"            # change default editor to vim
+--global --edit             # Configure user name, email
+--list                      # Print current configuration
+--bool core.bare true       # Create bare repository
+--global diff.submodule log # show changes in submodule 
+credential.helper store     # save id / pw in .gitcredentials
+core.editor "nano"          # change default editor to vim
+
+git config --global commit.template ~/.gitmessage
 ```
 
 > submodule
@@ -260,7 +269,8 @@ origin           # server commit history
 --graph          # In graph form
 --grep = "init"  # search for message
 -p <file>        # show changes over time for a specific file 
---since/until=2020-01-01        # from time
+--since/until=2020-01-01      # from time
+-1 --stat -- <path/to/file>   # Generate a diffstat (show file | 2 ++)
 
 --graph --decorate --pretty=oneline --abbrev-commit --all    # git lola
 ```

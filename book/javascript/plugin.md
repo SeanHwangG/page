@@ -62,12 +62,47 @@ export default {
 };
 ```
 
-> Types
+* Types
 
 ```js
 const schema = Joi.object().keys({
   type: Joi.string().valid('ios', 'android'),
 });
+```
+
+> Events
+
+```js
+const EventEmitter = require('events');
+const eventEmitter = new EventEmitter();
+
+eventEmitter.on('tutorial', (num1, num2)=>{
+  console.log(num1 + num2);
+});
+
+eventEmitter.emit('tutorial', 1,2)
+
+class Person extends EventEmitter{
+  constructor(name){
+    super();
+    this._name =  name;
+  }
+  get name(){
+    return this._name;
+  }
+}
+
+let pedro = new Person('Pedro');
+let christina = new Person('Christina');
+christina.on('name',()=>{
+  console.log('my name is' + christina.name);
+});
+pedro.on('name', ()=>{
+  console.log('my name is' + pedro.name);
+});
+
+pedro.emit('name');
+christina.emit('name');
 ```
 
 ## Deployment
@@ -454,6 +489,26 @@ A-->B: Works!
 * SQL Driver -> SQL Query -> DB
 * Answer
 * SQL Driver -> Sequelize -> Javascript Object
+
+> Options
+
+```sh
+RESTRICT
+CASCADE      # defaults for ON UPDATE
+NO ACTION
+SET DEFAULT
+SET NULL     # default for One-To-One
+```
+
+* The defaults for the associations is SET NULL for ON DELETE and CASCADE for.
+
+> Sync Options
+
+```js
+User.sync()   #  creates the table if it doesn't exist (and does nothing if it already exists)
+User.sync({ force: true })  # creates the table, dropping it first if it already existed
+User.sync({ alter: true })  # checks columns, data type, then performs necessary changes
+```
 
 > Terms
 

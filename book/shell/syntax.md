@@ -61,7 +61,21 @@ locale-gen en_US.UTF-8  # Create UTF-8
 > Command line
 
 ```sh
-grep -r -- "-n"i        # using '--' declare '-n' is not an option
+grep -r -- "-n"        # using '--' declare '-n' is not an option
+
+
+# Optional Argument
+ARG1=${1:-foo}
+ARG2=${2:-bar}
+
+echo "$ARG1"
+echo "$ARG2"
+
+# Check envrionment is set
+if [[ -z $REPO_PATH ]]; then
+    echo "REPO_PATH not set"
+    exit 1
+fi
 ```
 
 > shift
@@ -74,7 +88,6 @@ echo "The First Argument is: $1"  # a
 
 echo "The First Argument After Shift 2 is: $1"  # c
 shift
-
 echo "The First Argument After Shift is: $1"    # d
 ```
 
@@ -138,14 +151,17 @@ echo {10..1..2}          # similar to range
 $(( ))           # $(( 1 + 2 )) ...
 ```
 
-> brace expansion
+> Expansion
+
+* brace expansion
 
 ```sh
 echo a{d,c,b}e              # ade ace abe
 mkdir /usr/local/{old,new}  # create multiple
 ```
 
-> Tilde Expansion
+* Tilde
+  * ~ is expanded ONLY if it is the first character of a word AND it is unquoted
 
 ```sh
 ~-              # old pwd
@@ -153,7 +169,7 @@ mkdir /usr/local/{old,new}  # create multiple
 -fred           # home directory of the user fred
 ```
 
-> Parameter Expansion
+* Parameter
 
 ```sh
 ${param:-word}      # If param is unset, substitute expansion of word, else param
@@ -195,7 +211,7 @@ $( )          # $( echo "1.3 + 2.5" | bc )
 echo `time`          # escape command
 ```
 
-## Conditional
+### Conditional
 
 * doesn’t have data types → used as string in string operation / int in int operation
 
@@ -291,7 +307,9 @@ do
 done
 ```
 
-## while
+### Iterable
+
+> while
 
 ```sh
 echo "pid is $$"

@@ -48,7 +48,7 @@ brew install git && gh  # version control
 brew install binutils   # readelf equivalent 'export PATH="/usr/local/opt/binutils/bin:$PATH"' >> ~/.zshrc
 ```
 
-* bashrc
+* Example
 
 ```sh
 # Shell
@@ -56,6 +56,11 @@ case $- in
   *i*) ;;
     *) return;;
 esac
+
+HISTCONTROL=ignoreboth
+shopt -s histappend # append to history file, don't overwrite it
+HISTSIZE=1000       # set history size
+HISTFILESIZE=1000   # set history file size
 
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -108,7 +113,9 @@ alias xclip="pbcopy"
 alias xargs="gxargs"
 
 # Git Related
-alias gacp="git add -A && git commit --amend --no-edit && git push --force"
+alias gaca="git add -A && git commit --amend --no-edit"
+alias gacp="git add -A && git commit -m "blank" && git pull --rebase && git push"
+alias gacap="git add -A && git commit --amend --no-edit && git push --force"
 alias gaA="git add -A"
 alias gau="git add -u"
 alias gauca="git add -u && git commit --amend"
