@@ -1636,7 +1636,7 @@ system_cpu=`uname -m`
 
 ```sh
 alias untar='tar -zxvf '
-\aliased_command       # temporaily disable aliased command
+\aliased_command          # temporaily disable aliased command using backslash
 ```
 
 > unalias

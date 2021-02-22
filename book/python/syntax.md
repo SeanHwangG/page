@@ -1127,9 +1127,18 @@ reduce(lambda x, y: x ^ y, nums)
 <Instance>.__dict__
 ```
 
-* Variable
+> Variable
+
 * Can be accessed through class name and any instance of the class
 * If access using `self.<ClassVariable>`, the value is changed only for the instance
+
+* Optional to method
+
+```py
+def get(self, timeout=None):
+  if timeout is None:
+    self.timeout = timeout
+```
 
 * Method
 * dunder method used with __<dunder_name>__

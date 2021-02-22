@@ -1660,6 +1660,8 @@ python -m json.tool file.json  # validate file.json
 dumps()    # encode JSON Data into native Python String
 dump()     # encode and store JSON Data into a file
 load(s)    # read from json
+
+json.dumps(parsed, indent=4, sort_keys=True)    # pretty print json
 ```
 
 ```py
