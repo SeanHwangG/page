@@ -1277,6 +1277,44 @@ save_objects()
 
 ### Automation
 
+> python-pptx
+
+```py
+class PPT:
+
+    def __init__(self, layout=[12192000, 6858000]):     # 13.33, 7.5 inches
+        self.layout = layout
+        if os.path.exists('template.pptx'):
+            self.prs = Presentation('template.pptx')    # template file with "browsed by individual window" turned on
+            rId = self.prs.slides._sldIdLst[0].rId
+            self.prs.part.drop_rel(rId)
+            del self.prs.slides._sldIdLst[0]
+        else:
+            self.prs = Presentation()                   # starting from default settings
+        self.prs.slide_width, self.prs.slide_height = layout
+
+    def create_verse(self, sermon):     # Bible.pptx format (verses and hyperlinks)
+        self.add_slide()                # create title slide
+        if '"' in sermon.title:
+            self.add_textbox(sermon.title, [1.67, 0.08, 10, 1.2], 26, spacing=1.1)
+        else:
+            self.add_textbox('"' + sermon.title + '"', [1.67, 0.08, 10, 1.2], 26, spacing=1.1)
+        self.add_paragraph('(' + sermon.passages_raw[0] + '/ ' + sermon.preacher + ')', 24)
+
+        p = self.add_verse_slides(sermon.passages_ext, 'p')     # add verses in main passage
+        q = self.add_verse_slides(sermon.quotes_ext, 'q')       # add verses to quote
+
+        for slide in self.prs.slides:
+            self.slide = slide
+            self.add_link_table(p + q)  # add hyperlink table
+
+    def create_large(self, sermon):     # Large.pptx format
+        self.add_large_slides(sermon, sermon.passages_ext, 7)
+
+    def add_slide(self):                # create new blank slide
+        self.slide = self.prs.slides.add_slide(self.prs.slide_layouts[6])
+```
+
 > pyautogui
 
 ```py
