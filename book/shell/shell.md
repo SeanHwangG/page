@@ -17,16 +17,16 @@
 
 ```sh
 ctrl + a / e       # Move to the beginning / end of the line
-ctrl + r            # Search history
-ctrl + u | k        # Delete to the beginning / end of the line
-ctrl + w            # Delete a word
-ctrl + l            # Clear screen
-option + ← / →      # Navigate left / right
+ctrl + r           # Search history
+ctrl + u | k       # Delete to the beginning / end of the line
+ctrl + w           # Delete a word
+ctrl + l           # Clear screen
+option + ← / →     # Navigate left / right
 
-command + t         # Create new tab
-command + n          # Create new window
-ctrl + (shift) + tab    # Navigate tabs
-command + (shift) + d    # Split terminal
+command + t        # Create new tab
+command + n        # Create new window
+ctrl + (shift) + tab   # Navigate tabs
+command + (shift) + d  # Split terminal
 defaults write com.apple.finder AppleShowAllFiles TRUE    # Show hidden folder on Mac
 ```
 

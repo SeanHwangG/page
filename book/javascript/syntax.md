@@ -504,6 +504,51 @@ function toggle(id){
 <div class="hideable" id="div3" style="display:none">Div 3</div>
 ```
 
+* add
+
+{% tabs %}
+{% tab title="index.html" %}
+
+```html
+<body>
+  <script src="index.js"> </script>
+</body>
+```
+
+{% endtab %}
+{% tab title="index.js" %}
+
+```js
+const foods = ["pizza"];
+
+function getFoods() {
+  setTimeout(() => {
+    let output = "";
+    foods.forEach(food => {
+      output += `<li>${food}</li>`;
+    });
+    document.body.innerHTML = output;
+  }, 1000);
+}
+
+function addFood(food) {
+  setTimeout(() => {
+    foods.push(food);
+    resolve();
+  }, 1000);
+}
+
+async function init() {
+  await addFood("hotdog");
+  getFoods();
+}
+
+init();
+```
+
+{% endtab %}
+{% endtabs %}
+
 > window
 
 ```js

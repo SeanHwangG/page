@@ -24,7 +24,7 @@ sinks               # alsa, xvideo, tcp / udp
 * ubuntu
 
 ```text
-sudo apt-get install gtk+-3.0 
+sudo apt-get install gtk+-3.0
 sudo apt-get install libgstreamer-plugins-base1.0
 ```
 
@@ -61,7 +61,7 @@ gcc file_name.c -o file_name `pkg-config --cflags --libs gstreamer-video-1.0 gtk
 ![alt](.gitbook/assets/20210207_232135.png)
 
 ```text
-buffer        # objects for passing streaming data between elements 
+buffer        # objects for passing streaming data between elements
 events        # objects sent between elements which can travel upstream / downstream
 messages      # objects posted by elements on pipeline’s message bus
 query         # allow application to request information
@@ -144,7 +144,7 @@ image/png:
 
 > vaapi264dec
 
-* decodes from H264 bitstreams to surfaces suitable for vaapisink or vaapipostproc elements 
+* decodes from H264 bitstreams to surfaces suitable for vaapisink or vaapipostproc elements
 * use installed VA-API back-end
 
 > videoconvert
@@ -192,10 +192,10 @@ gst-launch-1.0 -e multifilesrc location=/home/root/mot17/train/MOT17-02-SDP/yuv_
 gst-launch-1.0 -e multifilesrc location="/home/root/mot17/train/MOT17-02-SDP/yuv_raws/frame%d.yuv" caps="image/yuv,framerate=(fraction)12/1" index=1  ! videoconvert ! fakesink sync=false
 ```
 
-> ERROR: from element /GstPipeline:pipeline0/GstMultiFileSrc:multifilesrc0: Internal data stream error.  
-> Additional debug info:  
-> ../gstreamer-1.16.0/libs/gst/base/gstbasesrc.c(3072): gst_base_src_loop (): /GstPipeline:pipeline0/GstMultiFileSrc:multifilesrc0:  
-> streaming stopped, reason not-negotiated (-4)  
+> ERROR: from element /GstPipeline:pipeline0/GstMultiFileSrc:multifilesrc0: Internal data stream error.
+> Additional debug info:
+> ../gstreamer-1.16.0/libs/gst/base/gstbasesrc.c(3072): gst_base_src_loop (): /GstPipeline:pipeline0/GstMultiFileSrc:multifilesrc0:
+> streaming stopped, reason not-negotiated (-4)
 > ERROR: pipeline doesn't want to preroll.
 
 * Wrong multifilesrc location
@@ -220,13 +220,13 @@ GObject
 * object responsible for delivering GstMessage packets in a first-in first-out way from streaming threads to the application
 * marshall the messages between different threads
 
-> GstMessage _gst_bus_timed_pop_filtered(GstBus_ bus,  
-> GstClockTime timeout,  
+> GstMessage _gst_bus_timed_pop_filtered(GstBus_ bus,
+> GstClockTime timeout,
 > GstMessageType types)
 
 * Get a message from a bus whose type matches message type mask types, waiting up to the specified timeout
 * discarding any messages that do not match the mask provided
-* with timeout 0, behaves like gst_bus_pop_filtered. 
+* with timeout 0, behaves like gst_bus_pop_filtered.
 * with timeout GST_CLOCK_TIME_NONE, block until a matching message was posted on the bus
 
 ### GstMap
@@ -268,23 +268,23 @@ GObject
 * contains GList of GstPad structures for all their input (sink) and output (source) pads
 
 * GST_STATE_NULL (default)
-  * No resources are allocated in this state, so, transitioning to it will free all resources. 
+  * No resources are allocated in this state, so, transitioning to it will free all resources.
   * The element must be in this state when its refcount reaches 0 and it is freed.
 
 * GST_STATE_READY
   * an element has allocated all of its global resources, that is, resources that can be kept within streams
-  * You can think about opening devices, allocating buffers and so on 
+  * You can think about opening devices, allocating buffers and so on
   * However, the stream is not opened in this state, so the stream positions is automatically zero If a stream was previously opened, it should be closed in this state, and position, properties and such should be reset.
 
 * GST_STATE_PAUSED
   * an element has opened the stream, but is not actively processing it.
-  * An element is allowed to modify a stream's position, read and process data and such to prepare for playback as soon as state is changed to PLAYING 
+  * An element is allowed to modify a stream's position, read and process data and such to prepare for playback as soon as state is changed to PLAYING
   * it is not allowed to play the data which would make the clock run
   * PAUSED is the same as PLAYING but without a running clock.
-  * Elements going into the PAUSED state should prepare themselves for moving over to the PLAYING state as soon as possible. 
-  * Video or audio outputs would, for example, wait for data to arrive and queue it so they can play it right after the state change. 
-  * Also, video sinks can already play the first frame since this does not affect the clock yet). 
-  * Autopluggers could use this same state transition to already plug together a pipeline. 
+  * Elements going into the PAUSED state should prepare themselves for moving over to the PLAYING state as soon as possible.
+  * Video or audio outputs would, for example, wait for data to arrive and queue it so they can play it right after the state change.
+  * Also, video sinks can already play the first frame since this does not affect the clock yet).
+  * Autopluggers could use this same state transition to already plug together a pipeline.
   * Most other elements, such as codecs or filters, do not need to explicitly do anything in this state, however.
 
 * GST_STATE_PLAYING
@@ -355,10 +355,10 @@ GObject
 * GST_PAD_PROBE_TYPE_BUFFER
   * A buffer is pushed or pulled
 
-> gulong gst_pad_add_probe(GstPad * pad,  
-> GstPadProbeType mask,  
-> GstPadProbeCallback callback,  
-> gpointer user_data,  
+> gulong gst_pad_add_probe(GstPad * pad,
+> GstPadProbeType mask,
+> GstPadProbeCallback callback,
+> gpointer user_data,
 > GDestroyNotify destroy_data)
 
 * Be notified of different states of pads. callback is called for every state that matches mask

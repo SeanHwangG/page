@@ -2,7 +2,7 @@
 
 > Error
 
-* Connection to _ closed by remote host  
+* Connection to _ closed by remote host
   * Administrator Disconnect
 
 * The System is going down for reboot NOW!
@@ -11,21 +11,21 @@
 * Broken pipe
   * IP changed or server can't guarantee security
 
-* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  
-@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @  
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  
-IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!  
-Someone could be eavesdropping on you right now (man-in-the-middle attack)!  
-It is also possible that a host key has just been changed.  
-The fingerprint for the ECDSA key sent by the remote host is  
-SHA256:kxkE5MRHdMciAYqcryrEn6fMRSXFuSuqixJZDU.  
-Please contact your system administrator.  
-Add correct host key in /home/sean/.ssh/known_hosts to get rid of this message.  
-Offending ECDSA key in /home/sean/.ssh/known_hosts:23  
+* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+SHA256:kxkE5MRHdMciAYqcryrEn6fMRSXFuSuqixJZDU.
+Please contact your system administrator.
+Add correct host key in /home/sean/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /home/sean/.ssh/known_hosts:23
   remove with:  sh
-  ssh-keygen -f "/home/sean/.ssh/known_hosts" -R "11.11.1.12"  
-Password authentication is disabled to avoid man-in-the-middle attacks.  
-Keyboard-interactive authentication is disabled to avoid man-in-the-middle attacks.  
+  ssh-keygen -f "/home/sean/.ssh/known_hosts" -R "11.11.1.12"
+Password authentication is disabled to avoid man-in-the-middle attacks.
+Keyboard-interactive authentication is disabled to avoid man-in-the-middle attacks.
   * scp -oStrictHostKeyChecking=no
   * ssh-keygen -f "/home/sean/.ssh/known_hosts" -R "11.11.1.12"
 
@@ -50,7 +50,7 @@ Keyboard-interactive authentication is disabled to avoid man-in-the-middle attac
 ```sh
 /bin            # Executables needed in single user mode and to bring system up or repair
 /sbin           # holds commands needed to boot the system for sudo user
-/etc            # System related configuration file (local static file to control program operation) 
+/etc            # System related configuration file (local static file to control program operation)
 /etc/paths      # look for commands
 /etc/hosts      # Static table lookup for hostnames
 /etc/services   # Internet network service list
@@ -80,6 +80,8 @@ usr             # . vs usr
 ```
 
 > lsattr
+
+* lists the file attributes on a second extended file system
 
 > chattr
 
@@ -126,7 +128,7 @@ i               # immutable
 -i                # Lists IP sockets
 -l                # file mod, # links, owner, group, bytes, modified path
 -R                # recursively
--S / t            # by size, date 
+-S / t            # by size, date
 ls -1 "$PWD/"*    # get all absolute path
 ```
 
@@ -214,14 +216,14 @@ $(dirname a/b/file.cpp) # cd into file's located folder
 
 ```sh
 -r [directory]  # copy all of the files including files inside of subfolders
--f              # if destination file cannot be opened, remove and try 
+-f              # if destination file cannot be opened, remove and try
 -T              # if target already existed as a directory, then cp will fail
 ```
 
 > mv
 
 ```sh
--t DESTINATION file1 file2 file3    # multiple files 
+-t DESTINATION file1 file2 file3    # multiple files
 `ls -1 | grep -v no_move.jpg folder      # move everything except one
 ~/Linux/Old/!(Tux.png) ~/Linux/New/
 #```
@@ -308,7 +310,7 @@ sudo umount temp_system
 
 ```sh
 -T                      # print new line as ^IO
-file | grep -vi "the"   # Print files with line the 
+file | grep -vi "the"   # Print files with line the
 /etc/*-release          # Prints linux distribution
 file1.txt file2.txt > file3.txt  # Merge two files into one
 ```
@@ -324,12 +326,12 @@ file1.txt file2.txt > file3.txt  # Merge two files into one
 ```sh
 -f         # wait for new strings, show dynamically
 ```
-  
+
 > wc
 
 ```sh
 -l                              # Counter number of lines
-find . -name '*' | xargs wc -l  # Count all number of lines 
+find . -name '*' | xargs wc -l  # Count all number of lines
 ```
 
 > more
@@ -411,7 +413,7 @@ eval $(grep -v -e '^#' .env | xargs -I {} echo export \'{}\')
 * read from standard input and write to standard output and files
 
 ```sh
--a            # Append output to files rather than overwriting 
+-a            # Append output to files rather than overwriting
 ```
 
 > grep
@@ -450,7 +452,7 @@ key * \c
 
 s/              # Replace
 /p              # print
--n              # suppress line echoed to stdout after commands 
+-n              # suppress line echoed to stdout after commands
 -i              # In place
 "s/hello/hi/" file.txt   # Replace hello to hi in file.txt
 -n '/^#include/p;q' file # (p)rints all cpp files, then (q)uits
@@ -509,7 +511,7 @@ tr "a-z" "A-Z"  # prints in capital letters
 > readelf
 
 * when build type or cmake is changed, it becomes new binary
-  
+
 ```sh
 -s libutil.so.1.5.4  | grep FILE   # Which file contained in binary
 ```
@@ -549,7 +551,7 @@ display name list (symbol table)
 > objdump
 
 ```sh
-prints contents of object files and final linked images 
+prints contents of object files and final linked images
 -a / -h a.o                # information in archive's headers / headers
 -s (-j section / -b) a.o   # full contents  (in sections / in binary)
 -d (-j section) a.o        # show file disassembled codes (in section)
@@ -693,8 +695,8 @@ zip -r my_arch.zip my_folder
 > unzip
 
 ```sh
--o                     # overwrite files WITHOUT prompting 
-file.zip -d <folder>   # Download in 
+-o                     # overwrite files WITHOUT prompting
+file.zip -d <folder>   # Download in
 ```
 
 ## Util
@@ -716,7 +718,7 @@ file.zip -d <folder>   # Download in
 > whatis
 
 ```sh
-<command>      # search the whatis database for complete words  
+<command>      # search the whatis database for complete words
 ```
 
 ### Copy
@@ -761,7 +763,7 @@ sleep       # default is seconds, m, h, d
 
 ```sh
 -v              #  change verbosity, more statistics with Linux kernel v2.6
-real / elapsed  # time between when the program started and finished execution. 
+real / elapsed  # time between when the program started and finished execution.
 user            # time CPU spent executing application code on behalf of program
 system          # time CPU spent executing system or kernel code on behalf of application
 Swaps           # num times the process was swapped to disk
@@ -769,7 +771,7 @@ Exit status     # exit status of the application.
 
 Page size (bytes)             # page size of the system
 Major (I/O) page faults       # num major page faults that required to be read from disk
-In / Voluntary context switch # num times the process yielded / taken from CPU 
+In / Voluntary context switch # num times the process yielded / taken from CPU
 ```
 
 ### Text
@@ -796,7 +798,7 @@ NR        # The total number of input records seen so far
 
 '/PAT1/,/PAT2/' file                             # Lines between inclusive
 '/PAT1/{flag=1; next} /PAT2/{flag=0} flag' file  # lines between exclude PAT1, PAT2
--F 'pattern' 'NF{print NF-1}' b4                 # Count number of pattern in each line 
+-F 'pattern' 'NF{print NF-1}' b4                 # Count number of pattern in each line
 '/ptn/ {c++} END {print c}' input.txt            # Count pattern in the string
 '{ t = $1; $1 = $2; $2 = t; print; }' input.txt  # Swap first two column
 ```
@@ -894,10 +896,26 @@ COMMAND     # name of the process (bb_monitor.pl)
 
 ```sh
 # human readable one liner
-vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'  
+vm_stat | perl -ne '/page size of (\d+)/ and $size=$1; /Pages\s+([^:]+)[^\d]+(\d+)/ and printf("%-16s % 16.2f Mi\n", "$1:", $2 * $size / 1048576);'
 ```
 
 ## User
+
+> Ownership
+
+* root
+  * aka superuser, administrator, admin or supervisor
+  * can do everything
+  * Unix-like systems, for example, the user with a user identifier (UID) of zero
+
+* Owner
+  * the assigned owner of the file or directory
+
+* Group
+  * members of the group that owns the file or directory
+
+* Other
+  * all other users that owns the file or the directory
 
 ```sh
 cut -d: -f1 /etc/passwd      # List all existing User
@@ -1006,28 +1024,6 @@ dscl . read /Groups/admin GroupMembership
 sudo scutil --set HostName mac
 ```
 
-## Ownership
-
-> root
-
-* aka superuser, administrator, admin or supervisor
-* can do everything
-* Unix-like systems, for example, the user with a user identifier (UID) of zero
-
-> Owner
-
-* the assigned owner of the file or directory
-
-> Group
-
-* members of the group that owns the file or directory
-
-> Other
-
-* all other users that owns the file or the directory
-
-### Operation
-
 > chmod
 
 ```sh
@@ -1096,7 +1092,7 @@ pid            # kill pid process
 
 ```sh
 command signal        # execute command when signal
-'myhandler' INT; myhandler() { ... ;}    # 
+'myhandler' INT; myhandler() { ... ;}    #
 ```
 
 > wait
@@ -1106,8 +1102,8 @@ command signal        # execute command when signal
 ```sh
 # grep cpu at certain second
 
-for i in 1 2 4 8 16 32; do 
-~/measure -t $i 
+for i in 1 2 4 8 16 32; do
+~/measure -t $i
 & sleep 10; top -n 1 -d 1 -i -b;  wait; done
 ```
 
@@ -1144,37 +1140,39 @@ for i in 1 2 4 8 16 32; do
 
 ### Transport
 
-> rsync src dst
+> rsync
 
 * copy every src to dest
 * Uses delta transfer algorithm and optimization to make copies faster
 * Uses 873 when using server
 
 ```sh
+src dst
 -a                # skip newer files on receiver
 -u                # preserve everything
 -C                # auto-ignore files in the same way CVS does
 -n / --dry-run    # don’t actually run
 -e 'ssh -p 10022' # specify remote shell to use
---exclude {'file1.txt','dir1/*','dir2'}   # exclude files / folders
 --exclude-from    # exclude all
 -L                # transform symlink into referent file/dir
 -r                # sync recursively
 -v                # increase verbosity
 -h / -p / -g      # preserve hard links / permissions / group
---update          # skip files when the mtimes are identical 
-
+--update          # skip files when the mtimes are identical
 -rav sean/ .      # copy all config files
+
+--exclude {'file1.txt','dir1/*','dir2'}   # exclude files / folders
+
 -avCL -e "ssh tunnel ssh" cgw01.nlp:/home/data/*.db .   # get files through tunnel
 ```
 
 > scp src dst
 
 ```sh
-local_file user@remote:/dir  # copy local to remote 
+local_file user@remote:/dir  # copy local to remote
 user@remote:/dir .           # copy remote to local
 -o                           # pass option to ssh in format used in ssh_config
-StrictHostKeyChecking=no     # 
+StrictHostKeyChecking=no     #
 -3r remote1 remote2          # remote to remote
 ```
 
@@ -1201,7 +1199,7 @@ kill -9 $(lsof -ti :80)  # Kill what is running on port
 
 ```sh
 -l            # only listening sockets
--n            # Show numerical addresses instead 
+-n            # Show numerical addresses instead
 -p            # PID / name of program to which each socket belongs
 -t            # tcp
 -u            # udp
@@ -1285,7 +1283,7 @@ ProxyCommand ssh -W server2:22 server1
 
 > ssh-copy-id
 
-* add local ~/.ssh/id_rsa.pub in remote .ssh/authorized_keys  
+* add local ~/.ssh/id_rsa.pub in remote .ssh/authorized_keys
 * ssh-copy-id user@hostname.example.com
 
 ```sh
@@ -1339,28 +1337,28 @@ users --> nginx --|--- host/blog ---> node.js on localhost:8181
                   +--- host/mail ---> node.js on localhost:8282
 
 server {
-    listen       80;
-    location / {
-        proxy_pass http://127.0.0.1:8080;
-    }
-    ...
+  listen       80;
+  location / {
+    proxy_pass http://127.0.0.1:8080;
+  }
+  ...
 }
 
 server {
-    listen       ...;
-    ...
-    location / {
-        proxy_pass http://127.0.0.1:8080;   # forward requests to `/` to server listening on `http://127.0.0.1:8080`.
-    }
-    
-    location /blog {
-        proxy_pass http://127.0.0.1:8181;
-    }
+  listen       ...;
+  ...
+  location / {
+    proxy_pass http://127.0.0.1:8080;   # forward requests to `/` to server listening on `http://127.0.0.1:8080`.
+  }
 
-    location /mail {
-        proxy_pass http://127.0.0.1:8282;
-    }
-    ...
+  location /blog {
+    proxy_pass http://127.0.0.1:8181;
+  }
+
+  location /mail {
+    proxy_pass http://127.0.0.1:8282;
+  }
+  ...
 }
 ```
 
@@ -1419,7 +1417,7 @@ $0      # Which shell am I using
 ```sh
 update                      # update apt
 
-/var/lib/apt/lists          # Storage area for state information for each package resource   
+/var/lib/apt/lists          # Storage area for state information for each package resource
 /var/lib/apt/lists/partial/ # Storage area for state information in transit
 list --installed            # List installed packages
 install -y git
@@ -1461,15 +1459,15 @@ brew cask install adoptopenjdk8  # 9, 10, 11
 -m --max-time             # maximum time in seconds
 -o <file> / -O            # Write output to <file> / local file named like the remote file we get
 
- -X POST                        # request type
+-X POST                         # request type
 -H 'Content-Type: app/json'     # header
 -d '{"id": "tom", "age": "7"}'  # data
 
 
 curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
 error() {
-    print_error $@
-    exit 1
+  print_error $@
+  exit 1
 }
 curl -m 2 www.google.com &> /dev/null || error "Failed to access external"
 ```
@@ -1495,7 +1493,7 @@ curl -m 2 www.google.com &> /dev/null || error "Failed to access external"
 
 ```sh
 -P                 # /path/to/folder
---ask-password     # secure safe 
+--ask-password     # secure safe
 --spider           # behave as a Web spider, just check that website are there.
 --http-user / http-passwd    # Specify username user and password on an HTTP (not safe)
 ```
@@ -1505,7 +1503,7 @@ curl -m 2 www.google.com &> /dev/null || error "Failed to access external"
 * maintain symbolic links determining default commands
 
 ```sh
---install /usr/bin/python3 python3 /usr/bin/python3.8 2    # set python3.8 with priority 2 
+--install /usr/bin/python3 python3 /usr/bin/python3.8 2    # set python3.8 with priority 2
 --config            # name
 ```
 
@@ -1515,7 +1513,7 @@ curl -m 2 www.google.com &> /dev/null || error "Failed to access external"
 
 ```sh
 /etc/yum.conf           # configuration file and related utilities
-/etc/yum.repos.d/       # options 
+/etc/yum.repos.d/       # options
 
 install package_name    # install package_name
 remove package_name     # remove a package
@@ -1545,7 +1543,7 @@ yum install -y ${PKGS[@]}
 
 * change shell options, set positional parameters, display names and values of shell variables
 * use - to set and + to unset (ex. set -e)
-* Set | unset values of shell options and positional parameters  
+* Set | unset values of shell options and positional parameters
 
 ```sh
 -a      # automatically export all variables
@@ -1575,8 +1573,8 @@ yum install -y ${PKGS[@]}
 ```sh
 ~/.<shell_name>rc       # to make it run when start an interactive shell
 ~/.<shell_name>profile  # to make when log in
-/etc/environment        # sets variable system wide for every user on boot 
-/etc/bash.bashrc        # executed if the bash shell is opened 
+/etc/environment        # sets variable system wide for every user on boot
+/etc/bash.bashrc        # executed if the bash shell is opened
 export name=sean        # Set name variable to sean
 export LC_ALL=C         # Change shell language to english
 ```
@@ -1614,13 +1612,13 @@ Print operating system name
 
 can_escalate_privileges()  # by default (e.g. on Linux) user can do so
 {
-    local result=0
-    if [ "$(uname)" = "FreeBSD" ]; then
-        if ! groups $USER | grep wheel 2>&1 1>/dev/null; then
-            result=1
-        fi
+  local result=0
+  if [ "$(uname)" = "FreeBSD" ]; then
+    if ! groups $USER | grep wheel 2>&1 1>/dev/null; then
+      result=1
     fi
-    return $result
+  fi
+  return $result
 }
 
 system_cpu=`uname -m`

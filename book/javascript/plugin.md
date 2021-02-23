@@ -198,25 +198,6 @@ get() {
 },
 ```
 
-> Postman
-
-* current datetime
-
-```js
-"{{$timestamp}}"
-```
-
-* Preivous datetime
-
-```js
-var moment = require('moment')
-pm.environment.set("today", moment().toISOString())
-pm.environment.set("yesterday", moment().subtract(1, 'day').toISOString())
-
-{{today}}
-{{yesterday}}
-```
-
 > winston
 
 * show full object

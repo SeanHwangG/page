@@ -61,7 +61,7 @@
   * Execution runtime, database, web server, development tools
   * Google App engine, Microsoft Azure
 * SaaS
-  * cloud service provides hardware, software environment \(operating system, application software\) 
+  * cloud service provides hardware, software environment \(operating system, application software\)
   * Dropbox
 
 > Roles
@@ -109,6 +109,11 @@
   * correlated query: A type of query that contains a subquery that requires information from a query one level up
 * Repeated fields
   * Optimize repeating duplicate infromation to speed up query
+
+> Errors
+
+* Data truncated for column 'authProvider' at row 1
+  * Your problem is that at the moment your incoming_Cid column defined as CHAR(1) when it should be CHAR(34).
 
 > Null
 
@@ -241,18 +246,25 @@ INSERT INTO borrower (cname, lno, due) VALUES
   ('jason', 'c', '3-3-3');
 ```
 
+* Delete all from table
+
+```sql
+TRUNCATE TABLE table_name;
+DELETE * FROM table_name;
+```
+
 > View
 
 ```sql
 CREATE VIEW Berto-Movies AS SELECT title FROM Movie WHERE director = 'Berto';
 
 -- Return the teams defeated only by the leading teams
-CREATE VIEW Leaders (name) AS 
+CREATE VIEW Leaders (name) AS
   SELECT s.name FROM Standings s
   WHERE NOT EXISTS
   (SELECT * FROM Standings s1 WHERE s.points < s1.points)
 
-SELECT name FROM Teams 
+SELECT name FROM Teams
   WHERE name NOT IN
     (SELECT t.name FROM Teams t, Matches m
     WHERE t.name = m.aTeam AND m.aScore < m.hScore AND m.hTeam NOT IN Leaders
@@ -313,7 +325,7 @@ ALTER table PERSON ADD primary key (persionId,Pname,PMID) -- Add primary key
 
 ```sql
 -- Find theaters showing movies by Bertolucci
-SELECT s.theater FROM schedule s, movie m  
+SELECT s.theater FROM schedule s, movie m
   WHERE s.title = m.title AND m.director = “Bertolucci”
 
 -- Find 11- 20th row
@@ -322,7 +334,7 @@ SELECT name FROM mydb ORDER BY score DESC LIMIT 10,10;
 -- SELECT o.OrderId, maximum(o.NegotiatedPrice, o.SuggestedPrice) FROM Order o
 SELECT
   o.OrderId,
-  CASE WHEN o.NegotiatedPrice > o.SuggestedPrice THEN o.NegotiatedPrice 
+  CASE WHEN o.NegotiatedPrice > o.SuggestedPrice THEN o.NegotiatedPrice
      ELSE o.SuggestedPrice
   END
 FROM Order o
@@ -345,7 +357,7 @@ LEAST(a, b, c, d, e) = GREATEST(a, b, c, d, e)
 
 ```sql
 -- sales data from 2013-01-03 to 2013-01-09
-SELECT * FROM Product_sales 
+SELECT * FROM Product_sales
   WHERE NOT (From_date > @RangeTill OR To_date < @RangeFrom)
 ```
 
@@ -360,7 +372,7 @@ SELECT * FROM tbl WHERE existing_start BETWEEN $newSTart AND $newEnd OR
 > Group
 
 ```sql
--- daily visit 
+-- daily visit
 SELECT date, source.medium, COUNT(DISTINCT(visiterId)) AS visits FROM table, GROUP BY 1, 2 ORDER BY 1 DESC, 2;
 ```
 
@@ -463,8 +475,8 @@ Natural [ (FULL | LEFT | RIGHT) OUTER | INNER ] JOIN table_name ON _.a = _.b
 * Equivalent to “on c1 and c2” and “using (c1, c2)”
 
 ```sql
--- Find the director of all movies showing in seoul 
-SELECT director FROM movie 
+-- Find the director of all movies showing in seoul
+SELECT director FROM movie
   NATURAL JOIN schedule WHERE theater = 'seoul'
 ```
 
@@ -495,7 +507,6 @@ SELECT c.name as name FROM bank.customer c
 | 10308   | 2          | 7          | 1996-09-18 | 3         |
 | 10309   | 37         | 3          | 1996-09-19 | 1         |
 | 10310   | 77         | 8          | 1996-09-20 | 2         |
-
 
 | EmployeeID | LastName  | FirstName | BirthDate | Photo      |
 | ---------- | --------- | --------- | --------- | ---------- |
@@ -535,17 +546,17 @@ SELECT Orders.OrderID, Employees.LastName, Employees.FirstName FROM Orders
 * Queries involving no negation can be unnested
 
 ```sql
--- Find directors of current movies 
+-- Find directors of current movies
 
 SELECT director FROM movie WHERE title IN (SELECT title FROM schedule)
 -- ==
 SELECT director FROM movie, schedule WHERE movie.title = schedule.title
 
 -- Find directors of movies showing in seoul
-SELECT m.director FROM movie m, (SELECT title FROM schedule WHERE theater = 'seoul') t 
+SELECT m.director FROM movie m, (SELECT title FROM schedule WHERE theater = 'seoul') t
   WHERE m.title = t.title
 
--- Find actors playing in some movie by Berto 
+-- Find actors playing in some movie by Berto
 SELECT actor FROM movie WHERE title IN (SELECT title FROM movie WHERE director = 'Berto')
 -- ==
 SELECT m1.actor FROM movie m1, movie m2 WHERE m1.title = m2.title AND m2.director = 'berto'
@@ -554,8 +565,8 @@ SELECT m1.actor FROM movie m1, movie m2 WHERE m1.title = m2.title AND m2.directo
 SELECT title FROM movie WHERE title NOT IN (SELECT title FROM movie WHERE actor = 'berto')
 
 -- Find theaters showing only movies by Berto
-SELECT theater FROM schedule WHERE theater NOT IN 
-    (SELECT theater FROM schedule NATURAL LEFT OUTER JOIN 
+SELECT theater FROM schedule WHERE theater NOT IN
+    (SELECT theater FROM schedule NATURAL LEFT OUTER JOIN
       (SELECT title, director FROM movie WHERE director = 'Berto') WHERE director IS NULL)
 
 -- Loans who have a strictly greater number of borrowers than the average number of borrowers over all loans of that type
@@ -569,19 +580,19 @@ SELECT l.no FROM bank.loan l JOIN bank.borrower b ON l.no = b.lno
 
 ```sql
 -- Way from city1 to city2 with at most 2 stop over.
-SELECT x.from z.to FROM flight x, flight y, flight z 
+SELECT x.from z.to FROM flight x, flight y, flight z
 WHERE x.from = 'city1' AND x.to = y.from AND y.to = z.from AND z.to = 'city2'
 
 -- Way from city1 to city with at most k stopovers.
 -- Intuition : (SELECT * FROM T_{k-1}) UNION (SELECT x.A, y.B FROM G x, T_{k - 1} y WHERE x.B = y.A)
-WITH recursive T as (SELECT * FROM G) UNION 
-(SELECT x.A, y.B FROM G x, T y WHERE x.B = y.A) SELECT * FROM T; 
+WITH recursive T as (SELECT * FROM G) UNION
+(SELECT x.A, y.B FROM G x, T y WHERE x.B = y.A) SELECT * FROM T;
 
 -- Find transitive closure of friend (drinkers who frequent the same bar) / frequent = (frequents, drinker, bar)
-CREATE RECURSIVE VIEW T as 
-  (SELECT f1.drinker AS drinker1, f2.drinker AS drinker2 FROM frequent f1, frequent f2 
-WHERE f1.bar = f2.bar) UNION 
-  (SELECT t1.drinker1, f2.drinker AS drinker2 FROM T t1, frequents f1, frequents f2 
+CREATE RECURSIVE VIEW T as
+  (SELECT f1.drinker AS drinker1, f2.drinker AS drinker2 FROM frequent f1, frequent f2
+WHERE f1.bar = f2.bar) UNION
+  (SELECT t1.drinker1, f2.drinker AS drinker2 FROM T t1, frequents f1, frequents f2
 WHERE t1.drinker2 = f1.drinker AND f1.bar = f2.bar)
 ```
 
@@ -590,9 +601,9 @@ WHERE t1.drinker2 = f1.drinker AND f1.bar = f2.bar)
 ```sql
 -- For each team, return its name and total number of points. (name and points)
 
-CREATE VIEW standings(name, points) AS 
-  SELECT name, SUM(pts) AS points FROM 
-  (SELECT aTeam AS name, 3 AS pts FROM matches WHERE ascore > hscore UNION ALL SELECT hTeam AS name AS pts FROM matches WHERE hscore > ascore UNION ALL 
+CREATE VIEW standings(name, points) AS
+  SELECT name, SUM(pts) AS points FROM
+  (SELECT aTeam AS name, 3 AS pts FROM matches WHERE ascore > hscore UNION ALL SELECT hTeam AS name AS pts FROM matches WHERE hscore > ascore UNION ALL
   SELECT aTeam AS name, 1 AS pts FROM Matches WHERE hScore = aScore UNION ALL
   SELECT hTeam AS name, 1 AS pts FROM Matches WHERE hScore = aScore UNION ALL
   SELECT name, 0 AS points FROM Teams)
@@ -602,11 +613,11 @@ CREATE VIEW standings(name, points) AS
 ### Update
 
 ```sql
--- change all 'berto' entries to 'bertolucci' 
+-- change all 'berto' entries to 'bertolucci'
 UPDATE movie SET director='bertolucci' WHERE director='berto';
 
 -- Increase all salary in toys dept by 10%
-UPDATE employee SET salary = 1.1 * salary 
+UPDATE employee SET salary = 1.1 * salary
 WHERE dept = 'toys'
 
 -- Change type of all “jumbo” loans to “student” and type of all original “student” loans to “jumbo”.
@@ -626,23 +637,25 @@ WHERE type = 'jumbo' OR type = 'student';
 | pros | Simple, Easy <br> Three recently visited chat | Size of Parent same <br> Create users within chat | Many to many relation one for users and another for rooms and messages |
 | cons | Not scalable                                  | Hard to delete subcollection                      | Getting data that is naturally hierarchical increase complexity        |
 
-> Type
+### Type
 
-* wide column
-  * Have column families, which are containers for rows
-  * Don’t need to know all the columns and row doesn’t have to have the same # of columns
-  * [+] Best suited for analyzing large datasets.
-  * Example : Cassandra, HBase
+> wide column
+
+* Have column families, which are containers for rows
+* Don’t need to know all the columns and row doesn’t have to have the same # of columns
+* [+] Best suited for analyzing large datasets.
+* Example : Cassandra, HBase
 
 ![wide column](images/20210220_191640.png)
 
-* Graph
-  * Store data whose relations are best represented in a graph. 
-  * Data is saved in graph with nodes (entities), properties (information), lines (connections)
-  * Neo4J
-  * solr
-    * distributed indexing, replication, load-balanced querying, automated failover | recovery, centralized config 
-    * powers the search and navigation features of many of the world's largest internet sites
+> Graph
+
+* Store data whose relations are best represented in a graph.
+* Data is saved in graph with nodes (entities), properties (information), lines (connections)
+* Neo4J
+* solr
+  * distributed indexing, replication, load-balanced querying, automated failover | recovery, centralized config
+  * powers the search and navigation features of many of the world's largest internet sites
 
 ### Elastic Search
 
@@ -654,7 +667,7 @@ WHERE type = 'jumbo' OR type = 'student';
 
 > Nodes
 
-* Part of the cluster that stores the data with search and index capabilities 
+* Part of the cluster that stores the data with search and index capabilities
 * Node names are lower-case and can have many of them
 
 > Shard, Replica
@@ -693,8 +706,8 @@ systemctl status mongod  # show mongodb status
 /var/log/mongodb     # log directory
 
 27017                # default port for mongod and mongos instances
-27018                # when running with --shardsvr command-line option 
-27019                # when running with --configsvr command-line option 
+27018                # when running with --shardsvr command-line option
+27019                # when running with --configsvr command-line option
 ```
 
 > cli
@@ -707,7 +720,7 @@ systemctl status mongod  # show mongodb status
 
 help                    # Show help.
 db.help()               # Show help for database methods
-db.<collection>.help()  # help on collection methods. collection can be non-existing 
+db.<collection>.help()  # help on collection methods. collection can be non-existing
 show dbs                # Print a list of all databases on the server
 use <db>                # Switch current database to <db>
 show collections        # Print a list of all collections for current database
@@ -726,7 +739,7 @@ db.createCollection('users')
 
 ```js
 user_cl.count()                       // Count # of drinkers.
-user_cl.count(addr: {$exists: true})  // with unique addresses 
+user_cl.count(addr: {$exists: true})  // with unique addresses
 ```
 
 ```js
@@ -736,12 +749,12 @@ user_cl.count(addr: {$exists: true})  // with unique addresses
 user_cl.find(name: {$ne : null))   // Non null value
 user_cl.find().pretty()            // pretty
 user_cl.find().sort({title:-1})    // sort by title
-user_cl.find(tags.1: "summer")     // 2nd element in tags is "summer" 
+user_cl.find(tags.1: "summer")     // 2nd element in tags is "summer"
 user_cl.find().forEach(function(d){print(d.id)}) // forEach
 user_cl.find({_id:{$gt:24}}, {email:1, _id:0})   // Grab email info for indexes gt 24
 user_cl.find(name: {$regex: |^go.*le$|})         // RE: starts with go ends with le
 user_cl.find({tags: {$in : ["popular", "smart"] } })    // users tagged as popular or smart
-user_cl.find({tags: {$nin : ["popular", "organic"] } }) // not tagged as 
+user_cl.find({tags: {$nin : ["popular", "organic"] } }) // not tagged as
 user_cl.insert({ name:'sean', rating:5})   // insert sean’s rating
 post_cl.remove({ name : 'Ryan' })          // insert post named ryan
 user_cl.update({ _id: 1 }, { rating: 4 }, { upsert: true } ); // Add if not present
@@ -764,9 +777,9 @@ user_cl.update({ _id: 1 }, { $rename : { rating: 'rate'} })   // rename
 * Wide : transformation that requires data shuffling across node partitions
 
 ```py
-collect()    # copy all elements to the driver 
-take(n)      # copy first n elements 
-reduce(func) # aggregate elements with func 
+collect()    # copy all elements to the driver
+take(n)      # copy first n elements
+reduce(func) # aggregate elements with func
 saveAsTextFile(filename) # Save to local file or HDFS
 ```
 
@@ -789,15 +802,15 @@ reducebykey
 * MLlib
 
 ```py
-from pyspark.mllib.stat import Statistics 
-dataMatrix = sc.parallelize([[1,2,3],[4,5,6], [7,8,9],[10, 11, 12]]) 
+from pyspark.mllib.stat import Statistics
+dataMatrix = sc.parallelize([[1,2,3],[4,5,6], [7,8,9],[10, 11, 12]])
 summary = Statistics.colStats(dataMatrix)
 ```
 
 ```py
-from pyspark.mllib.clustering import KMeans, KMeansModel 
+from pyspark.mllib.clustering import KMeans, KMeansModel
 import numpy as np
-data = sc.textFile("data.txt") 
+data = sc.textFile("data.txt")
 parsedData = data.map(lambda line: np.array([float(x) for x in line.split(' ')]))
 clusters = Kmeans.train(parsedData, k=3)
 ```
@@ -831,7 +844,7 @@ clusters = Kmeans.train(parsedData, k=3)
 * Advanced algorithms (highly coupled data processing algorithm)
 * Replacement to your infrastructure (may not be suitable solution for business case)
 * Random data access
-* Machine learning → HDFS Bottleneck | Mapreduce Computation | No interactive shell | Java 
+* Machine learning → HDFS Bottleneck | Mapreduce Computation | No interactive shell | Java
 * Line of Business → usually transactional and not a good fit (X - use relational database)
 
 > Hadoop vs HBase

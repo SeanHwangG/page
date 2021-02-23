@@ -198,6 +198,30 @@ constexpr int Factorial(int n) {
 }
 ```
 
+> delete
+
+```cpp
+=delete       // ensure not automatically provided by the compiler
+```
+
+> inline
+
+* For small, commonly-used functions, the overhead of the function call is more than the time needed to actually execute the function’s code
+* This overhead occurs for small functions because execution time of small function is less than the switching time.
+
+```cpp
+#include <iostream> 
+using namespace std; 
+inline int cube(int s) { 
+  return s*s*s; 
+} 
+int main() 
+{ 
+  cout << "The cube of 3 is: " << cube(3) << "\n"; 
+  return 0; 
+} //Output: The cube of 3 is: 27 
+```
+
 > sizeof
 
 ```cpp
@@ -205,12 +229,6 @@ int arr[6] = {1, 2, 3, 4, 5, 6};
 int* parr = arr;
 printf("Sizeof(arr) : %d \n", sizeof(arr));    # 24
 printf("Sizeof(parr) : %d \n", sizeof(parr));    # 8 (size of pointer)
-```
-
-> delete
-
-```cpp
-=delete       // ensure not automatically provided by the compiler
 ```
 
 > volatile
@@ -1562,6 +1580,77 @@ void complex_() {
   cout << "a.abs().abs() \t" << a << "\n\n";  // should be Complex &abs()
 
   // Complex c = 3; doesn't work because explicit
+}
+```
+
+> Error
+
+```cpp
+#include <string>
+#include <vector>
+using namespace std;
+
+class Movie
+{
+public:
+  // Movie(){};
+  ~Movie() { delete director_; }
+  string &GetTitle() const;
+  void SetTitle(string title);
+
+private:
+  // error: field has incomplete type 'A'
+  // -> shared_ptr<Movie> mv; works
+  // Movie mv;
+  string title_;
+  string *director_;
+};
+
+// error: out-of-line definition of 'GetTitle' does not match any declaration in 'Movie'
+// -> const is missing
+// string& Movie::GetTitle() {}
+
+// error: C++ requires a type specifier for all declarations
+// Movie::setTitle(string title) : title(title) {}
+
+// error: only constructors take base initializers
+// void Movie::SetTitle() : title_(title) {}
+
+int main()
+{
+  // error: no viable conversion from 'Movie *' to 'Movie'
+  // Movie m = new Movie;
+
+  // error: no matching constructor for initialization of 'Movie'
+  // -> Movie(string name) { director_ = new string(name); }
+  // Movie harry_potter("sean");
+
+  // error for object 0x1: pointer being freed was not allocated
+  // -> Person(const Person& rhs) = delete; // check in compile time
+  Movie titanic;
+
+  // error: redefinition of 'titanic'
+  // -> check for same variable name
+  // Movie titanic;
+
+  // error: type 'Movie' does not provide a call operator
+  // -> overload operator()
+  // titanic();
+
+  // error: no viable overloaded '='
+  // -> overload operator =
+  // titanic = 1;
+
+  // error: no member named 'length' in 'Movie'
+  // -> create member variable length
+  // titanic.length;
+
+  // error: invalid operands to binary expression ('std::__1::ostream' (aka 'basic_ostream<char>') and 'B')
+  // std::cout << titanic;
+
+  // ld: symbol(s) not found for architecture x86_64
+  // -> ldd a.o # check for dependency and see whether missing .cpp implementation
+  // titanic.GetTitle();
 }
 ```
 

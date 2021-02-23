@@ -73,7 +73,7 @@ got reset --hard origin/main
 * .gitignore
 
 ```sh
-*                    # Ignore everything    
+*                    # Ignore everything
 !*.py                # But not these files...
 
 # For home file
@@ -128,8 +128,8 @@ svn export <github_url>|trunk|codes       # Download some files from github
 
 > Error
 
-* error: cannot lock ref 'refs/remotes/origin/working/sample': 'refs/remotes/origin/working' exists; cannot create 'refs/remotes/origin/working/sample'  
-  From [https://github.com/sample/repo](https://github.com/sample/repo)  
+* error: cannot lock ref 'refs/remotes/origin/working/sample': 'refs/remotes/origin/working' exists; cannot create 'refs/remotes/origin/working/sample'
+  From [https://github.com/sample/repo](https://github.com/sample/repo)
   ! \[new branch\] working/hojae -&gt; origin/working/hojae \(unable to update local ref\)
 
 ```sh
@@ -149,7 +149,7 @@ git update-ref -d refs/remotes/origin/development
 --global --edit             # Configure user name, email
 --list                      # Print current configuration
 --bool core.bare true       # Create bare repository
---global diff.submodule log # show changes in submodule 
+--global diff.submodule log # show changes in submodule
 credential.helper store     # save id / pw in .gitcredentials
 core.editor "nano"          # change default editor to vim
 
@@ -163,7 +163,7 @@ git config --global commit.template ~/.gitmessage
 > add
 
 ```sh
-URL                # 
+URL                #
 git submodule add https://github.com/pybind/pybind11
 ```
 
@@ -268,7 +268,7 @@ origin           # server commit history
 --author="sean"  # limit author
 --graph          # In graph form
 --grep = "init"  # search for message
--p <file>        # show changes over time for a specific file 
+-p <file>        # show changes over time for a specific file
 --since/until=2020-01-01      # from time
 -1 --stat -- <path/to/file>   # Generate a diffstat (show file | 2 ++)
 
@@ -289,7 +289,7 @@ origin           # server commit history
 
 ```sh
 ls-files                    # show all files
---stage                
+--stage
 ls-tree -r -t -l --full-name HEAD | sort -n -k 4 | tail -n 10    # show largest files
 ```
 
@@ -330,7 +330,7 @@ git ls-tree --name-only -r HEAD    # List all files on the branch
 * Remove untracked files from the working tree
 
 ```sh
--n / --dry-run      # see what will be removed 
+-n / --dry-run      # see what will be removed
 -d                  # recurse directory
 -f                  # force
 ```
@@ -366,7 +366,7 @@ git checkout stash@{0} -- fn    # stash pop certain files
 add <name> <url>     # Adds a remote <name> for repository at <url> / add origin for new
 rm origin            # remove existing origin
 
-get-url              # 
+get-url              #
 set-url <name> <new> # Changes URL remote points to
 --
 ```
@@ -398,7 +398,7 @@ all                     # show all lfs files
 
 > add [filename]
 
-* add files to staging area 
+* add files to staging area
 
 ```sh
 -A        # Add, delete updated codes (git add . + git add -u)
@@ -427,7 +427,7 @@ git reset --soft HEAD@{1} && git commit -C HEAD@{1}                    # undo gi
 ![alt](images/20210218_015049.png)
 
 ```sh
-[]        
+[]
 [repo] [ref]                # first push
 -u / --set-upstream         # every successfully pushed, add upstream
 
@@ -470,7 +470,7 @@ native transport (i.e. git:// URL) and should be used with caution on unsecured 
 * does not change anything about your local state
 
 ```sh
---all && git reset --hard origin/master    # Download from remote and discard all 
+--all && git reset --hard origin/master    # Download from remote and discard all
 --unshallow                          # fetch all older commits from shallow clone
 ```
 
@@ -500,8 +500,8 @@ origin master                 # update local copy with commits from remote repo
 branch          # switch to branch
 commit          # update HEAD
 filename        # Discard changes in the working directory
-origin/master   # check out remote 
--b branch       # create a new branch, use it 
+origin/master   # check out remote
+-b branch       # create a new branch, use it
 -f branch commit # Reset <branch> to <commit>, even if <branch> exists
 ```
 
@@ -537,7 +537,7 @@ commit         # Undo commits in a public branch
 
 ```sh
 <>                    # show branch
-branch                # create name <branch> 
+branch                # create name <branch>
 -d / -D name          # Delete merged branch / not merged in upstream branch
 
 -f b1 b2              # Move b1 to b2
@@ -553,7 +553,7 @@ branch                # create name <branch>
 
 ```sh
 C1 C2          # copy C1, C2, … to our current HEAD
-C1...C2        # copy commit from C1 to C2 to our current HEAD 
+C1...C2        # copy commit from C1 to C2 to our current HEAD
 ```
 
 > Merge
@@ -612,7 +612,7 @@ CI_COMMIT_REF_NAME   # name of branch
 registry_http_addr # Needs to be reachable by web server (or LB).
 token_realm        # authentication endpoint, usually GitLab URL. needs to be reachable by the user
 http_secret        # random string to sign state that may be stored with client to protect tampering
-internal_key       # automatically generated. Contents of key that GitLab uses to sign the tokens. 
+internal_key       # automatically generated. Contents of key that GitLab uses to sign the tokens.
 ```
 
 > register
@@ -652,7 +652,7 @@ test:
 # apt install -y apt-transport-https software-properties-common
 # apt install curl
 # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-# add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" # docker repository 
+# add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" # docker repository
 # apt install docker-ce
 # docker run -d --name gitlab-runner --restart always -v /srv/gitlab-runner/config:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest
 image: busybox:latest
@@ -709,7 +709,7 @@ gh gist create filename    # push to gist
 ### workflow
 
 * name
-  * workflow name GitHub displays on your repository's actions page. 
+  * workflow name GitHub displays on your repository's actions page.
   * If omit name, GitHub sets it to workflow file path relative to root of the repository
 
 * action
@@ -720,7 +720,7 @@ gh gist create filename    # push to gist
   * specific activity that triggers a workflow
 
 * workflow
-  * an automated procedure that you add to your repository. 
+  * an automated procedure that you add to your repository.
   * made up of one or more jobs and can be scheduled or triggered by an event.
 
 
@@ -738,7 +738,7 @@ gh gist create filename    # push to gist
 
 ```yml
 name: CI
-on:         # Controls when the action will run. 
+on:         # Controls when the action will run.
   push:     # Triggers the workflow on push or pull request events but only for the main branch
     branches: [ main ]
   pull_request:
@@ -769,7 +769,7 @@ jobs:                   # workflow run is made up of 1+ jobs that can run sequen
 
 :source ~/.vimrc   # Apply vimrc
 :![cmd]            # run terminal command
-:help key-notation # man page 
+:help key-notation # man page
 :history           # Last command
 ```
 
@@ -813,12 +813,12 @@ ma             # mark a
 > map
 
 ```sh
-map / imap     # normal, visual mode / insert mode 
-unmap          # cancel mapping 
+map / imap     # normal, visual mode / insert mode
+unmap          # cancel mapping
 inoremap       # insert mode non recursive
-n / i          # normal / insert mode 
-v / s / x      # visual select mode / select mode / visual mode only 
-c              # command-line 
+n / i          # normal / insert mode
+v / s / x      # visual select mode / select mode / visual mode only
+c              # command-line
 l              # lang-arg o pending
 
 <D-            # mac command
@@ -828,7 +828,7 @@ l              # lang-arg o pending
 remap          # makes mappings work recursively
 nnoremap       # one that works in normal mode
 <silent>       # show no message when this key sequence is used
-<leader>       # let mapleader = autocmd 
+<leader>       # let mapleader = autocmd
 
 map <C-l> <Esc>:w<CR>:!clear;python %<CR>    # run python script
 filetype cpp nnoremap <F5> :w <bar> exec '!g++ -g -O2 -std=gnu++17 -static %'<CR>
@@ -859,7 +859,7 @@ ctrl + v | shift + i # enter      # python multiline comment
 
 ```
 :reg
-""          # unnamed | default register 
+""          # unnamed | default register
 “+          # clipboard
 "kyy        # copy current line to register k
 “kp         # paste k register
@@ -1033,7 +1033,7 @@ let colors = {
 }
 
 # Access
-echo colors["a"]   
+echo colors["a"]
 
 for key in keys(dict)
   echo key . ': ' . dict(key)

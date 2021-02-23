@@ -1,6 +1,6 @@
 # Cpp
 
-* https://modoocode.com/134 
+* https://modoocode.com/134
 * C with class Bjarne Stroustrup developed
 
 > Version
@@ -8,9 +8,9 @@
 * C++98
   * firht standard
 * C++11
-  * lambdas, auto type deduction, list initialization, smart pointers, move semantics 
+  * lambdas, auto type deduction, list initialization, smart pointers, move semantics
 * C++14
-  * return type deduction, binary literals, generic lambda expressions 
+  * return type deduction, binary literals, generic lambda expressions
 * C++17
   * binding, nested namespaces, inline variables, constexpr lambda
 
@@ -70,7 +70,6 @@ int& foo();    // foo() = 42; int* p1 = &foo(); works
   * An xvalue (an “eXpiring” value) also refers to an object, usually near the end of its lifetime
   * prvalue (“pure” rvalue) is an rvalue that is not an xvalue
 
-
 * Right left rule
   * Find identifier
   * Move right until out of symbols or hit right parenthesis.
@@ -116,7 +115,7 @@ int ff()();     // function returning a function returning an int (ILLEGAL)
 
 ```cpp
 int a = 2147483647;
-printf("a : %d \n", a);   // 2147483647 
+printf("a : %d \n", a);   // 2147483647
 a++;
 printf("a : %d \n", a);   // -2147483648
 unsigned int b = -1;
@@ -132,7 +131,7 @@ printf("b  : %u \n", b);  // 4294967295
   * compiled separately and only once
   * plugins or optional components that user may choose to be loaded or not
 
-## Memory
+> Memory
 
 * low memory address as chart goes down
 * Endian
@@ -158,8 +157,8 @@ int main() {
   int i;
   char *str = "Hello";
   char arr[2] = "Hi";
-  printf("global : %p \n", &global);  // 0x3e2300 
-  printf("i : %p \n", &i);            // 0x7fff9ebe5740 
+  printf("global : %p \n", &global);  // 0x3e2300
+  printf("i : %p \n", &i);            // 0x7fff9ebe5740
   printf("str : %p \n", str);         // 0x2339c0 → literal
   printf("arr : %p \n", arr);         // 0x7fff9ebe5750
 }
@@ -194,7 +193,7 @@ ColumnLimit: 100          # break line after 100 char
 > cppcheck
 
 ```sh
---enable=all 
+--enable=all
 --suppress=missingIncludeSystem 00_pointer.cpp
 ```
 
@@ -206,7 +205,7 @@ ColumnLimit: 100          # break line after 100 char
 
 * copy constructor / assignment operator / destructor / default constructor (when no other constructor)
 
-```
+```sh
 Preprossess  # Include header, expand Macro (default source.suffix.gch)
 Compilation  # assembly code (default source.s;)
 Assemble     # generate machine code (default source.o;)
@@ -215,7 +214,7 @@ Linking      # .o / .obj (+ .lib / .a / static library) → .exe (default a.out)
 
 > GCC
 
-```
+```sh
 <.cpp> / <.o>   # compile / link files (gcc -xc++ -lstdc++ -shared-libgcc)
 -c              # Compile / assemble the source files, but do not link (create .o)
 -g              # enable gdb
@@ -224,7 +223,7 @@ Linking      # .o / .obj (+ .lib / .a / static library) → .exe (default a.out)
 -l (lower L)    # link libraries
 -L              # /path contains library files, .a, .so
 -MD             # Create dependency
--o out_file     # preprocessed C source : stdout 
+-o out_file     # preprocessed C source : stdout
 -std=c++11      # 11 version
 -v              # Verbose Mode
 -Wall / extra   # enable all warning / extra warnings
@@ -240,7 +239,6 @@ Linking      # .o / .obj (+ .lib / .a / static library) → .exe (default a.out)
 # All -rpath arguments are concatenated and passed to the runtime linker, which uses them to locate shared objects at runtime.
 ```
 
-
 > ELF file
 
 ![alt](images/20210214_022453.png)
@@ -255,8 +253,8 @@ Linking      # .o / .obj (+ .lib / .a / static library) → .exe (default a.out)
 * #include "fn" preprocessor searches first in the same directory then search path (programmer-defined)
 * A more complete description is available in the GCC
 
-* added by the linking process 
-* starts with lib followed by name 
+* added by the linking process
+* starts with lib followed by name
 
 ```sh
 /usr/lib
@@ -292,10 +290,9 @@ int get_random_number();
 ```
 
 * Dynamic Linrary
-    * Linking postponed until execution time → useful for libraries 
-    * stub replaces itself with address of routine, and executes routine
-    * Window → .dll, Apple → dylib (Framework), Unix → so
-
+  * Linking postponed until execution time → useful for libraries
+  * stub replaces itself with address of routine, and executes routine
+  * Window → .dll, Apple → dylib (Framework), Unix → so
 
 ![alt](images/20210214_023228.png)
 
@@ -337,7 +334,7 @@ __declspec(dllexport) void moo() {
 
 * must be compiled using -g flags to see
 
-```js
+```sh
 # Breakpoints
 d N                    # Delete Nth breakpoint
 enable / disable br    # enable / disable all br
@@ -380,78 +377,7 @@ l <> / 20 / func / test.func     # list files around current / line 20 / functio
 
 ```
 
-## Class
-
-```cpp
-#include <string>
-#include <vector>
-using namespace std;
-
-class Movie
-{
-public:
-  // Movie(){};
-  ~Movie() { delete director_; }
-  string &GetTitle() const;
-  void SetTitle(string title);
-
-private:
-  // error: field has incomplete type 'A'
-  // -> shared_ptr<Movie> mv; works
-  // Movie mv;
-  string title_;
-  string *director_;
-};
-
-// error: out-of-line definition of 'GetTitle' does not match any declaration in 'Movie'
-// -> const is missing
-// string& Movie::GetTitle() {}
-
-// error: C++ requires a type specifier for all declarations
-// Movie::setTitle(string title) : title(title) {}
-
-// error: only constructors take base initializers
-// void Movie::SetTitle() : title_(title) {}
-
-int main()
-{
-  // error: no viable conversion from 'Movie *' to 'Movie'
-  // Movie m = new Movie;
-
-  // error: no matching constructor for initialization of 'Movie'
-  // -> Movie(string name) { director_ = new string(name); }
-  // Movie harry_potter("sean");
-
-  // error for object 0x1: pointer being freed was not allocated
-  // -> Person(const Person& rhs) = delete; // check in compile time
-  Movie titanic;
-
-  // error: redefinition of 'titanic'
-  // -> check for same variable name
-  // Movie titanic;
-
-  // error: type 'Movie' does not provide a call operator
-  // -> overload operator()
-  // titanic();
-
-  // error: no viable overloaded '='
-  // -> overload operator =
-  // titanic = 1;
-
-  // error: no member named 'length' in 'Movie'
-  // -> create member variable length
-  // titanic.length;
-
-  // error: invalid operands to binary expression ('std::__1::ostream' (aka 'basic_ostream<char>') and 'B')
-  // std::cout << titanic;
-
-  // ld: symbol(s) not found for architecture x86_64
-  // -> ldd a.o # check for dependency and see whether missing .cpp implementation
-  // titanic.GetTitle();
-}
-```
-
-## const
+> const
 
 ```cpp
 #include <iostream>
@@ -464,7 +390,7 @@ int main() {
   // non-const lvalue reference to type 'X'
   // -> X().ref()
   X& x = X();
-  
+
   int a = 5;
   // error: const' qualifier may not be applied to a reference
   // int &const ref1 = a;
@@ -494,7 +420,7 @@ int main() {
 }
 ```
 
-## Syntax
+> Syntax
 
 ```cpp
 // errors.cpp:1:10: fatal error: 'a' file not found
@@ -509,7 +435,7 @@ int main() {
 int main() {
   // unknown type name 'in'
   // in a;
-    
+
   // error: expression is not assignable
   // int a = 2 = 3;
   int a = 3;
@@ -540,43 +466,40 @@ int main() {
   auto e = "ab";
   // error: assigning to 'const char *' from incompatible type 'int
   // e = 3;
-  
+
   // error: no matching conversion for C-style cast from 'std::__1::string' (aka 'basic_string<char, char_traits<char>, allocator<char> >') to 'int'
   // -> cannot cast string to int
   // (int) e;
-  
+
   // error: expected type
   // -> type must be followed by new
   // new 1
-  
+
   return 0;
   // warning: unused variable 'a' [-Wunused-variable]
   // int a = 2;
 }
 ```
 
-## Link
+> Link
+
 * starts with L
 * Error when combine object files to create executable
 
-> duplicate symbols found
+* duplicate symbols found
+  * Same function declared in multiple files (#once)
+  * include same header multiple times (Check inline, static, #ifdef)
 
-* Same function declared in multiple files (#once)
-* include same header multiple times 
-    * Check inline, static, #ifdef
+* unresolved external symbol
+  * Can’t find function declaration, header include
 
-> unresolved external symbol
-
-* Can’t find function declaration, header include
-
-> Use of deleted function 'std::atomic<int>::atomic(const std::atomic<int>&)
-
-* Can't assign atomic from int
-* Can't directly print atomic, use .load 
+* Use of deleted function 'std::atomic<int>::atomic(const std::atomic<int>&)
+  * Can't assign atomic from int
+  * Can't directly print atomic, use .load
 
 # Make
 
-* Search GNUmakefile -> makefile -> Makefile 
+* Search GNUmakefile -> makefile -> Makefile
 
 > pkgconfig
 
@@ -597,64 +520,52 @@ opencv_example: example.o; $(CXX) $< -o $@ $(LDFLAGS)
 clean: ; rm -f example.o opencv_example
 ```
 
-
-## Terms
+> Terms
 
 ```make
 target … : prerequisites …
-    recipe
+  recipe
 ```
 
-> target
+* target
+  * usually name of a file generated by a program | name of action to carry out
 
-* usually name of a file generated by a program | name of action to carry out
+* prerequisite
+  * file that is used as input to create the target
 
-> prerequisite  
-
-* file that is used as input to create the target
-
-> recipe
-
-* an action that make carries out
+* recipe
+  * an action that make carries out
 
 ```make
    @:  # do nothing
 ```
 
+* kits
+  * project-agnostic and configuration-agnostic information about how to build code
+  * compilers, vscode installation, toolchain file
 
-> kits
-
-* project-agnostic and configuration-agnostic information about how to build code
-* compilers, vscode installation, toolchain file
-
-> variant
+* variant
 
 ```make
-Debug           # disables optimizations and includes debug info. 
-Release         # Includes optimizations but no debug info. 
+Debug           # disables optimizations and includes debug info.
+Release         # Includes optimizations but no debug info.
 MinRelSize      # Optimizes for size. No debug info
 RelWithDebInfo  # Optimizes for speed and includes debug info.
 ```
 
 ## Syntax
 
-> .PHONY
-
-* implicit rule search is skipped for .PHONY targets
-
-> .PRECIOUS
-
-* Don’t get deleted even if it is an intermediate file
-
-> .SILENT
-
-* make will not print recipe used to remake those files before executing them
-
+* .PHONY
+  * implicit rule search is skipped for .PHONY targets
+* .PRECIOUS
+  * Don’t get deleted even if it is an intermediate file
+* .SILENT
+  * make will not print recipe used to remake those files before executing them
 
 ## Run
 
 ```make
-<>          # make 
+<>          # make
 all         # convention (put all at top of the file)
 -f File     # Reads FILE as the makefile.
 -h          # Displays the list of make
@@ -680,9 +591,9 @@ all         # convention (put all at top of the file)
 │   ├── fstream.txt
 │   └── thread.txt
 └── obj
-    ├── 00_macro.o
-    ├── 01_primitives.o
-    └── 02_pointer.o
+  ├── 00_macro.o
+  ├── 01_primitives.o
+  └── 02_pointer.o
 .
 ├── Makefile
 
@@ -714,7 +625,7 @@ $(BIN_DIR)/%: $(OBJ_DIR)/%.o | $(BIN_DIR)
 
 $(BIN_DIR) $(OBJ_DIR):
   mkdir -p $@
-  
+
 .PHONY:     all run clean     # even if all run clean filename exists
 .PRECIOUS:  $(OBJ_DIR)/%.o    # keep intermediate files
 
@@ -752,12 +663,12 @@ cmake -Bbuild
 
 # OpenCV
 cmake -B build -DCMAKE_BUILD_TYPE=RELEASE \
-    -DCMAKE_INSTALL_PREFIX=../install \
-    -DBUILD_EXAMPLES=ON \
-    -DOPENCV_GENERATE_PKGCONFIG=ON \
-    -DBUILD_DOCS=ON \
-    -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules \
-    -DBUILD_EXAMPLES=ON
+  -DCMAKE_INSTALL_PREFIX=../install \
+  -DBUILD_EXAMPLES=ON \
+  -DOPENCV_GENERATE_PKGCONFIG=ON \
+  -DBUILD_DOCS=ON \
+  -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules \
+  -DBUILD_EXAMPLES=ON
 ```
 
 > Convention
@@ -787,17 +698,17 @@ target_link_libraries(main test)
 └── test.hpp
 
 # Hello Optional Toolchain / Build Type         # Debug Version doesn't do compiler optimization
-├── CMakeLists.txt                                                                  
+├── CMakeLists.txt
 project("Hello")
 cmake_minimum_required(VERSION 3.5)
 set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
-set(CMAKE_BUILD_TYPE Debug)                     # cmake -DCMAKE_BUILD_TYPE=Debug 
+set(CMAKE_BUILD_TYPE Debug)                     # cmake -DCMAKE_BUILD_TYPE=Debug
 add_executable(Hello ${SOURCE_FILES})
 ├── main.cpp
 └── toolchain
-    └── Linux-Clang.cmake
+  └── Linux-Clang.cmake
 set(CMAKE_CXX_COMPILER "/usr/bin/clang++" CACHE string "clang++ compiler" FORCE)    # cmake -Bbuild -Ctoolchain/Linux-Clang.cmake
-  
+
 # splitted into src / include dir + external
 .
 ├── CMakeLists.txt
@@ -814,10 +725,10 @@ target_link_libraries( tictactoe ${LIBS} )
 │   ├── model.h
 │   └── tictactoe.h
 └── src
-    ├── board.cpp
-    ├── main.cpp
-    ├── model.cpp
-    └── tictactoe.cpp
+  ├── board.cpp
+  ├── main.cpp
+  ├── model.cpp
+  └── tictactoe.cpp
 
 # Add resources
 .
@@ -849,10 +760,10 @@ if(GTEST_FOUND)
   set_target_properties(example PROPERTIES ENABLE_EXPORTS on)
 
   target_link_libraries(unit_tests PUBLIC # use executable as link library, and inherit linker options / library dependencies from it, by adding as dependency.
-    ${GTEST_BOTH_LIBRARIES} example)
+  ${GTEST_BOTH_LIBRARIES} example)
   target_include_directories(unit_tests PUBLIC
-    ${GTEST_INCLUDE_DIRS}) # doesn't do anything on linux
-  
+  ${GTEST_INCLUDE_DIRS}) # doesn't do anything on linux
+
 endif()
 
 ## packaging ##################################################################
@@ -868,11 +779,11 @@ include(CPack)                  # This must be last
 ├── resources
 │   └── resource1
 └── src
-    ├── main
-    │   ├── main.cpp
-    │   └── main.h
-    └── test
-        └── test.cpp
+  ├── main
+  │   ├── main.cpp
+  │   └── main.h
+  └── test
+    └── test.cpp
 ```
 
 * Subdirectory
@@ -883,17 +794,17 @@ include(CPack)                  # This must be last
 ├── CMakeLists.txt
 cmake_minimum_required(VERSION 3.0)
 project(test)
-add_subdirectory(test)                
+add_subdirectory(test)
 add_executable(main main.cpp)
-target_link_libraries(main test)        
+target_link_libraries(main test)
 ├── errors.cpp
 ├── main.cpp
 └── test
-    ├── CMakeLists.txt
+  ├── CMakeLists.txt
 cmake_minimum_required(VERSION 3.0)
 add_library(test STATIC test.cpp)       # STATIC, SHARED, or MODULE may be given to specify type of library to be created
-    ├── test.cpp
-    └── test.h
+  ├── test.cpp
+  └── test.h
 
 # Hello subdirectory 2
 ├── CMakeLists.txt
@@ -907,41 +818,40 @@ add_executable(hello_main main.cpp)
 target_link_libraries(hello_main hello_test)
 │   └── main.cpp                          # #include <hello/test.hpp>
 └── test
-    ├── CMakeLists.txt
+  ├── CMakeLists.txt
 add_library(hello_test hello/test.cpp hello/test.hpp)
 target_include_directories(hello_test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_definitions(hello_test PUBLIC MODE=4)     # PUBLIC - all targets, INTERFACE - except cur, PRIVATE - only cur
-    └── hello
-        ├── test.cpp
-        └── test.hpp
+  └── hello
+    ├── test.cpp
+    └── test.hpp
 ```
 
-## Terms
+## Files
 
-> CMakeCache.txt
-
-* store information for reuse on subsequent runs
+* CMakeCache.txt
+  * store information for reuse on subsequent runs
 
 > dependency
 
-```
+```sh
 in-source-build         # store binary and src files in the same (DISCOURAGED → V.C.)
 Generator               # (ex. Unix Makefiles, Ninja, Xcode)
 
 private dependency      # A uses B in its own internal implementation
 public dependency       # A uses B in its interface (ex. A func has a param of a type in B)
-interface dependency    # A uses B 
+interface dependency    # A uses B
 ```
 
-## Variable
+> Variable
 
 ![alt](images/20210214_024752.png)
 
 * Case sensitive
 * uninitialized = empty string
 
-```
-$@             # first target 
+```sh
+$@             # first target
 $^             # all dependency
 $<             # first dependency
 $(basename $@) # remove extension
@@ -955,7 +865,7 @@ x = dude       # declare variablruns / ignore set if exists
 
 # unset(VAR)
 
-# message(STATUS "arg = ${arg}")    
+# message(STATUS "arg = ${arg}")
 WARNING, FATAL_ERROR
 
 # Global
@@ -974,7 +884,7 @@ string(REGEX replace "[ad]" "X" m abdab) # m will be XbXXb
 
 # list
 Lists                 # set(var a b c) set(var a;b;c;)
-message( "$var" )     # print with ; delimeter 
+message( "$var" )     # print with ; delimeter
 ```
 
 ## Syntax
@@ -1023,12 +933,12 @@ message("${BoldWhite}This is BoldWhite\n\n${ColourReset}")
 
 ```cmake
 foreach(var RANGE 0 10 2)           # prints 0 \n 2 \n 4 \n 6 \n 8 \n 10
-    message("${var}")
+  message("${var}")
 endforeach()
 
 set(li A B)
 foreach(var IN LISTS li ITEMS foo)  # prints A \n B \n foo
-    message("${var}")
+  message("${var}")
 endforeach()
 ```
 
@@ -1043,7 +953,7 @@ $(SRCS:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%)
 $(info $$var : [${var}])  # echo
 filter-out        # removes some elements from a list ($(filter-out $@,$(MAKECMDGOALS)))
 MAKECMDGOALS      # list of "targets" spelled out on the command line
-notdir            # only extract file name 
+notdir            # only extract file name
 $(OBJECTS:.o=.d)  # replace .o to .d
 
 macro
@@ -1078,24 +988,22 @@ include(module)                # Use same variable scope
   * type is used by CMake GUI (FILEPATH, PATH, STRING, BOOL, INTERNAL)
   * PARENT_SCOPE cannot be combined with CACHE
 
-## Error
+> Error
 
-> CMake Error: Error processing
+* CMake Error: Error processing
+  * -C option is for preloading cache
+  * -D for defining some var value
 
 ```cmake
 cmake -CMAKE_TOOLCHAIN_FILE=/home/swt/work/Toolchain-ts7800-arm.cmake ..
 ```
 
-* -C option is for preloading cache
-* -D for defining some var value
+* CMake was unable to find a build program coressponding to "Unix Makefiles". CMAKE_MAKE_PROGRAM is not set.
+* You probably need to select a different build tool.
+  * check toolchain file location
 
-> CMake was unable to find a build program coressponding to "Unix Makefiles". CMAKE_MAKE_PROGRAM is not set.  
-> You probably need to select a different build tool.
-
-* check toolchain file location
-
-> file INSTALL cannot copy file  
-> " ~/build/x86_64/Release/lib/libname.so.1.0.1" to "/usr/local/lib/libname.so.1.0.1".
+* file INSTALL cannot copy file
+  * " ~/build/x86_64/Release/lib/libname.so.1.0.1" to "/usr/local/lib/libname.so.1.0.1".
 
 ```cmake
 # update cache
@@ -1105,13 +1013,11 @@ CMAKE_INSTALL_PREFIX:PATH=/usr/local
 -CMAKE_INSTALL_PREFIX:PATH=/usr/local
 ```
 
-> libopencv_dnn.so.4.5.1: undefined reference to `ngraph:
+* libopencv_dnn.so.4.5.1: undefined reference to `ngraph:
+  * check target_link_libraries
 
-* check target_link_libraries
-
-> ~/gcc/aarch64-ese-linux/real-ld: warning: libinference_engine.so, needed by ~/opencv/lib/libopencv_gapi.so.4.5.1, not found (try using -rpath or -rpath-link)
-
-* Add Linker flag
+* ~/gcc/aarch64-ese-linux/real-ld: warning: libinference_engine.so, needed by ~/opencv/lib/libopencv_gapi.so.4.5.1, not found (try using -rpath or -rpath-link)
+  * Add Linker flag
 
 ```cmake
 set (CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,/opt/openvino/deployment_tools/ngraph/lib")

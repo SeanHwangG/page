@@ -16,6 +16,16 @@
 * Dynamic Training
   * model stays up to date as new data arrives
 
+* Unsupervised Learning
+  * unlabeled data that the algorithm tries to make sense of by extracting features and patterns on its own
+  * [ex] market segmentation, organize computing cluster, social network analysis, astronomical data analysis
+  * [+] spectral classes do not always correspond to informational classes
+
+* End to End
+  * [+] Less hand-designing of components needed
+  * [-] Face recognition → large data for subproblems (face detection, face classification)
+  * [-] Not enough data → excludes potential useful hand-designed components
+
 ## Engineering
 
 > Terms
@@ -27,20 +37,18 @@
 * Negative Sampling
   * train models that generally have several order of magnitudes more negative than positive one
 
-### Offline Online
+> Learning
 
-> Offline
+* Offline
+  * [+] Make all possible predictions in a batch, using a mapreduce or similar.
+  * [+] Write to a table, then feed these to a cache|lookup table
+  * [-] long tail → can only predict things we know tail
+  * [-] update latency likely measured in hours or days
 
-* [+] Make all possible predictions in a batch, using a mapreduce or similar.
-* [+] Write to a table, then feed these to a cache|lookup table
-* [-] long tail → can only predict things we know tail
-* [-] update latency likely measured in hours or days
-
-> Online
-
-* Predict on demand, using a server
-* [+] can predict any new item as it comes
-* [-] monitoring needs are more intensive
+* Online
+  * Predict on demand, using a server
+  * [+] can predict any new item as it comes
+  * [-] monitoring needs are more intensive
 
 > Dynamic Sampling
 
@@ -48,6 +56,166 @@
 
 $$
 P\left(X^{!}\right)=1.0-P\left(\frac{X}{\text { Sum of Candidates }}^{0.7}\right)
+$$
+
+## Metric
+
+* softmax
+
+```py
+import numpy as np
+
+def softmax(x):
+  """
+  Args    : input value [N, dim]
+  Returns : softmax [N, dim]
+  """
+  m = np.amax(x, axis=(0, 1))
+  ret = np.exp(x - m) / np.sum(np.exp(x - m), axis=1, keepdims=True)
+  return ret
+```
+
+* Cross Entropy
+  * used for mutually exclusive classes (male vs female, grayscale vs color)
+  * probability distribution of the event over k different events
+
+$$
+g(z)_{i}=\frac{e^{z_{i}}}{\sum_{j=1}^{K} e^{z_{j}}}
+$$
+
+$$
+\begin{array}{ll}
+J(W)=-(y \log (\hat{y})+(1-y) \log (1-\hat{y})) & \text { binary } \\
+J(W)=-\frac{1}{N} \sum_{n=1}^{N} y_{n} \log \hat{y}_{n}+\left(1-y_{n}\right) \log \left(1-\hat{y}_{n}\right) & \text { multi class }
+\end{array}
+$$
+
+> Similarity
+
+* Cosine
+  * Useful for positive | negative feedback
+  * independent of vector length → commonly used measure for high-dimensional spaces
+
+* Jaccard
+  * [-] Cannot use if the input is binary (ex. Recsys thumbs up vs thumbs down)
+
+$$
+J \operatorname{accard}\left(U_{i}, U_{j}\right)=\frac{\left|U_{i} \cap U_{j}\right|}{\left|U_{i} \cup U_{j}\right|}
+$$
+
+```py
+import gzip
+import numpy
+import random
+import requests
+from collections import defaultdict
+
+# Data
+"""
+{'marketplace': 'US',
+ 'customer_id': '45610553',
+ 'review_id': 'RMDCHWD0Y5OZ9',
+ 'product_id': 'B00HH62VB6',
+ 'product_parent': '618218723',
+ 'product_title': 'AGPtek® 10 Isolated Output 9V 12V 18V Guitar Pedal Board Power Supply Effect Pedals with Isolated Short Cricuit / Overcurrent Protection',
+ 'product_category': 'Musical Instruments',
+ 'star_rating': 3,
+ 'helpful_votes': 0,
+ 'total_votes': 1,
+ 'vine': 'N',
+ 'verified_purchase': 'N',
+ 'review_headline': 'Three Stars',
+ 'review_body': 'Works very good, but induces ALOT of noise.',
+ 'review_date': '2015-08-31'}
+"""
+def jaccard(s1, s2): 
+  numer = len(s1 & s2) 
+  denom = len(s1 | s2)
+  return numer / denom
+
+def most_similar(i): 
+  similarities = [] 
+  users = item2user[i]
+  
+  candidate_items = set() 
+  for u in users: 
+    candidate_items |= user2item[u] 
+
+  for i2 in candidate_items:
+    if i == i2: continue
+    sim = jaccard(users, item2user[i2])
+    similarities.append((sim, i2))
+  similarities.sort(reverse=True)
+  return similarities[:10]
+
+user2item, item2user = defaultdict(set), defaultdict(set)
+
+item_name = {}
+for d in data: 
+  u, i = d['customer_id'], d['product_id'] 
+  item2user[i].add(u) 
+  user2item[u].add(i) 
+  item_name[i] = d['product_title']
+
+display(data[2])
+for sim, iid in most_similar(data[2]['product_id']):
+  print(f"{item_name[iid][:55]:<60} has {sim:.3f} most similar item")
+```
+
+* Pearson Correlation
+  * Subtract by normalized value → Useful for numerical rating
+
+$$
+\frac{\sum_{j}\left(r_{i j}-\bar{r}_{i}\right)\left(r_{k j}-\bar{r}_{k}\right)}{\sqrt{\sum_{j}\left(r_{i j}-\bar{r}_{i}\right)^{2} \sum_{j}\left(r_{k j}-\bar{r}_{k}\right)^{2}}}
+$$
+
+> Accuracy
+
+```py
+def acc_prec_multiclass(preds, labels):
+  TP, FP, TN, FN = [0 for i in range(202)], [0 for i in range(202)], [0 for i in range(202)], [0 for i in range(202)]
+  classes = []
+  
+  for p, l in zip(preds, labels):
+    if p == l:
+      TP[pred] += 1
+      for i in range (len(TP)):
+        TN[i] += 1
+      TN[pred] -= 1
+    else:
+      FP[pred] += 1
+      FN[label] += 1
+      for i in range (len(TN)):
+        TN[i] += 1
+      TN[pred] -= 1
+      TN[label] -= 1
+
+  for tp, fp, tn, fn in zip(TP, FP, TN, FN):
+    accuracy = (tp + tn) / (tp + fp + tn + fn)  
+    precision if fp + tp == 0 else tp / (fp + tp)
+    recall = 0 if tp + fn == 0 else tp / (tp + fn)
+    bcr = (precision + recall) / 2
+    classes.append({"Class": i, "Precision": precision, "Accuracy": accuracy, "Recall": recall, "BCR": bcr})
+
+  return classes
+```
+
+* F1
+  * gives a larger weight to lower numbers
+  * macro-F1 arithmetic mean of our per-class F1-scores
+  * weighted-F1, weight each class by the number of samples from that class
+  * micro-averaged F1, micro-F1 = micro-precision = micro-recall = accuracy
+
+$$
+2 \cdot \frac{\text { Prec } \cdot \text { recall }}{\text { Prec }+\text { recall }}=\frac{2 T P}{2 T P+F P+F N}
+$$
+
+* Fb
+  * Low beta: precision is more important. 
+  * High beta: recall is more important
+
+$$
+\left(1+\beta^{2}\right) \cdot \frac{\text { prec } \cdot \text { recall }}{\beta^{2} \cdot \text { prec }+\text { recall }}
 $$
 
 ## Deep Learning
@@ -126,6 +294,17 @@ g(a) = a
 $$
 
 * no matter how many layers it had, it will behave just like a single-layer perceptron
+
+> Relu
+
+![ReLu](images/20210222_225423.png)
+
+* good performance especially when dealing with vanishing gradient
+
+$$
+g(z)=max(0,z) \\
+g'(z)=1 (z>0), 0
+$$
 
 ### Gradient Descent
 
@@ -413,6 +592,38 @@ a 'wheel' is made from 'rubber'"​        # Substance (stuff) meronym
 * [-] No use for new users and new items 
 * [-] Won't necessarily encourage diverse results
 
+### Tree
+
+![Random Forest vs Boosting](images/20210222_225347.png)
+
+* Useful for tabular data
+* avoid overfitting in two ways: to add a stopping criteria, or to use tree pruning
+
+> Gradient Boosting Decision Tree
+
+* ensemble that takes an iteratively combine weak learners to create a strong learner
+* focus on mistakes of prior iterations
+* [+] powerful, accepts various inputs, used for classification / regression, outputs feature importance
+* [-] longer to train, likely to overfit, difficult to tune
+* Overfit
+  * max_depth (7), subsample, colsample_bytree, colsample_bylevel, eta, num_rounds
+* Under fit
+  * min_child_weight (0, 5, 15, 500), lambda alpha
+
+> Random Forest
+
+* each decision tree gets a random sample | columns of the training data to be sent to each tree
+  * [+] does not increase generalization error when more trees are added to the model
+  * [-] don’t train well on smaller datasets
+  * [-] problem of interpretability with random forest
+  * [-] Random forests do not handle large numbers of irrelevant features
+  * [-] models requires O(NK) memory storage, (N - # of base, K - # of trees)
+
+> Extra Tree
+
+* Split of each selected feature is random → less computationally expensive than a random forest
+* Extra Trees show low variance
+
 ## Reinforcement Learning
 
 > Terms
@@ -422,4 +633,185 @@ a 'wheel' is made from 'rubber'"​        # Substance (stuff) meronym
 ```sh
 Episodic Tasks    # Interaction breaks into episodes, which end with a terminal state. 
 Continuing Tasks  # Interaction goes on continually without terminal state.
+```
+
+* Policy
+  * Target : One we are learning
+  * Behavior : One we are choosing action from
+
+* Generalized policy iteration (GPI)
+  * interaction between policy-evaluation and policy improvement
+
+* Planning
+  * any process that takes input model, and improves a policy 
+
+* Backup Diagram
+
+### Model
+
+![Models](images/20210222_225900.png)
+
+* Dyna
+
+```text
+# Q+
+Initialize:
+  Q(s, a) and Model(s, a) for all s 2 S and a 2 A(s)
+Loop forever:
+  S ← current (nonterminal) state
+  A ← e-greedy(S, Q)
+  Take action A: observe resultant reward, R, and state, S' 
+  Q(S, A) ← Q(S, A) + α [R + γ maxaQ(S', a) - Q(S, A)] 
+  Model(S, A) ← R, S'
+  Loop repeat n times: 
+    S ← random previously observed state
+    A ← random action previously taken in S
+    R, S' ← Model(S, A) 
+    Q(S, A) ← Q(S, A) + α[(R + κτ0.5) + R + γ maxaQ(S', a) - Q(S, A)]
+```
+
+* Monte Carlo
+
+```text
+# e-soft
+Input : a policy π to be evaluated, ε > 0
+Initialize: 
+  π ← an arbitrary ε-soft policy 
+  Q(s, a) ∈ R (arbitrarily) for all s ∈ S, a ∈ A(s)
+  Returns(s, a) ← an empty list, for all s ∈ S, a ∈ A(s).
+Loop: 
+  Generate an episode from S0, A0, following π : S0, A0, R1, …, ST-1, AT-1, RT 
+  G ← 0
+  Loop for each step of episode, t = T - 1, T - 2, ..., 0:
+    G ← γG + Rt+1 
+    Append G to Returns(St, At) 
+    Q(St, At) ← average(Returns(St, At))
+    A* ← argmaxa Q(St, a)
+    For all a ∈ A(St):
+      
+
+# Exploring start
+Initialize: 
+  π(s) ∈ A(s)  (arbitrarily), for all s ∈ S. 
+  Q(s, a) ∈ R (arbitrarily), for all s ∈ S, a ∈ A(s).
+  Returns(s, a) ← an empty list, for all s ∈ S, a ∈ A(s).
+Loop: 
+  Choose S0 ∈ S, A0 ∈ A(S0) randomly s.t. all pairs have probability > 0
+  Generate an episode from S0, A0, following π : S0, A0, R1, …, ST-1, AT-1, RT 
+    G ← return that follows the first occurence of s, a
+    Append G to Returns(s, a)
+    Q(s, a) ← average(Returns(s, a))
+    For each s in the episode:
+      π(s) ← argmaxa Q(s, a)
+
+# Off-policy
+Input:
+  an arbitrary target policy π 
+Initialize, for all s ∈ S, a ∈ A(s):
+  Q(s, a) ← arbitrary
+  C(s, a) ← 0
+Repeat:
+  b ← any policy with coverage of π 
+  Generate an episode using b:
+  S0, A0, R1, …, ST - 1, AT - 1, RT, ST
+  G ← 0
+  W ← 1
+  For t = T - 1, T - 2, … down to 0:
+    G ← γG + Rt+1
+    C(St, At) ← C(St, At) + W
+    Q(St, At) ← Q(St, At) + W | C(St, At) [G - Q(St, At)]
+    W ← W π(At|St) | b(At|St)
+    If W = 0 then exit For loop
+
+# Prediction
+Initialize: 
+  π ← policy to be evaluated 
+  V ← an arbitrary state-value function 
+  Returns(s) ← an empty list, for all s ∈ S 
+Repeat forever: 
+  Generate an episode using π 
+  For each state s appearing in the episode: 
+    G ← the return that follows the first occurrence of s 
+    Append G to Returns(s) 
+    V (s) ← average(Returns(s))
+```
+
+* SARSA
+
+```text
+# Differential Semi-G
+Initialize state S, and action A
+Loop for each step:
+  Take action A, observe R, S’
+  Choose A’ as a function of q̂(S’, ·, w) (e.g. ε-greedy)
+  δ ← R - R̄+ q̂(S’, A’, w) - q̂(S, A, w)
+  R̄ ← R̄ + β δ
+  w ← w + αδ ∇q̂(S, A, w)
+  S ← S’
+  A ← A’     
+
+# Expected
+Loop for each episode:
+  Initialize S
+  Choose A from S using policy derived from Q (e.g. ε-greedy)
+  Loop for each step of episode:
+    Take action A, observe R, S’
+    Choose A’ from S’ using policy derived Q (e.g. ε-greedy) 
+    Q(S, A) ← Q(S, A) + α[R + γQ(S’, A’) - Q(S, A)]
+    Q(S, A) ← Q(S, A) + α[R + γΣaπ(a | St+1)Q(St+1, a) - Q(St, At)]
+    S ← S’; A ← A’;
+  until S is terminal
+```
+
+* Q Learning
+
+```text
+Initialize:
+  Q(s, a) = random, for all s ∈ S, a ∈ A(s)
+  Q(terminal, *) = 0
+Loop: 
+  Initialize S 
+  Loop for each step of episode: 
+    Choose A from S using policy derived from Q (e.g. e-greedy)
+    Take action A, observe R, S' 
+    Q(S, A) ← Q(S, A) + α [R + γ maxa Q(S', a) - Q(S, A)] 
+    S ← S' 
+  until S is terminal
+```
+
+* Q planning
+
+```text
+Loop:
+  Select a state, S ∈ S, and an action, a ∈ A(s) at random 
+  Send s, a to a sample model, and obtain a sample next reward, R, and a sample next state, S' 
+  Apply one-step tabular Q-learning to S, A, R, S' 
+    Q(S, A) ← Q(S, A) + α[ R + γmaxaQ(S', a) - Q(S, A)]
+```
+
+* TD0
+
+```text
+Input:
+  policy π to be evaluated, step size α 
+Initialize:
+  V(s), for all s ∈ S+, arbitrarily except that V(terminal) = 0 
+Loop for each episode:
+  Initialize S
+  Loop for each step of episode: 
+    A ← action given by π for S
+    Take action A, observer R, S' 
+    V(S) ← V(S) + α[R + γV(s') - V(S)]
+    S ← S'
+  until S is terminal
+
+> Semi-Gradient
+Loop for each episode: 
+    Initialize S 
+    Loop for each step of episode: 
+        Choose A ~ π(*|S)
+        Take action A, observe R, S' 
+        w ← w + α[R + γ v̂(S', w) - v̂(S, w)] Δv̂(S, w) 
+        S ← S' 
+until S is terminal
 ```

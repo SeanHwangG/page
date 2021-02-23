@@ -1,15 +1,5 @@
 # Tool
 
-## DataGrip
-
-* Useful for data visualization
-
-![alt](images/20210218_131324.png)
-
-* Perform sql query
-
-![alt](images/20210218_131400.png)
-
 ## VScode
 
 * [enter without key](https://code.visualstudio.com/docs/remote/troubleshooting)
@@ -33,10 +23,10 @@ github1s.com    # show github in vscode
 # Edit
 ⌘ d               # edit multiple variables
 option up / down  # move current code up / down
-⌃ Space           # trigger IntelliSense Suggestions 
+⌃ Space           # trigger IntelliSense Suggestions
 ⇧ ⌥ a             # toggle comment
 
-# Select 
+# Select
 ⌘ click        # Multi-line cursor
 ⇧ ⌥ drag       # Multi-line cursor
 ⌃⇧⌘←/→         # expand / shrink select
@@ -48,7 +38,7 @@ option up / down  # move current code up / down
 ⌘ shift .      # See all methods
 ⌘ option click # Open Side
 ⌘ click        # Replace / Click again to go back
-F8        
+F8
 ⌃ (⇧) -        # Navigate back (forward)
 
 # Screen
@@ -65,7 +55,7 @@ option ⌘ [     # Code folding
 # Terminal
 ⌃ `            # Focus on terminal
 ⌃ shift `      # New terminal
-⌘ ⌥ ← / → / ↑ / ↓   # Toggle between pane / terminal 
+⌘ ⌥ ← / → / ↑ / ↓   # Toggle between pane / terminal
 ```
 
 > Files
@@ -73,7 +63,7 @@ option ⌘ [     # Code folding
 * Settings.json
 
 ```json
-// ${workspaceFolder} workspace forder 
+// ${workspaceFolder} workspace forder
 
 {
     // General
@@ -87,7 +77,7 @@ option ⌘ [     # Code folding
     "build/": true,
   },
 
-  // Use environment variable ${env:Name} 
+  // Use environment variable ${env:Name}
   "args": ["${env:USERNAME}"]
 
   // Python related
@@ -97,7 +87,7 @@ option ⌘ [     # Code folding
   "python.pythonPath": "${workspaceFolder}/env/bin/python3",     // lint python
   "python.linting.pylintArgs": ["--generate-members"],           // disable cv2 warning
   "python.pythonPath": "${workspaceFolder}/env/bin/python3",     // python3 -m venv env
-  
+
   // c++ related
   "C_Cpp.clang_format_style": "file",                            // use .clang-format in current / home directory
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools" // use CMakeLists.txt for linting
@@ -109,7 +99,7 @@ option ⌘ [     # Code folding
 ```json
 {
   "console": "integratedTerminal",     // use integrated terminal for console.log
-  "sudo" : true,  // must be  used with "console": "externalTerminal" 
+  "sudo" : true,  // must be  used with "console": "externalTerminal"
   // add environment variable
   "env": {"API_BASE":"https://"}  ,
   "envFile": "${workspaceFolder}/.env" ,
@@ -259,7 +249,7 @@ option ⌘ [     # Code folding
 
 > Install
 
-* Lagging -> Renderer Type dom 
+* Lagging -> Renderer Type dom
 
 * Window
 
@@ -275,11 +265,18 @@ $HOME/Library/Application Support/Code/User/settings.json
 
 ### Extension
 
-> code runnero
+> code runner
+
+* settings.json
 
 ```sh
 {
-  "code-runner.ignoreSelection": true       # don't create tempCodeRunnerFile 
+  "code-runner.ignoreSelection": true,       # don't create tempCodeRunnerFile
+  "code-runner.saveAllFilesBeforeRun": true,
+  "code-runner.runInTerminal": true,
+  "code-runner.executorMapByGlob" : {
+    "complicated.cpp" : "cd $dir && bash run_complicated.sh"
+  }
 }
 ```
 
@@ -373,7 +370,7 @@ Paste Image:Path ${currentFileDir}/images
 
 > workspace
 
-* dedicated directory on the Jenkins server where each job is given and store generated files 
+* dedicated directory on the Jenkins server where each job is given and store generated files
 
 > build steps
 
@@ -399,7 +396,7 @@ pipeline {
         }
     }
 }
-``` 
+```
 
 * Cron
 
@@ -425,7 +422,7 @@ pipeline {
 * disable accented key for long press
 
 ```
-defaults write -g ApplePressAndHoldEnabled -bool false 
+defaults write -g ApplePressAndHoldEnabled -bool false
 ```
 
 ### Shortcut
@@ -450,7 +447,7 @@ defaults write -g ApplePressAndHoldEnabled -bool false
 ⌃ ⌘ space         # See special characters
 ⌘ ⇧ G             # Go to specific file path
 
-System Preferences -> Sharing -> Computer Name: 
+System Preferences -> Sharing -> Computer Name:
 XCode
 ```
 
@@ -513,25 +510,29 @@ option ↑ ↓ # Change sheet
 * stylish
 
 ```css
-.reset-3c756112--pageContainer-544d6e9c {
-    max-width: 1400px;
+..reset-3c756112--pageContainer-544d6e9c {
+    max-width: 1500px;
 }
-
 .reset-3c756112--contentNavigation-dd3370a4 {
     padding-left: 0;
-    width: calc((100% - 1448px) / 2 + 100px);
+    width: calc((100% - 1448px) / 5);
 }
-
 .reset-3c756112--menuItem-aa02f6ec--menuItemLight-757d5235--menuItemInline-173bdf97--pageSideMenuItem-22949732 {
     display: none;
 }
-
 .reset-3c756112--sidebarNav-1270f224 {
     display: none;
 }
-
 .reset-3c756112--body-324a5898 {
     margin: 0;
+}
+
+.reset-3c756112--pageSide-ad9fed26 {
+    width: 180px;
+}
+
+.reset-3c756112--contentNavigation-dd3370a4 {
+    min-width: 198px;
 }
 
 .reset-3c756112--body-324a5898 {
@@ -560,7 +561,7 @@ coldline        # long term backup
   * Allows a user to give permission for an app to act on their behalf
   * Register your app with Google (provide a client id, and client secret)
   * Redirect user to authorization URL (happens on google’s server), Google shows consent screen
-  * Google provides an authorization code 
+  * Google provides an authorization code
   * your app exchanges the code for a token and include token with subsequent requests to Google)
 
 * OIDC
@@ -600,7 +601,7 @@ a.py gs://seansdevnote/    # copy a.py to gs://seansdevnote/
 
 ```py
 info            # show commands
-cheat-sheet     # show useful 
+cheat-sheet     # show useful
 --version       # show version
 ```
 
@@ -637,7 +638,7 @@ config set run/platform managed run/region us-central1
 
 ```sh
 list
-print-access-token 
+print-access-token
 login
 revoke      # logout
 ```
@@ -645,7 +646,7 @@ revoke      # logout
 * dns
 
 ```sh
-record-sets transaction start --zone=MANAGED_ZONE    # 
+record-sets transaction start --zone=MANAGED_ZONE    #
 managed-zones list                        # show all managed zones
 ```
 
@@ -722,7 +723,7 @@ deploy
 --image gcr.io/seansdevnote/flask-fire # set image
 
 services list                          # show all services
-services describe                      # 
+services describe                      #
 ```
 
 * compute
@@ -820,13 +821,13 @@ instances create
 
 ```
 \begin{center}
-\begin{tabular}{ | m{5em} | m{1cm}| m{1cm} | } 
+\begin{tabular}{ | m{5em} | m{1cm}| m{1cm} | }
 \hline
-cell1 dummy text dummy text dummy text & cell2 & cell3 \\ 
+cell1 dummy text dummy text dummy text & cell2 & cell3 \\
 \hline
-cell1 dummy text dummy text dummy text & cell5 & cell6 \\ 
+cell1 dummy text dummy text dummy text & cell5 & cell6 \\
 \hline
-cell7 & cell8 & cell9 \\ 
+cell7 & cell8 & cell9 \\
 \hline
 \end{tabular}
 \end{center}
@@ -836,7 +837,7 @@ cell7 & cell8 & cell9 \\
  &  &  &  &  \\
  &  &  &  &  \\
  &  &  &  &  \\
- &  &  &  & 
+ &  &  &  &
 \end{tabular}
 \end{table}
 
@@ -898,7 +899,7 @@ cell7 & cell8 & cell9 \\
 ```text
 #n                   # headers
 ** bold    **        # Bold
- > backquote         # 
+ > backquote         #
 * / + / -            # list (add spaces to make sublist)
 1. / 2.              # unordered list
 ![sample](/assets/images/tux.png)        # images> Code Snipet
@@ -1030,9 +1031,9 @@ serve           # Run locally
 * Setup
 
 ```sh
-# Setup PC 
+# Setup PC
 git --version               # git version 2.17.1
-node --version  
+node --version
 npm --version
 
 npm install -g gulp         # provides a way to sequence commands that execute steps in local Operating System
@@ -1156,7 +1157,7 @@ iptables -n -L -t nat
 * ns
   * allow processes to be attached to private network segments
   * private networks are bridged into shared network with rest of containers
-  * containers haver virtual network cards 
+  * containers haver virtual network cards
   * containers get their own copy of networking stack
 
 * Repository
@@ -1190,13 +1191,13 @@ iptables -n -L -t nat
   * image argument must come last (-v page:page image:latest)
 
 ```sh
-docker run -ti image:latest bash -v page:page 
+docker run -ti image:latest bash -v page:page
 ```
 
 * Hang when apt [Connecting to archive.ubuntu.com (91.189.88.142)]
   * use apt-get update
 
-* docker: Error response from daemon: driver failed programming external connectivity on endpoint  
+* docker: Error response from daemon: driver failed programming external connectivity on endpoint
   app_2 (d408c39433627b00183bb): Bind for 0.0.0.0:80 failed: port is already allocated.
   * A port can be assigned to only one container/process at a time
 
@@ -1250,7 +1251,7 @@ docker images                 # google_size is only 5.57MB
 > CMD ["executable","param1","param2"] (exec) / command param1 param2 (shell)
 
 * provide defaults for an executing container
-* run once when container has started, using docker run     # can override using run IMG CMD 
+* run once when container has started, using docker run     # can override using run IMG CMD
 * does not execute anything at build time, but specifies the intended command for the image.
 * Must be used once, if multiple used last
 
@@ -1279,7 +1280,7 @@ CMD ["echo"]
 * docker run -P flag to publish all exposed ports and map them to high-order ports.
 
 ```sh
-8080                        # expose 
+8080                        # expose
 ```
 
 ```js
@@ -1307,7 +1308,7 @@ const app = express();
 const PORT = 4000;
 const client = mongodb.MongoClient;
 
-client.connect(config.DB, { useNewUrlParser: true }, (err, db) => { 
+client.connect(config.DB, { useNewUrlParser: true }, (err, db) => {
     if(err) {
         console.log('database is not connected')
     }
@@ -1440,7 +1441,7 @@ cat /proc/self/cgroup | head -1 | tr --delete ‘10:memory:/docker/’    # Get 
   * links a local input, output, and error stream to a container
 
 ```sh
-<container-name>            # 
+<container-name>            #
 ```
 
 * Detach
@@ -1479,7 +1480,7 @@ container_id  IMAGE:TAG        # convert container to images return image_id
 > tag
 
 ```sh
-image new_id                # Change image to new_id 
+image new_id                # Change image to new_id
 page seanhwangg/page        # connect to remote
 ```
 
@@ -1520,7 +1521,7 @@ $(docker ps -a -q)  # remove all containers
 > save
 
 -o my-images.tar.gz debian:sid busybox ubuntu:14.04
- 
+
 > load
 
 * Volume
@@ -1551,7 +1552,7 @@ docker port echo-server # in other terminal
 * use host if no isolation is needed
 
 ```sh
-ls                # list of all 
+ls                # list of all
 create nw         # create nw
 rm / prune        # Remove  one or more networks / all unused networks
 connect image nw
@@ -1591,10 +1592,10 @@ gcloud auth configure-docker
 * docker-machine env-default
 
 ```sh
-start             # 
+start             #
 create
 env               # Get environment variable
-restart 
+restart
 ip default        # Get default IP
 ```
 
@@ -1657,7 +1658,7 @@ cpu_quota allow Compose implementations to configure CPU CFS (Completely Fair Sc
 
 ```sh
 dns             # defines custom DNS servers
-mac_address     # 
+mac_address     #
 env_file        # adds environment variables to the container based on file content
 entrypoint      # overrides default entrypoint for the Docker
 environment     # environment have precedence over env_file
@@ -1746,12 +1747,12 @@ curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s ht
 > Pods
 
 * simplest unit that can interact with. create, deploy, delete, represents one running process on your cluster
-* contains docker application container / storage resources / unique network ip / containers run options 
+* contains docker application container / storage resources / unique network ip / containers run options
 * pending, running, succeeded, failed, CrashLoopBackoff
 
 > Minikube
 
-* lightweight kubernetes implementation that creates a VM on local machine 
+* lightweight kubernetes implementation that creates a VM on local machine
 * deploys a simple cluster containing only one node
 
 ```yml
@@ -1800,7 +1801,7 @@ helloworld        # run webserver
 * cluster-info
 
 ```sh
-<>                 # 
+<>                 #
 dump
 ```
 
@@ -1809,7 +1810,7 @@ dump
 ```sh
 -o                # output format (yaml)
 all               # see all nodes
---watch 
+--watch
 
 deployments / service  # show all deployment / service
 cronjob / pods         # list all cronjob
@@ -1866,9 +1867,9 @@ nodes / pods / jobs name # delete node
 pod                      # delete pods
 ```
 
-> expose 
+> expose
 
-* deployment node            # 
+* deployment node            #
 
 ### Command
 
@@ -1885,7 +1886,7 @@ events            # get real-time events from the server
 ```sh
 df                # information regarding amount of disk space used by docker daemon
 prune             # remove stopped, volumes unused by container, dangling image
-ls                # 
+ls                #
 ```
 
 > Remote
@@ -1949,7 +1950,7 @@ export FORMAT="\nID\t{{.ID}}\nIMAGE\t{{.Image}}\nCOMMAND\t{{.Command}}\nCREATED\
 * logs
 
 ```sh
-container_name            # show output of the container 
+container_name            # show output of the container
 docker run --name log -d ubuntu bash -c "lose /etc/password"
 docker logs log   # bash: lose: command not found
 ```
@@ -1995,7 +1996,7 @@ docker images -a | grep "pattern" | awk '{print $3}' | xargs docker rmi
 
 ```sh
 <docker_dir>           # build folder with Dockerfile
--t tag .               # tag name to 
+-t tag .               # tag name to
 --rm                   # Remove intermediate containers after a successful build
 --pull                 # Always attempt to pull a newer version of the image
 ```
@@ -2011,7 +2012,7 @@ docker images -a | grep "pattern" | awk '{print $3}' | xargs docker rmi
 --rm                   # Delete container after exit
 -ti                    # Terminal interactive
 --link                 # can see env of container 'aaa'
---host                 # 
+--host                 #
 --privileged=true --pid=host        # can kill other docker
 --memory / --cpu-quota / shares     # limit cpu and memory
 -v / --volume <host_dir>:<cont_dir> # Mount directory within docker (files if file exists)
