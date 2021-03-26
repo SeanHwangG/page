@@ -1,11 +1,13 @@
+# Syntax
 
-# IO
+## IO
 
-## Errors
+### Errors
+
 * throw
 
 ```java
-throws java.io.IOException					# When dealing with I/O in Java
+throws java.io.IOException  // When dealing with I/O in Java
 ```
 
 * Catch all excpetion
@@ -18,7 +20,7 @@ try {
 }
 ```
 
-## Primitives
+### Primitives
 
 * automatic cast
 
@@ -27,7 +29,8 @@ float → double
 byte → short → int → long
 JAVA → CPP → C
 ```
-## String
+
+### String
 
 ```java
 System.out.println(System.getProperty("file.encoding"));  // Print encoding type of file
@@ -59,13 +62,13 @@ public class a {
 }
 ```
 
-## Iterator
+### Iterator
 
 ```java
 remove()    // Removes from the underlying collection the last element returned by this iterator
 ```
 
-## List
+### List
 
 ```java
 unmodifiable, LinkedList is modifiable
@@ -77,12 +80,12 @@ remove(int index)	Removes the element at the specified position in this list (op
 size()			Returns the number of elements in this list
 ```
 
-# Operation
+## Operation
 
 
-# OOP
+## OOP
 
-## Class
+### Class
 
 * can extend from only 1 base class
 
@@ -95,7 +98,7 @@ size()			Returns the number of elements in this list
 * classes must be defined abstract if at least one method in the class definition is defined abstractly
 * classes which are too generic to be instantiated as objects (cannot create abstract object)
 
-## Interface Inheritance
+### Interface Inheritance
 
 * Interfaces contain no method definitions, no constructors, and only public static final variable
 * Classes may implement multiple interfaces
@@ -121,7 +124,7 @@ public static class Sub extends Super {
 public class MethodTest {
   public static void main(String[] args) {
     Super sup = new Super();
-    Sub sub = new Sub();	
+    Sub sub = new Sub();
     Super sup_ref_sub = new Sub();
 
     sup.meth(sup);                  // 1
@@ -139,11 +142,11 @@ public class MethodTest {
 }
 ```
 
-# Patterns
+## Patterns
 
 * [CS](../cs/cs.md#pattern)
 
-## Principles
+### Principles
 
 * [theory](../cs/cs.md#Principle)
 
@@ -160,15 +163,15 @@ Car car = new Car(18);
 
 interface ITire { int wheelSize(); }		// Car depends on interface
 class Tire implements ITire { int wheelSize(){} }
-class Car { 
-  ITire tire; 
-  Car(int size) { this.tire = new Toyo(size); } 
-  int wheelSize() { return tire.size(); } 
+class Car {
+  ITire tire;
+  Car(int size) { this.tire = new Toyo(size); }
+  int wheelSize() { return tire.size(); }
 }
 Car car = new Car(new Toyo(18));
 ```
 
-## Creational Patterns
+### Creational Patterns
 
 * Singleton
 
@@ -194,70 +197,70 @@ Event event = factory.createEvent(FLOWERS);   // BEST
 * Builder
 
 ```java
-interface HousePlan { 
-  public void setRoof(String roof); 
-  public void setInterior(String interior); 
-} 
-class House implements HousePlan { 
-  private String roof, interior; 
-  public void setRoof(String roof) { this.roof = roof; } 
-  public void setInterior(String interior) { this.interior = interior; } 
-} 
-interface HouseBuilder { 
-  public void bulidRoof();   
-  public void buildInterior(); 
-  public House getHouse(); 
-} 
-class IglooHouseBuilder implements HouseBuilder { 
-  private House house; 
-  public IglooHouseBuilder() { this.house = new House(); } 
-  public void buildInterior() { house.setInterior("Ice Carvings"); } 
-  public void bulidRoof() { house.setRoof("Ice Dome"); } 
-  public House getHouse() { return this.house; } 
-} 
-class TipiHouseBuilder implements HouseBuilder { 
-  private House house; 
-  public TipiHouseBuilder() { this.house = new House(); } 
-  public void buildInterior() { house.setInterior("Fire Wood"); } 
-  public void bulidRoof() { house.setRoof("Wood, caribou and seal skins"); } 
-  public House getHouse() { return this.house; } 
+interface HousePlan {
+  public void setRoof(String roof);
+  public void setInterior(String interior);
+}
+class House implements HousePlan {
+  private String roof, interior;
+  public void setRoof(String roof) { this.roof = roof; }
+  public void setInterior(String interior) { this.interior = interior; }
+}
+interface HouseBuilder {
+  public void bulidRoof();
+  public void buildInterior();
+  public House getHouse();
+}
+class IglooHouseBuilder implements HouseBuilder {
+  private House house;
+  public IglooHouseBuilder() { this.house = new House(); }
+  public void buildInterior() { house.setInterior("Ice Carvings"); }
+  public void bulidRoof() { house.setRoof("Ice Dome"); }
+  public House getHouse() { return this.house; }
+}
+class TipiHouseBuilder implements HouseBuilder {
+  private House house;
+  public TipiHouseBuilder() { this.house = new House(); }
+  public void buildInterior() { house.setInterior("Fire Wood"); }
+  public void bulidRoof() { house.setRoof("Wood, caribou and seal skins"); }
+  public House getHouse() { return this.house; }
 }
 
-class CivilEngineer  { 
-  private HouseBuilder houseBuilder; 
-  public CivilEngineer(HouseBuilder houseBuilder) { this.houseBuilder = houseBuilder; } 
-  public House getHouse() { return this.houseBuilder.getHouse(); } 
-  public void constructHouse() { 
-    this.houseBuilder.bulidRoof(); 
-    this.houseBuilder.buildInterior(); 
-  } 
-} 
+class CivilEngineer  {
+  private HouseBuilder houseBuilder;
+  public CivilEngineer(HouseBuilder houseBuilder) { this.houseBuilder = houseBuilder; }
+  public House getHouse() { return this.houseBuilder.getHouse(); }
+  public void constructHouse() {
+    this.houseBuilder.bulidRoof();
+    this.houseBuilder.buildInterior();
+  }
+}
 
-class Builder { 
-  public static void main(String[] args) { 
-    HouseBuilder iglooBuilder = new IglooHouseBuilder(); 
-    CivilEngineer engineer = new CivilEngineer(iglooBuilder); 
-    engineer.constructHouse(); 
-    House house = engineer.getHouse(); 
-    System.out.println("Builder constructed: "+ house); 
-  } 
-} 
+class Builder {
+  public static void main(String[] args) {
+    HouseBuilder iglooBuilder = new IglooHouseBuilder();
+    CivilEngineer engineer = new CivilEngineer(iglooBuilder);
+    engineer.constructHouse();
+    House house = engineer.getHouse();
+    System.out.println("Builder constructed: "+ house);
+  }
+}
 ```
 
-## Strucutral Pattern
+### Strucutral Pattern
 
 * Adaptor
 
 ```java
 interface ITarget { void request(); }
 class Adapter implements ITarget {	        // Adapter class enables Adaptee to use incompatible Itarget
-    Adaptee adaptee; 
-    public Adapter(Adaptee a) { this.adaptee = a; } 
+    Adaptee adaptee;
+    public Adapter(Adaptee a) { this.adaptee = a; }
     public void request() { this.adaptee.specificRequest(); }
 }
 class Adaptee {  public void specificRequest() { ... } }
 
-ITarget target = new Adapter( new Adaptee() ); 
+ITarget target = new Adapter( new Adaptee() );
 target.request();
 ```
 
@@ -278,20 +281,20 @@ Beverage bev = new Foam(new Espresso());
 
 // Generally simpler and better
 interface Beverage {
-  String getDescription(); 
+  String getDescription();
   int cost();
 }
-class CoffeeDrink extends Beverage { 
-  float theCost; 
-  CoffeeDrink(String desc, float cost) { description = desc; theCost = cost;} 
-  float cost() { return theCost; } 
-} 
-class Condiment extends Beverage { 
-  Beverage beverage; 
-  float theCost; 
-  Condiment(Beverage bev, String desc, float cost) { 
-    beverage = bev; description = desc; theCost = cost; } 
-  float cost() { return beverage.cost() + theCost; } 
+class CoffeeDrink extends Beverage {
+  float theCost;
+  CoffeeDrink(String desc, float cost) { description = desc; theCost = cost;}
+  float cost() { return theCost; }
+}
+class Condiment extends Beverage {
+  Beverage beverage;
+  float theCost;
+  Condiment(Beverage bev, String desc, float cost) {
+    beverage = bev; description = desc; theCost = cost; }
+  float cost() { return beverage.cost() + theCost; }
   String getDescription() { return beverage.getDescription() + ", " + description; }
 }
 
@@ -303,13 +306,13 @@ Beverage bev = new Condiment(new CoffeeDrink("Espresso", 1.00), "Foam", 0.3); //
 ```java
 // delegate (receiving) object
 class Rectangle(int width, int height) {
-  void area() { 
+  void area() {
     return width * height;
   }
 }
 
 // original (sending) object
-class Window(Rectangle bounds) {			
+class Window(Rectangle bounds) {
   void area() {
     return bounds.area();
   }
@@ -329,32 +332,32 @@ class Display {
 }
 
 // Good
-interface DataSubject { void register(DataObserver do); } 
-interface DataObserver { void newData(int d); } 
-class Data implements DataSubject { 
-    int data = 0; 
-    ArrayList<DataObserver> observers; 
-    void setData(int d) { data = d; notify(d); } 
-    void register(DataObserver do) { observers.add(do); } 
+interface DataSubject { void register(DataObserver do); }
+interface DataObserver { void newData(int d); }
+class Data implements DataSubject {
+    int data = 0;
+    ArrayList<DataObserver> observers;
+    void setData(int d) { data = d; notify(d); }
+    void register(DataObserver do) { observers.add(do); }
     void notify(int d) { for (DataObserver obs: Observers) obs.newData(d); }
 }
-class Display { 
+class Display {
     void show(int v) { Print("val: " + v); }
 }
-class DataDispMed implements DataObserver { 
-    DataSubject ds; 
-    Display disp; 
-    DataDispMed(DataSubject ds, Display disp) { 
-        this.ds = ds; 
-        this.disp = disp; 
-        ds.register(this); 
-    } 
-    void newData(int d) { disp.show(d); } 
+class DataDispMed implements DataObserver {
+    DataSubject ds;
+    Display disp;
+    DataDispMed(DataSubject ds, Display disp) {
+        this.ds = ds;
+        this.disp = disp;
+        ds.register(this);
+    }
+    void newData(int d) { disp.show(d); }
 }
-void main() { 
-    Data data = new Data(); 
-    Display = new Display(); 
-    DataDispMed ddm = new DataDispMed(data, disp); 
+void main() {
+    Data data = new Data();
+    Display = new Display();
+    DataDispMed ddm = new DataDispMed(data, disp);
     data.setData(5); // print “val: 5”
 }
 ```
@@ -380,7 +383,7 @@ class Acct implements AcctSubject {
   List<AcctObserver> aos;
   void withdraw(int a) { bal -= a; notify(); }
   void reg(AcctObserver ao) { aos.add(ao); }
-  void notify() { 
+  void notify() {
     for (AcctObserver ao : aos) { ao.newbal(bal); }
   }
 }
@@ -405,16 +408,16 @@ class AcctUIMediator implements AccountObserver, UIObserver {
   void newbal(int b) { ui.show(b); }
   void withdraw(int a) { acct.withdraw(a); }
 }
-interface AcctSubject { 
-  void register(AcctObserver do); 
-  void notify(); 
+interface AcctSubject {
+  void register(AcctObserver do);
+  void notify();
 }
 interface AcctObserver { void newbal(int b); }
 class Acct implements AcctSubject {
   List<AcctObserver> aos;
   void withdraw(int a) { bal -= a; notify(); }
   void register(AcctObserver ao) { aos.add(ao); }
-  void notify() { 
+  void notify() {
     for (AcctObserver ao : aos) { ao.newbal(bal); }
   }
 }
@@ -435,14 +438,14 @@ void main() {
 }
 ```
 
-## Behavioral
+### Behavioral
 
 > Strategy pattern
 
 ```java
-class Duck { 
-  IFlyBehavior fb; 
-  IQuackBehavior qb; 
+class Duck {
+  IFlyBehavior fb;
+  IQuackBehavior qb;
   IDisplayBehavior db;
   public Duck (IFlyBehavior fb, IQuackBehavior qb, IDisplayBehavior db) { };
   public void fly() { this.fb.fly(); }
@@ -452,21 +455,21 @@ class Duck {
 > Iterator
 
 ```java
-interface iterable { Iterator GetIterator(); } 
-class iterable { Iterator GetIterator(); } 
-interface Iterator { bool hasNext(); void next(); object current(); } 
+interface iterable { Iterator GetIterator(); }
+class iterable { Iterator GetIterator(); }
+interface Iterator { bool hasNext(); void next(); object current(); }
 class Iterator { bool hasNext(); void next(); object current(); }
 ```
 
 > Observer
 
-* subject (observable) maintains a dependents (observers) 
+* subject (observable) maintains a dependents (observers)
 * subject notifies observers automatically of any state changes, usually by calling one of their methods.
 
 ![alt](images/20210213_184248.png)
 
 ```java
-interface IOservable {	
+interface IOservable {
   void add (IObserver o);
   void remove (IObserver o);
   void notify();
@@ -493,33 +496,32 @@ class PhoneDisplay implements IObserver{
 }
 ```
 
+### Functional
 
-## Functional
+## Conccurency
 
-# Conccurency
-
-## synchronized
+### synchronized
 
 ```java
-class Counter { 
-    int count; 
-    public synchronized void increment() { count++; } 
+class Counter {
+    int count;
+    public synchronized void increment() { count++; }
 }
 
-public class SyncDemo { 
-    public static void main(String[] args) { 
-        Counter c = new Counter(); 
-        Thread t1 = new Thread(new Runnable() { 
+public class SyncDemo {
+    public static void main(String[] args) {
+        Counter c = new Counter();
+        Thread t1 = new Thread(new Runnable() {
             public void run() { for (int i = 0; i <= 1000; i++) { c.increment;()} }}
         );
-        Thread t2 = new Thread(new Runnable() { 
+        Thread t2 = new Thread(new Runnable() {
             public void run() { for (int i = 0; i <= 1000; i++) { c.increment;()} }}
         );
         t1.start();
         t1.join();	// wait for complete the job
         t2.start();
         t2.join();	// wait for complete the job
-        
+
         System.out.println("Count" + c.count);
     }
 }

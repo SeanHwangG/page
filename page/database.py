@@ -2,16 +2,18 @@ import os
 import json
 import pathlib
 import functools
+import traceback
 from firebase_admin import credentials, firestore, initialize_app
 from .models.member import Member
 from .models.team import Team
 from .models.problem import Problem
+from .models.mock import Mock
 from .models.doc import Doc
 from .common import PATH, logger, service_account_credential, html2text
 
 
 def dict2class(collection_id, dict):
-  COLLECTION_ID2CLS = {"member": Member, "team": Team, "problem": Problem, "doc": Doc}
+  COLLECTION_ID2CLS = {"mock": Mock, "member": Member, "team": Team, "problem": Problem, "doc": Doc}
   return COLLECTION_ID2CLS[collection_id](**dict)
 
 
@@ -26,12 +28,16 @@ class FirebaseDB():
     self._db = firestore.client()
 
   def add(self, collection_id, document, overwrite=True):
-    document_id = document.__dict__[collection_id + "_id"]
-    document_ref = self._db.collection(collection_id).document(document_id)
+    try:
+      document_id = document.__dict__[collection_id + "_id"]
+      document_ref = self._db.collection(collection_id).document(document_id)
 
-    if not overwrite and document_ref.get().exists:
-      return False
-    document_ref.set(document.__dict__)
+      if not overwrite and document_ref.get().exists:
+        return False
+      document_ref.set(document.__dict__)
+    except Exception as e:
+      print(e)
+      traceback.print_exc()
     return True
 
   def delete(self, collection_id, document_id, ignore_missing=True):

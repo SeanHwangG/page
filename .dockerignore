@@ -5,8 +5,10 @@ env
 .env
 token.pickle
 
-page/local_db
-
-simple_demo
+cpp
+python
+java
+javascript
+private
 
 __pycache__

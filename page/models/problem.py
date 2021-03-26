@@ -12,7 +12,6 @@ from selenium.webdriver.support.ui import Select
 
 
 class Problem():
-
   def __init__(self, problem_id="", title="", level="", link="", category_id="", solution_link=""):
     self.problem_id = problem_id
     self.title = title
@@ -23,6 +22,9 @@ class Problem():
 
   def __repr__(self):
     return f"{self.problem_id}"
+
+  def __str__(self):
+    return f"{self.__dict__}"
 
   @classmethod
   def get_baekjoon_problems_level(cls, level):

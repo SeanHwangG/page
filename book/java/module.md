@@ -4,12 +4,12 @@
 
 * log4j.appender.A1.layout.ConversionPattern=%d{HH:mm:ss,SSS} %-5p %c{1}.%M %L %x - %m%n
 
-```
+```sh
 %c        # Class name
 %M        # Method name
 %L        # Line number
 %p        # debug strength
-%20c      # Left pad if less than 20 char 
+%20c      # Left pad if less than 20 char
 %-20c     # Right pad if less than 20 char
 ```
 
@@ -49,6 +49,6 @@ public static void main(String[] args) throws SQLException, ClassNotFoundExcepti
 }
 
 con.setAutoCommit(false);     # Commit all changes at once
-con.commit(); 
+con.commit();
 con.setAutoCommit(true);
 ```

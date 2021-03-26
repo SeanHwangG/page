@@ -3,10 +3,20 @@ env
 # Credential files
 *.log
 .env
+nohup.out
+.vscode
+*.embed
+*.code-workspace
+*.deleteme
 token.pickle
 
 page/local_db
-
+drivers
 simple_demo
+node_modules
+static
+service_account.json
+/db
+cloud_sql_proxy
 
 __pycache__

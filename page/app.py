@@ -11,7 +11,6 @@ from .models.member import Member
 from .common import PATH, logger, oauth_credential, git_credential
 from .database import remote_db, local_db
 from collections import defaultdict
-from livereload import Server
 from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from oauthlib.oauth2 import WebApplicationClient
@@ -20,8 +19,6 @@ from oauthlib.oauth2 import WebApplicationClient
 def create_app():
   app = Flask(__name__)
   app.secret_key = "page"
-  app.config["DEBUG"] = True
-
   login_manager = LoginManager()
   login_manager.init_app(app)
 
@@ -48,19 +45,8 @@ def create_app():
     return render_template("premium.html")
 
   @app.route("/", methods=["GET"])
-  @app.route("/page/", methods=["GET"])
-  @app.route("/page/<string:cur_doc_id>/", methods=["GET"])
-  @app.route("/page/<string:cur_doc_id>/<string:cur_h1>/", methods=["GET"])
-  @app.route("/page/<string:cur_doc_id>/<string:cur_h1>/<string:cur_h2>", methods=["GET"])
-  def index(cur_doc_id="Python", cur_h1="", cur_h2=""):
-    logger.debug(f"index({cur_doc_id}, {cur_h1}, {cur_h2})")
-    doc = local_db.get("doc", cur_doc_id)
-    if cur_h1 == "":
-      cur_h1 = next(iter(doc.headers))
-      return redirect(f"/page/{cur_doc_id}/{cur_h1}")
-    contents = filter(lambda content: content["h1"] == cur_h1 and content["h2"] == cur_h2, doc.contents)
-
-    return render_template("index.html", cur_doc_id=cur_doc_id, cur_h1=cur_h1, contents=contents)
+  def index():
+    return render_template("index.html")
 
   @app.route("/signin", methods=["POST", "GET"])
   def signin():
@@ -112,5 +98,4 @@ def create_app():
 
 if __name__ == "__main__":
   app = create_app()
-  server = Server(app.wsgi_app)
-  server.serve(debug=True)
+  app.run()

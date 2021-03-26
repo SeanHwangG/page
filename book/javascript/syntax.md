@@ -1,27 +1,95 @@
 # Syntax
 
-## IO
+## Builtin
 
-> comment
+### Type
+
+* All JavaScript values, except primitives, are objects
+* Don’t Declare Number, String, Boolean Objects → slows down execution speed
+* typeof() returns data types
+* Objects are mutable: They are addressed by reference, not by value
 
 ```js
-//      // single line
-/* */    // multi line
+// compare address
+var x = "John";
+var y = new String("John");
+(x === y)     // false
 ```
 
-### Print
+{% tabs %}
+{% tab title='loosely_typed.js' %}
 
 ```js
-console.log();      
-process.stdout.write():  // without newline
-console.table([])       // print in table foramt
-console.log(JSON.stringify(data))   // print in nice format
+// All of these evaluate to true
+console.log(false == '0');
+console.log(null == undefined);
+console.log(" \t\r\n" == 0);
+console.log('' == 0);
+if ({}) // ...
+if ([]) // ...
+
+var x = 5 + "7";    // x.valueOf() is 57,  typeof x is a string
+var x = "5" + 7;    // x.valueOf() is 57,  typeof x is a string
+var x = 5 - "x";    // x.valueOf() is NaN, typeof x is a number
 ```
 
-> Error
+{% endtab %}
+{% endtabs %}
+
+> Number
+
+* EPSILON
+* MAX_SAFE_INTEGER
+* MAX_VALUE
+* MIN_SAFE_INTEGER
+* MIN_VALUE          // the smallest positive numeric value
+* NEGATIVE_INFINITY
+* NaN
+* POSITIVE_INFINITY
+* prototype
+
+* isFinite()
+* isInteger()
+* isNaN()
+* isSafeInteger()
+* parseFloat()
+* parseInt((radix))
+* toString((radix))
+* Number((6.688689).toFixed(1));  // 6.7
+
+> Primitives
+
+* === : returns true if both operands are of the same type and contain the same value
 
 ```js
-console.trace();        // print stack trace when error
+ret = ret.replace(/that $/,'it');
+'hi there how are you'.match(/\s/g).length;
+
+process.stdin.addListener("data", (data)=>{
+  var x = data.toString().split(/[\s,]+/).trim()
+})
+
+process.stdin.resume();
+process.stdin.setEncoding('ascii');
+
+var input_stdin = "";
+var input_stdin_array = "";
+var input_currentline = 0;
+
+process.stdin.on('data', function (data) {
+  input_stdin += data;
+});
+
+process.stdin.on('end', function () {
+  input_stdin_array = input_stdin.split("\n");
+  main();
+});
+
+function readLine() {
+  return input_stdin_array[input_currentline++];
+}
+
+process.stdout.write("Download" + data.length + "%\r"); // overwrite line
 ```
 
 ### Keywords
@@ -58,8 +126,38 @@ console.log(baz);
 ```js
 x = 3.14;       // Reference error
 delete x;       // Syntax error
-function x(p1, p2) {};  
+function x(p1, p2) {};
 ```
+
+
+### Function
+
+* console
+  * log
+  * table : print in table format
+
+{% tabs %}
+{% tab title='print.js' %}
+
+```js
+// single line
+/* multi
+line */
+console.log();
+process.stdout.write():  // without newline
+console.table([])       // print in table foramt
+console.log(JSON.stringify(data))   // print in nice format
+```
+
+{% endtab %}
+{% tab title='error.js' %}
+
+```js
+console.trace();        // print stack trace when error
+```
+
+{% endtab %}
+{% endtabs %}
 
 ## Operation
 
@@ -88,7 +186,7 @@ var arr = ['a','b', 'c']
 var added = [...arr, 'd']                // Copy Array
 
 function add(x, y, z) { console.log(x+y+z) }  // Pass array as parameter
-var args = [0, 1, 2, 3] 
+var args = [0, 1, 2, 3]
 add(...args)
 
 var obj1 = { foo: 'bar', x: 42 };
@@ -102,7 +200,7 @@ var mergedObj = { ...obj1, ...obj2 };    // merge objects
 
 ```js
 + -  * /  // Addition / Subtraction / Multiplication / Division
-** %      // Exponentiation (ES2016) / Modulus 
+** %      // Exponentiation (ES2016) / Modulus
 ++ --     // Increment / Decrement
 & | ^     // AND / OR / XOR
 ~         // NOT
@@ -115,11 +213,11 @@ instanceof  // Returns true if an object is an instance of an object type
 > Math
 
 ```js
-E / PI 
+E / PI
 abs() ceil() floor() round()  // floating point
 sin() cos() tan() tanh()      // trig function
 pow() exp() sqrt() log() cbrt()
-max() min()               // 
+max() min()               //
 random()                  // return 0 or 1
 trunc()
 
@@ -151,215 +249,131 @@ switch(expression) {
 }
 ```
 
-### Variable
-
-* All JavaScript values, except primitives, are objects 
-* Don’t Declare Number, String, Boolean Objects → slows down execution speed
-* typeof() returns data types
-* Objects are mutable: They are addressed by reference, not by value
-
-```js
-// compare address
-var x = "John";             
-var y = new String("John");
-(x === y)     // false
-
-// All of these evaluate to true
-console.log(false == '0');
-console.log(null == undefined);
-console.log(" \t\r\n" == 0);
-console.log('' == 0);
-if ({}) // ...
-if ([]) // ...
-```
-
-* JavaScript is loosely typed, so it can change its data type
-
-```js
-var x = 5 + "7";    // x.valueOf() is 57,  typeof x is a string
-var x = "5" + 7;    // x.valueOf() is 57,  typeof x is a string
-var x = 5 - "x";    // x.valueOf() is NaN, typeof x is a number
-```
-
-> Number
-
-```js
-EPSILON
-MAX_SAFE_INTEGER
-MAX_VALUE
-MIN_SAFE_INTEGER
-MIN_VALUE          // the smallest positive numeric value
-NEGATIVE_INFINITY
-NaN
-POSITIVE_INFINITY
-prototype
-
-isFinite()
-isInteger()
-isNaN()
-isSafeInteger()
-parseFloat()
-parseInt((radix))
-toString((radix))
-
-// Floating point
-Number((6.688689).toFixed(1));  // 6.7
-```
-
-> Primitives
-
-```js
-===        // returns true if both operands are of the same type and contain the same value
-
-ret = ret.replace(/that $/,'it');
-'hi there how are you'.match(/\s/g).length;
-
-process.stdin.addListener("data", (data)=>{
-    var x = data.toString().split(/[\s,]+/).trim()
-})
-
-process.stdin.resume();
-process.stdin.setEncoding('ascii');
-
-var input_stdin = "";
-var input_stdin_array = "";
-var input_currentline = 0;
-
-process.stdin.on('data', function (data) {
-    input_stdin += data;
-});
-
-process.stdin.on('end', function () {
-    input_stdin_array = input_stdin.split("\n");
-    main();    
-});
-
-function readLine() {
-    return input_stdin_array[input_currentline++];
-}
-
-process.stdout.write("Download" + data.length + "%\r"); // overwrite line
-```
-
 ### Iterables
 
-* in vs of
-
-```js
-for...in Loop   // iterates over the index in the array.
-for...of Loop   // iterates over the object of objects.
-```
+* for...in Loop : iterates over the index in the array.
+* for...of Loop : iterates over the object of objects.
 
 * comprehension
-
-```js
-[for (x of iterable) x]
-[for (x of iterable) if (condition) x]
-[for (x of iterable) for (y of iterable) x + y]
-```
+  * [for (x of iterable) x]
+  * [for (x of iterable) if (condition) x]
+  * [for (x of iterable) for (y of iterable) x + y]
 
 > String
 
+* charAt / charCodeAt()
+* concat()
+* constructorendsWith()
+* fromCharCode()
+* includes()
+* lastIndexOf()
+* lengthlocaleCompare()
+* prototyperepeat()
+* search()
+* startsWith()
+* substr()
+* substring()
+* toLocaleLowerCase / UpperCase()
+* toLowerCase / UpperCase()
+* toString()
+* trim()
+* valueOf()
+
+* split(delim, time)
+  * str.split("o").length-1 : count number of occurence →
+* indexOf()
+  * s.indexOf(" ")
+
+{% tabs %}
+{% tab title='split_string.js' %}
+
 ```js
-charAt / charCodeAt()
-concat()
-constructorendsWith()
-fromCharCode()
-includes()
-lastIndexOf()
-lengthlocaleCompare()
-prototyperepeat()
-search()
-startsWith()
-substr()
-substring()
-toLocaleLowerCase / UpperCase()
-toLowerCase / UpperCase()
-toString()
-trim()
-valueOf()
-
-> indexOf()
-var i = s.indexOf(" ")
-var splits = [s.slice(0, i) + s.slice(i + 1)]   // split string manually
-
-> match()                     // search a string for a match and returns matches
-"a,b".match(/([^,]*,(.*)/))   // split once using regex
-
-> split(delim, time)                
-str.split("o").length-1   // count number of occurence → 
-
-> replace()   
-("bef", "aft")            // only once
-(/bef/g, "after")         // replace all
-
-> slice(start, end)       // extract parts of a string
-.slice(1, end - 1)        // removes first and last char
-("000" + n).splice(-4)    // rihgt pad
-(n + "000").splice(4)     // rihgt pad
-
-hit.objectID.split('-').slice(0, -1).join('-')    // python rsplit
+var splits = [s.slice(0, i) + s.slice(i + 1)]
 ```
+
+{% endtab %}
+{% endtabs %}
+
+* match() : search a string for a match and returns matches
+
+{% tabs %}
+{% tab title='match.js' %}
+
+```js
+"a,b".match(/([^,]*,(.*)/))   // split once using regex
+```
+
+{% endtab %}
+{% endtabs %}
+
+* replace()
+  * ("bef", "aft") : only once
+  * (/bef/g, "after") : replace all
+
+* slice(start, end) : extract parts of a string
+  * .slice(1, end - 1) : removes first and last char
+  * ("000" + n).splice(-4) : rihgt pad
+  * (n + "000").splice(4) : rihgt pad
+  * hit.objectID.split('-').slice(0, -1).join('-') : python rsplit
 
 > regex
 
-```js
-/()/;
-```
+* /()/;
 
 > Array
 
-```js
-length               // Size of array
-concat()
-copyWithin()
-entries()
-every()
-fill()
-filter()             // array.filter(value => value < 0);
-find()
-findIndex()
-forEach()            // arr.forEach((num, index) => { arr[index] = num * 2; });
-from()
-includes()
-indexOf()
-isArray()
-join()
-keys()
-lastIndexOf()
-map()                // let doubled = arr.map(num => { return num * 2; });
-pop()
-prototype
-push()
-reduce()             // [].reduce((a, b) => a + b);        // sum
-reduceRight()
-reverse()            // loop backward
-shift()              // get first element = poll in queue
-slice()
-some()
-sort()               // items.sort((a, b) => { return a.value - b.value; });
-splice()             // items.splice(pos, num, newval);
-toString()
-unshift()
-valueOf()
+* length : Size of array
+* concat()
+* copyWithin()
+* entries()
+* every()
+* fill()
+* filter() : array.filter(value => value < 0);
+* find()
+* findIndex()
+* forEach() : arr.forEach((num, index) => { arr[index] = num * 2; });
+* from()
+* includes()
+* indexOf()
+* isArray()
+* join()
+* keys()
+* lastIndexOf()
+* map() : let doubled = arr.map(num => { return num * 2; });
+* pop()
+* prototype
+* push()
+* reduce() : [].reduce((a, b) => a + b);        // sum
+* reduceRight()
+* reverse() : loop backward
+* shift() : get first element = poll in queue
+* slice()
+* some()
+* sort() : items.sort((a, b) => { return a.value - b.value; });
+* splice() : items.splice(pos, num, newval);
+* toString()
+* unshift()
+* valueOf()
+* splice(index, delete); : remove elements
+* split(',').map(Number); : split as an integer
+* map(x=>x[0]); : first column of 2d array
 
-splice(index, delete);    // remove elements
-split(',').map(Number);   // split as an integer
-map(x=>x[0]);             // first column of 2d array
-```
-
-* Examples
+{% tabs %}
+{% tab title='array.js' %}
 
 ```js
-new Array(len).fill(0);   // Create empty array
+new Array(len).fill(0);
 
 // Uppercase all array
 var fruits = ["Banana", "Orange", "Apple", "Mango"];
 Array.prototype.myUcase = function() {
-    for (i = 0; i < this.length; i++)
-        this[i] = this[i].toUpperCase();
+  for (i = 0; i < this.length; i++)
+    this[i] = this[i].toUpperCase();
 };
 ```
+
+{% endtab %}
+{% endtabs %}
 
 ### Hashable
 
@@ -381,7 +395,7 @@ has()
 ```js
 // Remove duplicate in array
 const numbers = [2,3,4,4,2,3,3,4,4,5,5,6,6,7,5,32,3,4,5]
-console.log([...new Set(numbers)]) 
+console.log([...new Set(numbers)])
 ```
 
 > Object
@@ -436,7 +450,7 @@ toString()
 
 ```js
 // Check Same date
-var isSameDay = (dateToCheck.getDate() === actualDate.getDate() 
+var isSameDay = (dateToCheck.getDate() === actualDate.getDate()
      && dateToCheck.getMonth() === actualDate.getMonth()
      && dateToCheck.getFullYear() === actualDate.getFullYear())
 
@@ -474,7 +488,7 @@ getElementByClassName(cls)  // get all elements with className
 'tag.class#id';             // using query selector
 '.class1, .class2'          // class1 or class2
 '.class1.class2'            // class1 and class2
-[style="display: none;"]    // display is 
+[style="display: none;"]    // display is
 
 setAttribute(name, value)
 
@@ -503,6 +517,51 @@ function toggle(id){
 <div class="hideable" id="div2" style="display:none">Div 2</div>
 <div class="hideable" id="div3" style="display:none">Div 3</div>
 ```
+
+* add
+
+{% tabs %}
+{% tab title="index.html" %}
+
+```html
+<body>
+  <script src="index.js"> </script>
+</body>
+```
+
+{% endtab %}
+{% tab title="index.js" %}
+
+```js
+const foods = ["pizza"];
+
+function getFoods() {
+  setTimeout(() => {
+    let output = "";
+    foods.forEach(food => {
+      output += `<li>${food}</li>`;
+    });
+    document.body.innerHTML = output;
+  }, 1000);
+}
+
+function addFood(food) {
+  setTimeout(() => {
+    foods.push(food);
+    resolve();
+  }, 1000);
+}
+
+async function init() {
+  await addFood("hotdog");
+  getFoods();
+}
+
+init();
+```
+
+{% endtab %}
+{% endtabs %}
 
 > window
 
@@ -534,7 +593,7 @@ function withdraw(account, amount) {
 }
 ```
 
-> Arrow 
+> Arrow
 
 ```js
 hello = () => "Hello World!";        # works if only has one statement
@@ -563,10 +622,10 @@ class LoggingButton extends React.Component {
 * Basic Example
 
 ```js
-function html_tag(tag) { 
-  function wrap_text(msg) { 
+function html_tag(tag) {
+  function wrap_text(msg) {
     console.log('<' + tag + '>' + msg + '</' + tag + '>')
-  } 
+  }
   return wrap_text
 }
 
@@ -621,18 +680,18 @@ class Foo {
 var foo = new Foo('Saurabh');
 foo.display(); // Saurabh
 
-// The assignment operation below simulates loss of context 
-// similar to passing the handler as a callback in the actual 
+// The assignment operation below simulates loss of context
+// similar to passing the handler as a callback in the actual
 // React Component
-var display = foo.display; 
+var display = foo.display;
 display(); // TypeError: this is undefined
 ```
 
 * Mixin
 
 ```js
-const Tracer = (SuperClass) => class extends SuperClass { 
-    trace(msg) { console.info(`Message: ${msg}`); } 
+const Tracer = (SuperClass) => class extends SuperClass {
+    trace(msg) { console.info(`Message: ${msg}`); }
 }
 
 class NiceWidget extends Tracer(Widget) { drawingNicely() { this.trace(); } }
