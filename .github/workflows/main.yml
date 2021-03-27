@@ -18,69 +18,21 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: create .env file
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          envkey_GIT: ${{ secrets.GIT }}
-          envkey_OAUTH: ${{ secrets.OAUTH }}
-          envkey_SERVICE_ACCOUNT: ${{ secrets.SERVICE_ACCOUNT }}
-
-      - name: Build and test
-        run: |
-          docker-compose up --build -d
-          docker-compose run api bash -c "script/entrypoint.sh test"
-          docker tag gcr.io/seansdevnote/api ${{ steps.repo.outputs.repo_name }}
-
-  book_deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-        with:
-          python-version: "3.x"
-
-      - name: Install dependencies
-        run: |
-          git checkout book
-          git reset --hard origin/main
-          git log -3
-          python -m api.common.update_md
-          git config --local user.email 'action@github.com'
-          git config --local user.name 'github-actions'
-          git add --all
-          git commit --allow-empty -m 'Inject problems'
-        shell: bash
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
-          branch: book
-
   deploy-job:
     runs-on: ubuntu-latest
-    needs: [test] # will require package-job to be successful for triggering
+    needs: [test]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - name: Django aws eb deployment
+        uses: joel-hanson/django-aws-eb-deploy@V1.1
         with:
-          version: "270.0.0"
-          service_account_email: ${{ secrets.GKE_EMAIL }} # email address of our service account that will be created with storage and kubernetes permissions
-          service_account_key: ${{ secrets.GKE_PASSWORD }} # service account file.
-      - name: set_repo_location # steps required to find the image id of our image from contiainer registry
-        id: repo
-        run: |
-          echo "::set-output name=repo_name::gcr.io/seansdevnote/api:$(git rev-parse --short HEAD)"
-      - name: Install Helm # helm installation in our runner for deploying.
-        run: |
-          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-          chmod 700 get_helm.sh
-          ./get_helm.sh
-      - name: Push to gcp
-        run: |
-          docker-compose push
-      - name: Helm Deploy # deploying our helm chart to our cluster
-        run: >
-          gcloud container clusters get-credentials api --zone us-central1-a --project seansdevnote
-          helm upgrade --install --set image=${{ steps.repo.outputs.repo_name }} --set user=${{ secrets.DB_USER }} --set name=${{ secrets.DB_NAME }} --set password=${{ secrets.DB_PASSWORD }} --wait --atomic api ./k8s
+          python_version: 3.8.2
+          flake8: true
+          aws_access_key_id: ${{ secrets.aws_access_key_id }}
+          aws_secret_access_key: ${{ secrets.aws_secret_access_key }}
+          django_path: sample_project
+          unit_testing: true
+          deploy: true
+          min_coverage: 10
+          postgresql_required: true
+          security_check: true
+          flake8_config_file: "sample_project/.flake8"

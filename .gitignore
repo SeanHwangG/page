@@ -7,16 +7,17 @@ nohup.out
 .vscode
 *.embed
 *.code-workspace
-*.deleteme
+*.ignore
 token.pickle
 
-page/local_db
 drivers
 simple_demo
-node_modules
-static
 service_account.json
 /db
 cloud_sql_proxy
 
 __pycache__
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

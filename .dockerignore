@@ -5,10 +5,4 @@ env
 .env
 token.pickle
 
-cpp
-python
-java
-javascript
-private
-
 __pycache__

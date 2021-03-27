@@ -1,21 +1,6 @@
-[submodule "cpp"]
-	path = cpp
-	url = https://github.com/SeanHwangG/cpp
-[submodule "java"]
-	path = java
-	url = https://github.com/SeanHwangG/java
-[submodule "private"]
-	path = private
-	url = https://github.com/SeanHwangG/private
-[submodule "javascript"]
-	path = javascript
-	url = https://github.com/SeanHwangG/javascript
-[submodule "python"]
-	path = python
-	url = https://github.com/SeanHwangG/python
-[submodule "api"]
-	path = api
-	url = https://github.com/SeanHwangG/api
-[submodule "data"]
-	path = data
-	url = https://github.com/SeanHwangG/data
+[submodule "note"]
+	path = note
+	url = https://github.com/SeanHwangG/note
+[submodule "note_private"]
+	path = note_private
+	url = https://github.com/SeanHwangG/note_private
