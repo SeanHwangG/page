@@ -73,6 +73,7 @@ for _ in ("boto", "elasticsearch", "urllib3", "selenium.webdriver.remote.remote_
 print(f"Current log level is {LOG_LEVEL}")
 ALLOWED_HOSTS = ["127.0.0.1", "eb-django-app-dev.elasticbeanstalk.com"]
 INSTALLED_APPS = [
+    'admin_numeric_filter',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -84,7 +85,7 @@ INSTALLED_APPS = [
     'health_check',
     'rest_framework',
     'util',
-    'markdown',
+    'gitbook',
     'problem',
     'user'
 ]
@@ -118,12 +119,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'classroom.wsgi.application'
-
-STATIC_ROOT = os.path.join(CLASSROOM_DIR, "..", "www", "static")
-STATIC_URL = "/static/"
-STATICFILES_DIRS = (
-    os.path.join(CLASSROOM_DIR, 'static'),
-)
 
 
 # Database
@@ -189,3 +184,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(CLASSROOM_DIR, "..", "www", "static")
+STATICFILES_DIRS = (
+    os.path.join(CLASSROOM_DIR, 'static'),
+)

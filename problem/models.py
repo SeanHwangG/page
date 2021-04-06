@@ -6,7 +6,7 @@ from datetime import datetime
 
 class Tag(models.Model):
   tag_id = models.CharField(max_length=255, null=False, primary_key=True)
-  group = models.CharField(max_length=255, null=False, choices=[("syntax", "syntax"), ("algorithm", "algorithm")])
+  group = models.CharField(max_length=255, null=False, choices=[("syntax", "syntax"), ("algorithm", "algorithm"), ("type", "type")])
   created_at = models.DateTimeField(auto_now_add=True)
   modified_at = models.DateTimeField(auto_now=True)
 
@@ -37,6 +37,10 @@ class Problem(models.Model):
   list_display = ['problem_id', 'level']
   created_at = models.DateTimeField(auto_now_add=True)
   modified_at = models.DateTimeField(auto_now=True)
+
+  @property
+  def user_with_solution_count(self):
+    return len(Solution.objects.filter(problem_id=self.problem_id))
 
   def __str__(self):
     return f"{self.problem_id}"

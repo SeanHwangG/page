@@ -25,5 +25,5 @@ urlpatterns = [
     path('api/user/new', user.views.UserCreate.as_view()),
     path('user/', include("user.urls")),
     path('problem/', include("problem.urls")),
-    path('markdown/', include("markdown.urls"))
+    path('gitbook/', include("gitbook.urls"))
 ]

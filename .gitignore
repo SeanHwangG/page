@@ -15,6 +15,7 @@ simple_demo
 service_account.json
 /db
 cloud_sql_proxy
+note_private
 
 __pycache__
 # Elastic Beanstalk Files
