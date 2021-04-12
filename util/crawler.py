@@ -11,6 +11,7 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from itertools import islice
 
+import traceback
 import logging
 
 
@@ -56,14 +57,12 @@ def _crawl_BJ_problems(level):
         if id_title[0].isdigit() and len(id_title) == 2:
           problem_id, title = id_title
           link = f'http://acmicpc.net/problem/{problem_id}'
-          problems.append({
-              "problem_id": f"BJ_{problem_id}",
-              "link": link,
-              "level": level,
-              "title": title
-          })
-  except Exception as e:
-    logging.warn(e)
+          problems.append({"problem_id": f"BJ_{problem_id}",
+                           "link": link,
+                           "level": level,
+                           "title": title})
+  except:
+    logging.warn(traceback.format_exc())
   finally:
     driver.quit()
   return problems
@@ -74,6 +73,7 @@ def _crawl_LC_problems(limit):
   driver = get_chrome_driver()
   problems = []
   try:
+    driver.get(f"https://leetcode.com/problemset/all/")
     select = Select(WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.TAG_NAME, 'select'))))
     select.select_by_visible_text('all')
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, 'form-control')))
@@ -81,14 +81,12 @@ def _crawl_LC_problems(limit):
     data = driver.find_element_by_class_name("reactable-data").find_elements_by_tag_name("tr")
     for prob in islice(data, limit):
       problem_id, title, level = prob.text.split('\n')
-      problems.append({
-          "problem_id": f"LC_{problem_id}",
-          "level": {"Easy": 1, "Medium": 2, "Hard": 3}[level[level.find(' ') + 1:]],
-          "link": prob.find_element_by_css_selector("a").get_attribute('href'),
-          "title": title
-      })
+      problems.append({"problem_id": f"LC_{problem_id}",
+                       "level": {"Easy": 1, "Medium": 2, "Hard": 3}[level[level.find(' ') + 1:]],
+                       "link": prob.find_element_by_css_selector("a").get_attribute('href'),
+                       "title": title.strip()})
   except Exception as e:
-    logging.error(e)
+    logging.error(traceback.format_exc())
   finally:
     driver.quit()
   return problems
@@ -105,18 +103,16 @@ def _craw_KT_problems_page(page):
       try:
         title, _, _, _, _, _, _, _, level = l.text.rsplit(maxsplit=8)
         link = l.find_element_by_css_selector("a").get_attribute('href')
-        problems.append({
-            "problem_id": f"KT_{link.rsplit('/')[-1]}",
-            "title": title,
-            "link": link,
-            "level": level
-        })
+        problems.append({"problem_id": f"KT_{link.rsplit('/')[-1]}",
+                         "title": title,
+                         "link": link,
+                         "level": level})
       except:
-        traceback.print_exc()
+        logging.warn(traceback.format_exc())
     driver.quit()
 
   except Exception as e:
-    logging.error(e)
+    logging.error(traceback.format_exc())
   finally:
     driver.quit()
   return problems

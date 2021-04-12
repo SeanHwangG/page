@@ -21,5 +21,9 @@ class Command(BaseCommand):
   def handle(self, *args, **options):
     logging.info(f"{options}")
     site = Site.objects.get(site_id=options["site_id"])
+    total = 0
     for problem_dic in crawl_problems(options["site_id"], options["n_thread"], options["test"]):
-      Problem.objects.update_or_create(problem_id=problem_dic["problem_id"], link=problem_dic["link"], level=problem_dic["level"], site_id=options["site_id"], title=problem_dic["title"])
+      _, created = Problem.objects.update_or_create(problem_id=problem_dic["problem_id"], defaults={"link": problem_dic["link"],
+                                                                                                    "level": problem_dic["level"], "site_id": options["site_id"], "title": problem_dic["title"]})
+      total += int(created)
+    logging.info(f"Created : {total} problems")

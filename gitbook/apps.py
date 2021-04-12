@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class MarkdownConfig(AppConfig):
-  name = 'markdown'
+class GitbookConfig(AppConfig):
+  name = 'gitbook'

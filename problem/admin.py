@@ -19,7 +19,7 @@ class CustomSliderNumericFilter(SliderNumericFilter):
 
 class ProblemAdmin(admin.ModelAdmin):
   list_display = ("problem_id", "title_link", "tag_list", "solved_users", "created_at", "user_with_solution_count")
-  list_filter = ("site__site_id", "tags", "created_at", ("level", RangeNumericFilter),)
+  list_filter = ("site__site_id", "tags", "created_at")  # , ("level", RangeNumericFilter),)
   search_fields = ('problem_id', "title")
   list_per_page = 500
 

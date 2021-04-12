@@ -19,7 +19,8 @@ from dotenv import load_dotenv
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 65535
 CLASSROOM_DIR = Path(__file__).resolve().parent.parent
-NOTE_DIR = CLASSROOM_DIR / 'note'
+NOTE_DIR = CLASSROOM_DIR / '../note'
+INTERVIEW_DIR = CLASSROOM_DIR / '../interview'
 ENV_PATH = CLASSROOM_DIR / '.env'
 NOTE_GITHUB = "https://github.com/SeanHwangG/note/tree/main"
 SECRET_KEY = 'i(1vsy6#=p!s&gnhrr-8%f4&a0kj8efee26v2*u%mjfyjw7d1l'
@@ -73,7 +74,7 @@ for _ in ("boto", "elasticsearch", "urllib3", "selenium.webdriver.remote.remote_
 print(f"Current log level is {LOG_LEVEL}")
 ALLOWED_HOSTS = ["127.0.0.1", "eb-django-app-dev.elasticbeanstalk.com"]
 INSTALLED_APPS = [
-    'admin_numeric_filter',
+    # 'admin_numeric_filter',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -4,46 +4,46 @@ from util.markdown import extract
 import logging
 
 
-class MarkdownManager(models.Manager):
+class GitbookManager(models.Manager):
   def parse_summary(self, summary_path):
     logging.debug(f"parse_summary({summary_path})")
-    markdowns = []
+    gitbooks = []
     for link in extract(summary_path, "links"):
       logging.info(link["url"])
       directory, file_name = link["url"].rsplit("/", 1)
-      markdowns.append(self.model(directory=directory, file_name=file_name))
-    return markdowns
+      gitbooks.append(self.model(directory=directory, file_name=file_name))
+    return gitbooks
 
 
 class HeaderManager(models.Manager):
-  def parse_markdown(self, doc_path, markdown_id):
-    logging.debug(f"parse_markdown({doc_path}, {markdown_id})")
+  def parse_gitbook(self, doc_path, gitbook_id):
+    logging.debug(f"parse_gitbook({doc_path}, {gitbook_id})")
     headers = []
 
     for header in extract(doc_path, "headers"):
-      headers.append(self.model(markdown_id=markdown_id, level=header["level"], name=header["name"]))
-    logging.debug(f"parse_markdown({doc_path}, {markdown_id})")
+      headers.append(self.model(gitbook_id=gitbook_id, level=header["level"], name=header["name"]))
+    logging.debug(f"parse_gitbook({doc_path}, {gitbook_id})")
 
     return headers
 
 
-class Markdown(models.Model):
-  markdown_id = models.CharField(max_length=255, null=False, primary_key=True)
+class Gitbook(models.Model):
+  gitbook_id = models.CharField(max_length=255, null=False, primary_key=True)
   directory = models.CharField(max_length=255, null=False)
   file_name = models.CharField(max_length=255, null=False)
-  objects = MarkdownManager()
+  objects = GitbookManager()
 
   def __str__(self):
-    return f"{self.markdown_id}"
+    return f"{self.gitbook_id}"
 
   def save(self, *args, **kw):
-    self.markdown_id = f'{self.directory}/{self.file_name}'
-    super(Markdown, self).save(*args, **kw)
+    self.gitbook_id = f'{self.directory}/{self.file_name}'
+    super(Gitbook, self).save(*args, **kw)
 
 
 class Header(models.Model):
   header_id = models.CharField(max_length=255, null=False, primary_key=True)
-  markdown = models.ForeignKey(Markdown, null=False, on_delete=models.PROTECT)
+  gitbook = models.ForeignKey(Gitbook, null=False, on_delete=models.PROTECT)
   name = models.CharField(max_length=255, null=False)
   level = models.IntegerField(default=-1)
   objects = HeaderManager()
@@ -52,5 +52,5 @@ class Header(models.Model):
     return f"{self.header_id}"
 
   def save(self, *args, **kw):
-    self.header_id = f'{self.markdown_id}#{self.name}'
+    self.header_id = f'{self.gitbook_id}#{self.name}'
     super(Header, self).save(*args, **kw)

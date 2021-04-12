@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Markdown, Header
+from .models import Gitbook, Header
 
-admin.site.register(Markdown)
+admin.site.register(Gitbook)
 admin.site.register(Header)
