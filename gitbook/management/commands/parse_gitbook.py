@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from markdown.models import Markdown, Header
+from gitbook.models import Markdown, Header
 from django.conf import settings
 import io
 import logging

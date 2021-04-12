@@ -1,6 +1,0 @@
-[submodule "note"]
-	path = note
-	url = https://github.com/SeanHwangG/note
-[submodule "note_private"]
-	path = note_private
-	url = https://github.com/SeanHwangG/note_private

@@ -1,8 +1,8 @@
+import io
+import logging
 import panflute
 import pypandoc
-import logging
 import pathlib
-import io
 
 TAG2MAPPING = {
     "links": {"panflute_cls": panflute.Link,

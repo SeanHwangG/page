@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .models import Markdown
+from .models import Gitbook
 
 
 def home(request):
-  context = {'markdowns': Markdown.objects.all()}
+  context = {'markdowns': Gitbook.objects.all()}
   return render(request, 'markdown/home.html', context)

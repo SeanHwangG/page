@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.conf import settings
-from .driver import get_chrome_driver
+from .crawler import get_chrome_driver
 
 
 class AllTest(TestCase):
