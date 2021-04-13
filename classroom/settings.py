@@ -19,10 +19,8 @@ from dotenv import load_dotenv
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 65535
 CLASSROOM_DIR = Path(__file__).resolve().parent.parent
-NOTE_DIR = CLASSROOM_DIR / '../note'
-INTERVIEW_DIR = CLASSROOM_DIR / '../interview'
 ENV_PATH = CLASSROOM_DIR / '.env'
-NOTE_GITHUB = "https://github.com/SeanHwangG/note/tree/main"
+PROBLEM_GITHUB = "https://github.com/SeanHwangG/classroom/tree/main"
 SECRET_KEY = 'i(1vsy6#=p!s&gnhrr-8%f4&a0kj8efee26v2*u%mjfyjw7d1l'
 DEBUG = os.getenv("DEBUG")
 load_dotenv(dotenv_path=ENV_PATH)

@@ -21,6 +21,7 @@ class Command(BaseCommand):
   def handle(self, *args, **options):
     logging.info(f"{options}")
     site = Site.objects.get(site_id=options["site_id"])
+    if site_id == "HR":
     total = 0
     for problem_dic in crawl_problems(options["site_id"], options["n_thread"], options["test"]):
       _, created = Problem.objects.update_or_create(problem_id=problem_dic["problem_id"], defaults={"link": problem_dic["link"],

@@ -62,7 +62,7 @@ def _crawl_BJ_problems(level):
                            "level": level,
                            "title": title})
   except:
-    logging.warn(traceback.format_exc())
+    logging.warning(traceback.format_exc())
   finally:
     driver.quit()
   return problems
@@ -92,13 +92,12 @@ def _crawl_LC_problems(limit):
   return problems
 
 
-def _craw_KT_problems_page(page):
-  logging.info(f"_craw_KT_problems({page})")
+def _crawl_KT_problems_page(page):
+  logging.info(f"_crawl_KT_problems_page({page})")
   driver = get_chrome_driver()
   problems = []
   try:
     driver.get(f"https://open.kattis.com/problems?page={page}")
-    chrome_options = Options()
     for l in driver.find_elements_by_css_selector("tr.odd,tr.even"):
       try:
         title, _, _, _, _, _, _, _, level = l.text.rsplit(maxsplit=8)
@@ -108,14 +107,30 @@ def _craw_KT_problems_page(page):
                          "link": link,
                          "level": level})
       except:
-        logging.warn(traceback.format_exc())
-    driver.quit()
-
+        logging.warning(traceback.format_exc())
   except Exception as e:
     logging.error(traceback.format_exc())
   finally:
     driver.quit()
   return problems
+
+
+def _crawl_HR_problem(HR_id):
+  driver = get_chrome_driver()
+  try:
+    link = f"https://www.hackerrank.com/challenges/{HR_id}/problem"
+    driver.get(link)
+    return {
+        "problem_id": HR_id,
+        "link": link,
+        "title": driver.find_element_by_class_name("ui-icon-label page-label"),
+        "level": driver.find_element_by_class_name("difficulty-block").text,
+    }
+  except:
+    logging.warning(traceback.format_exc())
+
+
+print(_crawl_HR_problem("matching-anything-but-new-line"))
 
 
 def crawl_problems(site_id, n_thread=None, test=None):
@@ -130,7 +145,7 @@ def crawl_problems(site_id, n_thread=None, test=None):
         yield from future.result()
   elif site_id == "KT":
     with ThreadPoolExecutor() as ex:
-      futures = [ex.submit(_craw_KT_problems_page, page) for page in ([0, 1] if test else range(50))]  # TODO, 50 is hardcoded
+      futures = [ex.submit(_crawl_KT_problems_page, page) for page in ([0, 1] if test else range(50))]  # TODO, 50 is hardcoded
       for future in as_completed(futures):
         yield from future.result()
   else:

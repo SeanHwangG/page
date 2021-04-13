@@ -1,6 +1,6 @@
 import io
 import logging
-import pathlib
+from pathlib import Path
 import re
 import traceback
 import panflute
@@ -30,16 +30,17 @@ class Command(BaseCommand):
     try:
       if options["problem"]:
         site_ids = set(site.site_id for site in Site.objects.all())
-        new_tag = new_problem = 0
-        for file in settings.NOTE_DIR.glob(options["problem"]):
+        new_tag = new_solution = 0
+        for file in Path(".").glob(options["problem"]):
           logging.debug(file)
           tag_id, title = str(file).rsplit("/", 2)[1:]
           tag, created = Tag.objects.get_or_create(tag_id=tag_id)
           if title[:2] not in site_ids:
             pass
-          new_tag += int(created)
+          if created:
+            new_tag += 1
+            logging.info(f"Created : tag {tag}")
 
-          relative_path = str(file.relative_to(settings.NOTE_DIR))
           site_id, problem_id = title[:-3].split("_", 1)
           try:
             problem = Problem.objects.get(problem_id=f"{site_id}_{problem_id}", site_id=site_id)
@@ -47,10 +48,13 @@ class Command(BaseCommand):
             logging.warn(traceback.format_exc())
             continue
           problem.tags.set(Tag.objects.filter(tag_id=tag_id))
-          solution, created = Solution.objects.update_or_create(user=User.objects.get(user_id="rbtmd1010"), problem=problem, defaults={"link": f"{settings.NOTE_GITHUB}/{relative_path}"})
-          new_problem += int(created)
+          solution, created = Solution.objects.update_or_create(user=User.objects.get(user_id="rbtmd1010"), problem=problem, defaults={
+                                                                "link": f"{settings.PROBLEM_GITHUB}/tree/main/{str(file).split('interview/', 1)[1]}"})
+          if created:
+            new_solution += 1
+            logging.info(f"Created : solution {solution}")
         logging.info(f"Created : {new_tag} tags from directory")
-        logging.info(f"Created : {new_problem} problems from directory")
+        logging.info(f"Created : {new_solution} solutions from directory")
       else:
         if options["team_id"]:
           users = User.objects.filter(membership__team_id=options["team_id"])
