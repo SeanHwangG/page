@@ -48,7 +48,7 @@ class SolutionAdmin(admin.ModelAdmin):
 
 
 class SiteAdmin(admin.ModelAdmin):
-  list_display = ("site_id", "site_link", "modified_at",)
+  list_display = ("site_id", "site_link", "name", "modified_at",)
 
   def site_link(self, site):
     return format_html(f"<a href={site.link}>{site.link}</a>")
