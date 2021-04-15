@@ -11,7 +11,7 @@ class Command(BaseCommand):
   help = 'Closes the specified poll for voting'
 
   def add_arguments(self, parser):
-    parser.add_argument('-g', '--gitbook_conf_dir', type=str, help="directory path where .gitbook.yaml is", default=f"{settings.NOTE_DIR}")
+    parser.add_argument('-g', '--gitbook_conf_dir', type=str, help="directory path where .gitbook.yaml is")
 
   def handle(self, *args, **options):
     with open(f"{options['gitbook_conf_dir']}/.gitbook.yaml", 'r') as stream:

@@ -6,7 +6,7 @@ from datetime import datetime
 
 class Tag(models.Model):
   tag_id = models.CharField(max_length=255, null=False, primary_key=True)
-  group = models.CharField(max_length=255, null=False, choices=[("syntax", "syntax"), ("algorithm", "algorithm"), ("type", "type")])
+  group = models.CharField(max_length=255, null=False, choices=[("syntax", "syntax"), ("algorithm", "algorithm"), ("sql", "sql"), ("type", "type")])
   created_at = models.DateTimeField(auto_now_add=True)
   modified_at = models.DateTimeField(auto_now=True)
 
@@ -19,6 +19,7 @@ class Tag(models.Model):
 
 class Site(models.Model):
   site_id = models.CharField(max_length=255, null=False, primary_key=True)
+  name = models.CharField(max_length=255, default="", null=False)
   link = models.CharField(max_length=255, default="")
   created_at = models.DateTimeField(auto_now_add=True)
   modified_at = models.DateTimeField(auto_now=True)

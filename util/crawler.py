@@ -1,4 +1,4 @@
-from threading import Lock
+from threading import local
 from django.conf import settings
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
@@ -14,16 +14,19 @@ from itertools import islice
 import traceback
 import logging
 
+thread_local = local()
+
 
 def get_chrome_driver():
-  with Lock():
-    chrome_options = Options()
-    if not settings.DEBUG:
-      chrome_options.add_argument('--headless')
-      chrome_options.add_argument('--no-sandbox')
-      chrome_options.add_argument('--disable-dev-shm-usage')
+  driver = getattr(thread_local, 'driver', None)
+  if driver is None:
+    chrome_options = webdriver.ChromeOptions()
+    # chrome_options.add_argument('--headless') TODO Headless doesn't work for hackerrank
+    # chrome_options.add_argument('--no-sandbox')
+    # chrome_options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-    return driver
+    setattr(thread_local, 'driver', driver)
+  return driver
 
 
 def _crawl_BJ_solutions(BJ_id):
@@ -40,8 +43,8 @@ def _crawl_BJ_solutions(BJ_id):
     driver.quit()
 
 
-def _crawl_BJ_problems(level):
-  logging.debug(f"_crawl_BJ_problems({level})")
+def _crawl_BJ_problems_level(level):
+  logging.debug(f"_crawl_BJ_problems_level({level})")
   driver = get_chrome_driver()
   problems = []
   try:
@@ -62,7 +65,7 @@ def _crawl_BJ_problems(level):
                            "level": level,
                            "title": title})
   except:
-    logging.warn(traceback.format_exc())
+    logging.warning(traceback.format_exc())
   finally:
     driver.quit()
   return problems
@@ -92,13 +95,12 @@ def _crawl_LC_problems(limit):
   return problems
 
 
-def _craw_KT_problems_page(page):
-  logging.info(f"_craw_KT_problems({page})")
+def _crawl_KT_problems_page(page):
+  logging.info(f"_crawl_KT_problems_page({page})")
   driver = get_chrome_driver()
   problems = []
   try:
     driver.get(f"https://open.kattis.com/problems?page={page}")
-    chrome_options = Options()
     for l in driver.find_elements_by_css_selector("tr.odd,tr.even"):
       try:
         title, _, _, _, _, _, _, _, level = l.text.rsplit(maxsplit=8)
@@ -108,9 +110,7 @@ def _craw_KT_problems_page(page):
                          "link": link,
                          "level": level})
       except:
-        logging.warn(traceback.format_exc())
-    driver.quit()
-
+        logging.warning(traceback.format_exc())
   except Exception as e:
     logging.error(traceback.format_exc())
   finally:
@@ -118,21 +118,46 @@ def _craw_KT_problems_page(page):
   return problems
 
 
-def crawl_problems(site_id, n_thread=None, test=None):
+def _crawl_HR_problem(problem_id):
+  logging.info(f"_crawl_HR_problem({problem_id})")
+  driver = get_chrome_driver()
+  try:
+    link = f"https://www.hackerrank.com/challenges/{problem_id[3:]}/problem"
+    logging.info(link)
+    driver.get(link)
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, 'difficulty-block')))
+    level = driver.find_elements_by_class_name("difficulty-block")[1].text.split()[-1]
+    return {"problem_id": problem_id,
+            "link": link,
+            "title": driver.find_element_by_class_name("ui-icon-label").text,
+            "level": {"Easy": 1, "Medium": 2, "Hard": 3}[level]}
+  except:
+    logging.warning(traceback.format_exc())
+
+
+def crawl_problems(site_id, n_thread=None, problem_ids=None):
+  """ Return generator of problem DTO """
   logging.debug(f"crawl_problems({site_id}, {n_thread})")
   assert not n_thread or site_id in ["BJ", "KT"], "n_thread only supports in BJ, KT"
-  if site_id == "LC":
-    yield from _crawl_LC_problems(5 if test else None)
-  elif site_id == "BJ":
-    with ThreadPoolExecutor() as ex:
-      futures = [ex.submit(_crawl_BJ_problems, level) for level in ([29, 30] if test else range(31))]
+  if site_id == "LC":   # no multithread yet TODO
+    yield from _crawl_LC_problems()
+  elif site_id == "BJ":  # multithread by level
+    with ThreadPoolExecutor(n_thread) as ex:
+      futures = [ex.submit(_crawl_BJ_problems_level, level) for level in range(31)]
       for future in as_completed(futures):
         yield from future.result()
-  elif site_id == "KT":
-    with ThreadPoolExecutor() as ex:
-      futures = [ex.submit(_craw_KT_problems_page, page) for page in ([0, 1] if test else range(50))]  # TODO, 50 is hardcoded
+  elif site_id == "KT":  # multithread by page
+    with ThreadPoolExecutor(n_thread) as ex:
+      futures = [ex.submit(_crawl_KT_problems_page, page) for page in range(50)]  # TODO, remove hardcode
       for future in as_completed(futures):
         yield from future.result()
+  elif site_id == "HR":  # Multithread by question
+    with ThreadPoolExecutor(n_thread) as ex:
+      futures = [ex.submit(_crawl_HR_problem, problem_id) for problem_id in problem_ids]
+      for future in as_completed(futures):
+        problem = future.result()
+        if problem:
+          yield problem
   else:
     raise Exception(f"Site not Supported : {site_id}")
 
