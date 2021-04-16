@@ -39,8 +39,6 @@ def _crawl_BJ_solutions(BJ_id):
              "problem_ids": [f"BJ_{problem}" for problem in driver.find_element_by_class_name('panel-body').text.split()]}]
   except Exception as e:
     logging.warning(f"{e}")
-  finally:
-    driver.quit()
 
 
 def _crawl_BJ_problems_level(level):
@@ -66,8 +64,6 @@ def _crawl_BJ_problems_level(level):
                            "title": title})
   except:
     logging.warning(traceback.format_exc())
-  finally:
-    driver.quit()
   return problems
 
 
@@ -90,8 +86,6 @@ def _crawl_LC_problems(limit):
                        "title": title.strip()})
   except Exception as e:
     logging.error(traceback.format_exc())
-  finally:
-    driver.quit()
   return problems
 
 
@@ -113,8 +107,6 @@ def _crawl_KT_problems_page(page):
         logging.warning(traceback.format_exc())
   except Exception as e:
     logging.error(traceback.format_exc())
-  finally:
-    driver.quit()
   return problems
 
 
