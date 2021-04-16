@@ -1,23 +1,19 @@
-# README
+# Classroom API
 
-## About me
+## Diagram
 
-> Sean Gyuseung Hwang
+![Class Diagram](images/20210416_155459.png)
 
-* https://github.com/SeanHwangG
+![Usecase Diagram](images/20210416_162126.png)
 
-## About Book
+## Django API usage
 
-> Reference
+> Manage gitbook
 
-* [씹어먹는 C++](https://modoocode.com/134)
-* Computer systems: a programmer's perspective (3rd Edition)
-* [Udacity operating system](https://classroom.udacity.com/courses/ud189)
-* [Bash shell](https://mug896.github.io/bash-shell/)
+* django-admin combine_markdown
+* django-admin parse_gitbook
 
-## About website
+> Crawling
 
-> Github
-
-* https://seanhwangg.gitbook.io/note/
-* https://github.com/SeanHwangG/classroom
+* django-admin crawl_problems
+* django-admin crawl_solutions
