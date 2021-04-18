@@ -11,19 +11,21 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from itertools import islice
 
+import re
 import traceback
 import logging
 
 thread_local = local()
 
 
-def get_chrome_driver():
+def get_chrome_driver(headless=True):
   driver = getattr(thread_local, 'driver', None)
   if driver is None:
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument('--headless') TODO Headless doesn't work for hackerrank
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
+    if headless:
+      chrome_options.add_argument('--headless')  # TODO Headless doesn't work for hackerrank
+      chrome_options.add_argument('--no-sandbox')
+      chrome_options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     setattr(thread_local, 'driver', driver)
   return driver
@@ -110,9 +112,31 @@ def _crawl_KT_problems_page(page):
   return problems
 
 
+def _crawl_CF_problems_page(page):
+  logging.info(f"_crawl_CF_problems_page({page})")
+  driver = get_chrome_driver()
+  problems = []
+  try:
+    driver.get(f"https://codeforces.com/problemset/page/{page}")
+    for l in driver.find_elements_by_css_selector("table.problems>tbody>tr")[1:]:
+      if l.text.count("\n") == 3:
+        problem_id, title, _, level = l.text.split("\n")
+      else:
+        problem_id, title, level = l.text.split("\n")
+      level = next(iter(re.findall("\d+", level)), -1)
+      link = l.find_element_by_css_selector("a").get_attribute('href')
+      problems.append({"problem_id": f"CF_{problem_id}",
+                       "title": title,
+                       "link": link,
+                       "level": level})
+  except:
+    logging.warning(traceback.format_exc())
+  return problems
+
+
 def _crawl_HR_problem(problem_id):
   logging.info(f"_crawl_HR_problem({problem_id})")
-  driver = get_chrome_driver()
+  driver = get_chrome_driver(False)
   try:
     link = f"https://www.hackerrank.com/challenges/{problem_id[3:]}/problem"
     logging.info(link)
@@ -141,6 +165,11 @@ def crawl_problems(site_id, n_thread=None, problem_ids=None):
   elif site_id == "KT":  # multithread by page
     with ThreadPoolExecutor(n_thread) as ex:
       futures = [ex.submit(_crawl_KT_problems_page, page) for page in range(50)]  # TODO, remove hardcode
+      for future in as_completed(futures):
+        yield from future.result()
+  elif site_id == "CF":  # multithread by page
+    with ThreadPoolExecutor(n_thread) as ex:
+      futures = [ex.submit(_crawl_CF_problems_page, page) for page in range(80)]
       for future in as_completed(futures):
         yield from future.result()
   elif site_id == "HR":  # Multithread by question

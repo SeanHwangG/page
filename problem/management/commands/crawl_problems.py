@@ -15,7 +15,7 @@ class Command(BaseCommand):
   help = 'Update problem level'
 
   def add_arguments(self, parser):
-    parser.add_argument('-s', '--site_id', type=str, help="glob path for problems", choices=["BJ", "LC", "KT", "HR"])
+    parser.add_argument('-s', '--site_id', type=str, help="glob path for problems", choices=["BJ", "CF", "LC", "KT", "HR"])
     parser.add_argument('-nt', '--n_thread', type=int, help="Whether to parse problems in multithreading (default all available)", default=None)
 
   def handle(self, *args, site_id=None, n_thread=None, **options):
