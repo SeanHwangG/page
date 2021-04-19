@@ -30,7 +30,7 @@ class Site(models.Model):
 
 class Problem(models.Model):
   problem_id = models.CharField(max_length=255, null=False, primary_key=True)
-  level = models.FloatField(default=-1)
+  level = models.IntegerField(default=-1)
   link = models.CharField(max_length=255, default="")
   title = models.CharField(max_length=255, default="")
   tags = models.ManyToManyField(Tag)

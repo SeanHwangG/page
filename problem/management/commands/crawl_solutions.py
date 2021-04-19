@@ -61,10 +61,10 @@ class Command(BaseCommand):
         elif user_id:
           users = User.objects.filter(user_id=user_id)
         for solution_dic in crawl_solutions(users.values_list(f"{site_id}_id", flat=True), site_id, n_thread):
-          unseen_total, seen_total = 0
+          unseen_total, seen_total = 0, 0
           for problem_id in solution_dic["problem_ids"]:
             _, unseen_created = Problem.objects.get_or_create(problem_id=problem_id, site_id=site_id)
-            _, seen_created = Solution.objects.update_or_create(user=User.objects.get(user_id=solution_dic["user_id"]), problem=problem)
+            _, seen_created = Solution.objects.update_or_create(user=User.objects.get(user_id=solution_dic["user_id"]), problem_id=problem_id)
             unseen_total, seen_total = unseen_total + int(unseen_created), seen_total + int(seen_total)
           logging.info(f"Created : {unseen_total} new problems, {seen_total} solutions by {solution_dic['user_id']} solved")
     except Exception as e:
