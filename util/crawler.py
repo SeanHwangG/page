@@ -31,7 +31,7 @@ def get_chrome_driver(headless=True):
   return driver
 
 
-def _crawl_BJ_solutions(BJ_id):
+def _crawl_BJ_solutions(BJ_id: str):
   logging.info(f"_crawl_BJ_solutions({BJ_id})")
   driver = get_chrome_driver()
   try:
@@ -69,7 +69,7 @@ def _crawl_BJ_problems_level(level):
   return problems
 
 
-def _crawl_LC_problems(limit):
+def _crawl_LC_problems(limit: int):
   logging.info(f"_crawl_LC_problems({limit})")
   driver = get_chrome_driver()
   problems = []
@@ -91,7 +91,7 @@ def _crawl_LC_problems(limit):
   return problems
 
 
-def _crawl_KT_problems_page(page):
+def _crawl_KT_problems_page(page: int):
   logging.info(f"_crawl_KT_problems_page({page})")
   driver = get_chrome_driver()
   problems = []
@@ -112,7 +112,23 @@ def _crawl_KT_problems_page(page):
   return problems
 
 
-def _crawl_CF_problems_page(page):
+def _crawl_CC_problem(problem_id: str):
+  logging.info(f"_crawl_CC_problems({problem_id})")
+  CC_levels = ["", "Beginner", "Easy", "Medium", "Hard", "Challenge", "Extcontest"]
+  driver = get_chrome_driver()
+  try:
+    link = f"https://www.codechef.com/problems/{problem_id[3:]}"
+    level = CC_levels.index(driver.find_elements_by_css_selector("aside>a")[1].text[9:-1])
+    driver.get(link)
+    return {"problem_id": problem_id,
+            "title": driver.find_element_by_css_selector("h1").text.split(" Problem Code")[0],
+            "link": link,
+            "level": level}
+  except Exception as e:
+    logging.error(traceback.format_exc())
+
+
+def _crawl_CF_problems_page(page: int):
   logging.info(f"_crawl_CF_problems_page({page})")
   driver = get_chrome_driver()
   problems = []
@@ -134,7 +150,7 @@ def _crawl_CF_problems_page(page):
   return problems
 
 
-def _crawl_HR_problem(problem_id):
+def _crawl_HR_problem(problem_id: str):
   logging.info(f"_crawl_HR_problem({problem_id})")
   driver = get_chrome_driver(False)
   try:
@@ -151,39 +167,34 @@ def _crawl_HR_problem(problem_id):
     logging.warning(traceback.format_exc())
 
 
-def crawl_problems(site_id, n_thread=None, problem_ids=None):
+def crawl_problems(site_id: str, n_thread=None, problem_ids=None):
   """ Return generator of problem DTO """
   logging.debug(f"crawl_problems({site_id}, {n_thread})")
   assert not n_thread or site_id in ["BJ", "KT"], "n_thread only supports in BJ, KT"
   if site_id == "LC":   # no multithread yet TODO
     yield from _crawl_LC_problems()
-  elif site_id == "BJ":  # multithread by level
+  else:  # multithread by level
     with ThreadPoolExecutor(n_thread) as ex:
-      futures = [ex.submit(_crawl_BJ_problems_level, level) for level in range(31)]
-      for future in as_completed(futures):
-        yield from future.result()
-  elif site_id == "KT":  # multithread by page
-    with ThreadPoolExecutor(n_thread) as ex:
-      futures = [ex.submit(_crawl_KT_problems_page, page) for page in range(50)]  # TODO, remove hardcode
-      for future in as_completed(futures):
-        yield from future.result()
-  elif site_id == "CF":  # multithread by page
-    with ThreadPoolExecutor(n_thread) as ex:
-      futures = [ex.submit(_crawl_CF_problems_page, page) for page in range(80)]
-      for future in as_completed(futures):
-        yield from future.result()
-  elif site_id == "HR":  # Multithread by question
-    with ThreadPoolExecutor(n_thread) as ex:
-      futures = [ex.submit(_crawl_HR_problem, problem_id) for problem_id in problem_ids]
+      if site_id == "BJ":
+        futures = [ex.submit(_crawl_BJ_problems_level, level) for level in range(31)]
+      elif site_id == "HR":  # TODO, remove hardcode
+        futures = [ex.submit(_crawl_KT_problems_page, page) for page in range(50)]
+      elif site_id == "CF":  # multithread by page
+        futures = [ex.submit(_crawl_CF_problems_page, page) for page in range(80)]
+      # Multithread by question
+      elif site_id == "HR":
+        futures = [ex.submit(_crawl_HR_problem, problem_id) for problem_id in problem_ids]
+      elif site_id == "CC":
+        futures = [ex.submit(_crawl_CC_problem, level) for level in problem_ids]
+      else:
+        raise Exception(f"Unknown site : {site_id}")
       for future in as_completed(futures):
         problem = future.result()
         if problem:
           yield problem
-  else:
-    raise Exception(f"Site not Supported : {site_id}")
 
 
-def crawl_solutions(user_site_ids, site_id, n_thread=None):
+def crawl_solutions(user_site_ids, site_id: str, n_thread=None):
   logging.info(f"crawl_solutions({user_site_ids}, {site_id})")
   driver = get_chrome_driver()
   if site_id == "BJ":
