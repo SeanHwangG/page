@@ -16,6 +16,13 @@
       type="text/css"
       href="{% static '/css/main.css' %}"
     />
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert-{{message.tags}}">
+          {{message}}
+        </div>
+      {% endfor %}
+    {% endif %}
   </head>
   <body>
     <div class="container-fluid">{% block content %} {% endblock %}</div>

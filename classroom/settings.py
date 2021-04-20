@@ -72,7 +72,8 @@ for _ in ("boto", "elasticsearch", "urllib3", "selenium.webdriver.remote.remote_
 print(f"Current log level is {LOG_LEVEL}")
 ALLOWED_HOSTS = ["127.0.0.1", "eb-django-app-dev.elasticbeanstalk.com"]
 INSTALLED_APPS = [
-    # 'admin_numeric_filter',
+    'crispy_forms',
+    'admin_numeric_filter',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -104,7 +105,7 @@ ROOT_URLCONF = 'classroom.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [CLASSROOM_DIR / 'templates'],
+        'DIRS': [CLASSROOM_DIR / 'classroom' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -187,3 +188,5 @@ STATIC_ROOT = os.path.join(CLASSROOM_DIR, "..", "www", "static")
 STATICFILES_DIRS = (
     os.path.join(CLASSROOM_DIR, 'static'),
 )
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
