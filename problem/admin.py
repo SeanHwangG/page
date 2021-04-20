@@ -5,11 +5,15 @@ import logging
 from admin_numeric_filter.admin import RangeNumericFilter, SliderNumericFilter
 
 
-from .models import Tag, Problem, Site, Solution
+from .models import Tag, Problem, Site, Solution, Account
+
+
+class AccountAdmin(admin.ModelAdmin):
+  list_display = ("user", "site", "login_id")
 
 
 class TagAdmin(admin.ModelAdmin):
-  list_display = ("tag_id", "group",  "modified_at",)
+  list_display = ("name", "group",  "modified_at",)
 
 
 class CustomSliderNumericFilter(SliderNumericFilter):
@@ -18,9 +22,9 @@ class CustomSliderNumericFilter(SliderNumericFilter):
 
 
 class ProblemAdmin(admin.ModelAdmin):
-  list_display = ("problem_id", "title_link", "tag_list", "solved_users", "created_at", "user_with_solution_count")
-  list_filter = ("site__site_id", "tags", "created_at")  # , ("level", RangeNumericFilter),)
-  search_fields = ('problem_id', "title")
+  list_display = ("name", "title_link", "tag_list", "solved_users", "created_at", "user_with_solution_count")
+  list_filter = ("site__name", "tags", "created_at", ("level", RangeNumericFilter),)
+  search_fields = ('name', "title")
   list_per_page = 500
 
   def get_queryset(self, request):
@@ -32,7 +36,7 @@ class ProblemAdmin(admin.ModelAdmin):
     return format_html(f"<a href={problem.link}>[{int(problem.level)}] {problem.title}</a>")
 
   def tag_list(self, problem):
-    return "\n".join([t.tag_id for t in problem.tags.all()])
+    return "\n".join([t.name for t in problem.tags.all()])
 
   def solved_users(self, problem):
     solutions = Solution.objects.filter(problem=problem).order_by("user")
@@ -40,20 +44,21 @@ class ProblemAdmin(admin.ModelAdmin):
 
 
 class SolutionAdmin(admin.ModelAdmin):
-  list_display = ("problem_id", "user_id", "language", "created_at", "link")
+  list_display = ("user_id", "language", "created_at", "link")
   list_filter = ("user", "language", "created_at")
   list_editable = ("language",)
-  search_fields = ("problem__problem_id",)
+  search_fields = ("problem__name",)
   list_per_page = 500
 
 
 class SiteAdmin(admin.ModelAdmin):
-  list_display = ("site_id", "site_link", "name", "modified_at",)
+  list_display = ("name", "site_link", "name", "modified_at",)
 
   def site_link(self, site):
     return format_html(f"<a href={site.link}>{site.link}</a>")
 
 
+admin.site.register(Account, AccountAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Problem, ProblemAdmin)
 admin.site.register(Site, SiteAdmin)

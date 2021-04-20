@@ -8,7 +8,7 @@ import logging
 
 
 class UserAdmin(admin.ModelAdmin):
-  list_display = ("name", "BJ_id", "all_count", "today_count", "created_at")
+  list_display = ("name", "all_count", "today_count", "created_at")
 
   def get_queryset(self, request):
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
@@ -32,7 +32,7 @@ class MembershipAdmin(admin.ModelAdmin):
 
 
 class TeamAdmin(admin.ModelAdmin):
-  list_display = ("team_id", "team_admin", "created_at")
+  list_display = ("name", "team_admin", "created_at")
 
   def team_admin(self, team):
     return ",".join(Membership.objects.filter(team=team, membership_type="admin").values_list('user__name', flat=True))

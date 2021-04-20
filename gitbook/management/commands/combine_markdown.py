@@ -29,7 +29,8 @@ class Command(BaseCommand):
           continue
         out = Path(f"{result_dir}/{dir.name}.md").open('w')
         paths = dir.glob(file)
-        path_problems = [(path, Problem.objects.get_or_create(problem_id=path.stem, site_id=path.stem[:2])[0]) for path in paths]
+        site = Site.objects.get(name=path.stem[:2])
+        path_problems = [(path, Problem.objects.get_or_create(name=path.stem, site=site)[0]) for path in paths]
         path_problems = list(sorted(path_problems, key=lambda path_problem: (path_problem[1].site_id, path_problem[1].level)))
         for i, (path, problem) in enumerate(path_problems):
           if problem.site_id == "LC":

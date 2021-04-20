@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import UniqueConstraint
 from util.markdown import extract
 import logging
+import uuid
 
 
 class GitbookManager(models.Manager):
@@ -28,29 +29,28 @@ class HeaderManager(models.Manager):
 
 
 class Gitbook(models.Model):
-  gitbook_id = models.CharField(max_length=255, null=False, primary_key=True)
+  id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+  name = models.CharField(max_length=255, null=False)
   directory = models.CharField(max_length=255, null=False)
   file_name = models.CharField(max_length=255, null=False)
   objects = GitbookManager()
 
   def __str__(self):
-    return f"{self.gitbook_id}"
+    return f"{self.name}"
 
   def save(self, *args, **kw):
-    self.gitbook_id = f'{self.directory}/{self.file_name}'
     super(Gitbook, self).save(*args, **kw)
 
 
 class Header(models.Model):
-  header_id = models.CharField(max_length=255, null=False, primary_key=True)
+  id = models.UUIDField(default=uuid.uuid4, primary_key=True)
   gitbook = models.ForeignKey(Gitbook, null=False, on_delete=models.PROTECT)
   name = models.CharField(max_length=255, null=False)
   level = models.IntegerField(default=-1)
   objects = HeaderManager()
 
   def __str__(self):
-    return f"{self.header_id}"
+    return f'{self.gitbook}#{self.name}'
 
   def save(self, *args, **kw):
-    self.header_id = f'{self.gitbook_id}#{self.name}'
     super(Header, self).save(*args, **kw)
