@@ -23,6 +23,7 @@ class Command(BaseCommand):
     logging.info(f"handle({dir}, {file}, {result_dir}, {lang_tag}, {problem})")
     if problem:
       dirs = list(Path(".").glob(dir))
+      logging.info(f"{dirs}")
 
       for dir in dirs:
         if not dir.is_dir():

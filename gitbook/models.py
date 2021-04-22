@@ -29,7 +29,7 @@ class HeaderManager(models.Manager):
 
 
 class Gitbook(models.Model):
-  id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+  uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
   name = models.CharField(max_length=255, null=False)
   directory = models.CharField(max_length=255, null=False)
   file_name = models.CharField(max_length=255, null=False)
@@ -43,7 +43,7 @@ class Gitbook(models.Model):
 
 
 class Header(models.Model):
-  id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+  uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
   gitbook = models.ForeignKey(Gitbook, null=False, on_delete=models.PROTECT)
   name = models.CharField(max_length=255, null=False)
   level = models.IntegerField(default=-1)

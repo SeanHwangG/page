@@ -9,11 +9,11 @@ from .models import Tag, Problem, Site, Solution, Account
 
 
 class AccountAdmin(admin.ModelAdmin):
-  list_display = ("user", "site", "login_id")
+  list_display = ("user", "site", "name")
 
 
 class TagAdmin(admin.ModelAdmin):
-  list_display = ("name", "group",  "modified_at",)
+  list_display = ("name", "type",  "modified_at",)
 
 
 class CustomSliderNumericFilter(SliderNumericFilter):
@@ -22,9 +22,9 @@ class CustomSliderNumericFilter(SliderNumericFilter):
 
 
 class ProblemAdmin(admin.ModelAdmin):
-  list_display = ("name", "title_link", "tag_list", "solved_users", "created_at", "user_with_solution_count")
+  list_display = ("code", "title_link", "tag_list", "solved_users", "created_at", "user_with_solution_count")
   list_filter = ("site__name", "tags", "created_at", ("level", RangeNumericFilter),)
-  search_fields = ('name', "title")
+  search_fields = ('code', "title")
   list_per_page = 500
 
   def get_queryset(self, request):
@@ -44,7 +44,7 @@ class ProblemAdmin(admin.ModelAdmin):
 
 
 class SolutionAdmin(admin.ModelAdmin):
-  list_display = ("user_id", "language", "created_at", "link")
+  list_display = ("user", "problem", "language", "created_at", "link")
   list_filter = ("user", "language", "created_at")
   list_editable = ("language",)
   search_fields = ("problem__name",)

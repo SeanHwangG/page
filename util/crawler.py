@@ -31,14 +31,14 @@ def get_chrome_driver(headless=True):
   return driver
 
 
-def _crawl_BJ_solutions(BJ_id: str):
-  logging.info(f"_crawl_BJ_solutions({BJ_id})")
+def _crawl_BJ_solutions(account_name: str):
+  logging.info(f"_crawl_BJ_solutions({account_name})")
   driver = get_chrome_driver()
   try:
-    driver.get(f"https://www.acmicpc.net/user/{BJ_id}")
+    driver.get(f"https://www.acmicpc.net/user/{account_name}")
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'panel-body')))
-    return [{"user_id": BJ_id,
-             "problem_ids": [f"BJ_{problem}" for problem in driver.find_element_by_class_name('panel-body').text.split()]}]
+    return [{"account_name": account_name,
+             "problem_codes": [problem for problem in driver.find_element_by_class_name('panel-body').text.split()]}]
   except Exception as e:
     logging.warning(f"{e}")
 
@@ -56,11 +56,12 @@ def _crawl_BJ_problems_level(level):
         break
       for line in lines.split("\n"):          # ex)
         line = line.strip("STANDARD").strip()  # 10430 나머지 계산 STANDARD -> 10430 나머지 계산
-        id_title = line.split(' ', 1)         # 10430 나머지 계산 -> [10430, 나머지 계산]
-        if id_title[0].isdigit() and len(id_title) == 2:
-          problem_id, title = id_title
-          link = f'http://acmicpc.net/problem/{problem_id}'
-          problems.append({"problem_id": f"BJ_{problem_id}",
+        code_title = line.split(' ', 1)       # 10430 나머지 계산 -> [10430, 나머지 계산]
+        if code_title[0].isdigit() and len(code_title) == 2:
+          code, title = code_title
+          link = f'http://acmicpc.net/problem/{code}'
+          problems.append({"site_code": "BJ",
+                           "problem_code": code,
                            "link": link,
                            "level": level,
                            "title": title})
@@ -69,7 +70,7 @@ def _crawl_BJ_problems_level(level):
   return problems
 
 
-def _crawl_LC_problems(limit: int):
+def _crawl_LC_problems(limit: int = None):
   logging.info(f"_crawl_LC_problems({limit})")
   driver = get_chrome_driver()
   problems = []
@@ -81,8 +82,9 @@ def _crawl_LC_problems(limit: int):
 
     data = driver.find_element_by_class_name("reactable-data").find_elements_by_tag_name("tr")
     for prob in islice(data, limit):
-      problem_id, title, level = prob.text.split('\n')
-      problems.append({"problem_id": f"LC_{problem_id}",
+      code, title, level = prob.text.split('\n')
+      problems.append({"site_code": "LC",
+                       "problem_code": code,
                        "level": {"Easy": 1, "Medium": 2, "Hard": 3}[level[level.find(' ') + 1:]],
                        "link": prob.find_element_by_css_selector("a").get_attribute('href'),
                        "title": title.strip()})
@@ -101,7 +103,8 @@ def _crawl_KT_problems_page(page: int):
       try:
         title, _, _, _, _, _, _, _, level = l.text.rsplit(maxsplit=8)
         link = l.find_element_by_css_selector("a").get_attribute('href')
-        problems.append({"problem_id": f"KT_{link.rsplit('/')[-1]}",
+        problems.append({"site_code": "KT",
+                         "problem_code": f"{link.rsplit('/')[-1]}",
                          "title": title,
                          "link": link,
                          "level": level})
@@ -112,15 +115,16 @@ def _crawl_KT_problems_page(page: int):
   return problems
 
 
-def _crawl_CC_problem(problem_id: str):
-  logging.info(f"_crawl_CC_problems({problem_id})")
+def _crawl_CC_problem(code: str):
+  logging.info(f"_crawl_CC_problems({code})")
   CC_levels = ["", "Beginner", "Easy", "Medium", "Hard", "Challenge", "Extcontest"]
   driver = get_chrome_driver()
   try:
-    link = f"https://www.codechef.com/problems/{problem_id[3:]}"
+    link = f"https://www.codechef.com/problems/{code}"
     level = CC_levels.index(driver.find_elements_by_css_selector("aside>a")[1].text[9:-1])
     driver.get(link)
-    return {"problem_id": problem_id,
+    return {"site_code": "CC",
+            "problem_code": code,
             "title": driver.find_element_by_css_selector("h1").text.split(" Problem Code")[0],
             "link": link,
             "level": level}
@@ -136,12 +140,13 @@ def _crawl_CF_problems_page(page: int):
     driver.get(f"https://codeforces.com/problemset/page/{page}")
     for l in driver.find_elements_by_css_selector("table.problems>tbody>tr")[1:]:
       if l.text.count("\n") == 3:
-        problem_id, title, _, level = l.text.split("\n")
+        code, title, _, level = l.text.split("\n")
       else:
-        problem_id, title, level = l.text.split("\n")
+        code, title, level = l.text.split("\n")
       level = next(iter(re.findall("\d+", level)), -1)
       link = l.find_element_by_css_selector("a").get_attribute('href')
-      problems.append({"problem_id": f"CF_{problem_id}",
+      problems.append({"site_code": "CF",
+                       "problem_code": f"{code}",
                        "title": title,
                        "link": link,
                        "level": level})
@@ -150,16 +155,17 @@ def _crawl_CF_problems_page(page: int):
   return problems
 
 
-def _crawl_HR_problem(problem_id: str):
-  logging.info(f"_crawl_HR_problem({problem_id})")
+def _crawl_HR_problem(code: str):
+  logging.info(f"_crawl_HR_problem({code})")
   driver = get_chrome_driver(False)
   try:
-    link = f"https://www.hackerrank.com/challenges/{problem_id[3:]}/problem"
+    link = f"https://www.hackerrank.com/challenges/{code}/problem"
     logging.info(link)
     driver.get(link)
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, 'difficulty-block')))
     level = driver.find_elements_by_class_name("difficulty-block")[1].text.split()[-1]
-    return {"problem_id": problem_id,
+    return {"site_code": "HR",
+            "problem_code": code,
             "link": link,
             "title": driver.find_element_by_class_name("ui-icon-label").text,
             "level": {"Easy": 1, "Medium": 2, "Hard": 3}[level]}
@@ -167,7 +173,7 @@ def _crawl_HR_problem(problem_id: str):
     logging.warning(traceback.format_exc())
 
 
-def crawl_problems(site_id: str, n_thread=None, problem_ids=None):
+def crawl_problems(site_id: str, n_thread: int = None, codes: list[str] = None):
   """ Return generator of problem DTO """
   logging.debug(f"crawl_problems({site_id}, {n_thread})")
   assert not n_thread or site_id in ["BJ", "KT"], "n_thread only supports in BJ, KT"
@@ -183,22 +189,22 @@ def crawl_problems(site_id: str, n_thread=None, problem_ids=None):
         futures = [ex.submit(_crawl_CF_problems_page, page) for page in range(80)]
       # Multithread by question
       elif site_id == "HR":
-        futures = [ex.submit(_crawl_HR_problem, problem_id) for problem_id in problem_ids]
+        futures = [ex.submit(_crawl_HR_problem, code) for code in codes]
       elif site_id == "CC":
-        futures = [ex.submit(_crawl_CC_problem, level) for level in problem_ids]
+        futures = [ex.submit(_crawl_CC_problem, code) for code in codes]
       else:
         raise Exception(f"Unknown site : {site_id}")
       for future in as_completed(futures):
         problem = future.result()
         if problem:
-          yield problem
+          yield from problem
 
 
-def crawl_solutions(user_site_ids, site_id: str, n_thread=None):
-  logging.info(f"crawl_solutions({user_site_ids}, {site_id})")
+def crawl_solutions(account_names: str, site_id: str, n_thread: int = None):
+  logging.info(f"crawl_solutions({account_names}, {site_id})")
   driver = get_chrome_driver()
   if site_id == "BJ":
     with ThreadPoolExecutor(n_thread) as ex:
-      future2level = [ex.submit(_crawl_BJ_solutions, BJ_id) for BJ_id in user_site_ids]
+      future2level = [ex.submit(_crawl_BJ_solutions, account_name) for account_name in account_names]
       for future in as_completed(future2level):
         yield from future.result()

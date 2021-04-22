@@ -24,6 +24,7 @@ defusedxml==0.6.0
 dill==0.3.3
 Django==3.1.7
 django-admin-numeric-filter==0.1.6
+django-crispy-forms==1.11.2
 django-extensions==3.1.1
 django-health-check==3.16.3
 djangorestframework==3.12.4
@@ -31,15 +32,6 @@ dnspython==1.16.0
 docutils==0.16
 email-validator==1.1.2
 Flask==1.1.2
-Flask-AppBuilder==3.1.1
-Flask-Babel==1.0.0
-Flask-Caching==1.9.0
-Flask-JWT-Extended==3.25.1
-Flask-Login==0.4.1
-Flask-OpenID==1.2.5
-Flask-SQLAlchemy==2.4.4
-Flask-WTF==0.14.3
-graphviz==0.16
 gunicorn==19.10.0
 idna==2.10
 importlib-metadata==1.7.0
