@@ -17,9 +17,8 @@ class Command(BaseCommand):
     parser.add_argument('-f', '--file', type=str, required=True, help="Path or glob path relative to dir path (base/glob)")
     parser.add_argument('-r', '--result_dir', type=str, help="Directory to put result markdown")
     parser.add_argument('-l', '--lang_tag', help="Whether to add language tag (ex: ```py ..code.. ```)", action="store_true")
-    parser.add_argument('-p', '--problem', help="Whether to add problem meta info", action="store_true")
 
-  def handle(self, dir="", file="", result_dir="", lang_tag=False, problem=False, **options):
+  def handle(self, dir="", file="", result_dir="", lang_tag=False, **options):
     logging.info(f"handle({dir}, {file}, {result_dir}, {lang_tag}, {problem})")
     if problem:
       dirs = list(Path(".").glob(dir))
@@ -42,7 +41,8 @@ class Command(BaseCommand):
             level = problem.level
           if i == 0 or path_problems[i - 1][1].site_id != problem.site_id:
             out.write(f"\n\n> {problem.site.name}")
-          out.write(f"\n\n * [lv {level} : {problem.title}]({problem.link}) [(edit)]({settings.PROBLEM_GITHUB}/edit/main/{str(path.resolve()).split('interview/', 1)[1]})\n\n")
+          url_path = str(path.resolve()).split('interview/', 1)[1]
+          out.write(f"\n\n * [lv {level} : {problem.title}]({problem.link}) [(edit)]({settings.PROBLEM_GITHUB}/edit/main/{url_path})\n\n")
           out.write(path.read_text())
         logging.info(f"Wrote : {out.name}")
         logging.info(f"Processed : {len(path_problems)} problems")

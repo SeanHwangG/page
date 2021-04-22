@@ -13,7 +13,7 @@ class AccountAdmin(admin.ModelAdmin):
 
 
 class TagAdmin(admin.ModelAdmin):
-  list_display = ("name", "type",  "modified_at",)
+  list_display = ("name", "type", "modified_at",)
 
 
 class CustomSliderNumericFilter(SliderNumericFilter):
@@ -40,7 +40,8 @@ class ProblemAdmin(admin.ModelAdmin):
 
   def solved_users(self, problem):
     solutions = Solution.objects.filter(problem=problem).order_by("user")
-    return format_html(", ".join(f"<a href={solution.link}>{solution.user.name}</a>" if solution.link else solution.user.name for solution in solutions))
+    return format_html(", ".join(f"<a href={solution.link}>{solution.user.name}</a>"
+                                 if solution.link else solution.user.name for solution in solutions))
 
 
 class SolutionAdmin(admin.ModelAdmin):

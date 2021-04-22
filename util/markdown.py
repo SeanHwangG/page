@@ -4,11 +4,10 @@ import panflute
 import pypandoc
 import pathlib
 
-TAG2MAPPING = {
-    "links": {"panflute_cls": panflute.Link,
-              "panflute2json": {"url": "url"}},
-    "headers": {"panflute_cls": panflute.Header,
-                "panflute2json": {"level": "level", "name": "identifier"}}}
+TAG2MAPPING = {"links": {"panflute_cls": panflute.Link,
+                         "panflute2json": {"url": "url"}},
+               "headers": {"panflute_cls": panflute.Header,
+                           "panflute2json": {"level": "level", "name": "identifier"}}}
 
 
 def __init__(self, tag):

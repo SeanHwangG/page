@@ -20,7 +20,7 @@ class Command(BaseCommand):
     parser.add_argument('-s', '--site_code', type=str, help="Type of problem site_id", choices=["BJ"], required=True)
     parser.add_argument('-t', '--team_name', type=str, help="team_name")
     parser.add_argument('-u', '--user_name', type=str, help="user_name")
-    parser.add_argument('-nt', '--n_thread', action="store_true", help="Number of thread to parse solutions (default all available)", default=None)
+    parser.add_argument('-nt', '--n_thread', action="store_true", help="Number of thread to parse (default available)", default=None)
 
   def handle(self, *args, site_code: str = None, team_name: str = None, user_name: str = None, n_thread: int = None, **options):
     logging.info(f"handle({site_code}, {team_name}, {user_name}, {n_thread})")

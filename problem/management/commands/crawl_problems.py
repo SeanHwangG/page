@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
   def add_arguments(self, parser):
     parser.add_argument('-s', '--site_code', type=str, help="glob path for problems", choices=["BJ", "CC", "CF", "LC", "KT", "HR"])
-    parser.add_argument('-nt', '--n_thread', type=int, help="Whether to parse problems in multithreading (default all available)", default=None)
+    parser.add_argument('-nt', '--n_thread', type=int, help="numer of thread to crawl (default all)", default=None)
 
   def handle(self, *args, site_code=None, n_thread=None, **options):
     logging.info(f"handle({site_code}, {n_thread})")

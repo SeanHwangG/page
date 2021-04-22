@@ -65,7 +65,7 @@ def _crawl_BJ_problems_level(level):
                            "link": link,
                            "level": level,
                            "title": title})
-  except:
+  except Exception as _:
     logging.warning(traceback.format_exc())
   return problems
 
@@ -99,17 +99,14 @@ def _crawl_KT_problems_page(page: int):
   problems = []
   try:
     driver.get(f"https://open.kattis.com/problems?page={page}")
-    for l in driver.find_elements_by_css_selector("tr.odd,tr.even"):
-      try:
-        title, _, _, _, _, _, _, _, level = l.text.rsplit(maxsplit=8)
-        link = l.find_element_by_css_selector("a").get_attribute('href')
-        problems.append({"site_code": "KT",
-                         "problem_code": f"{link.rsplit('/')[-1]}",
-                         "title": title,
-                         "link": link,
-                         "level": level})
-      except:
-        logging.warning(traceback.format_exc())
+    for row_tag in driver.find_elements_by_css_selector("tr.odd,tr.even"):
+      title, _, _, _, _, _, _, _, level = row_tag.text.rsplit(maxsplit=8)
+      link = row_tag.find_element_by_css_selector("a").get_attribute('href')
+      problems.append({"site_code": "KT",
+                       "problem_code": f"{link.rsplit('/')[-1]}",
+                       "title": title,
+                       "link": link,
+                       "level": level})
   except Exception as e:
     logging.error(traceback.format_exc())
   return problems
@@ -138,19 +135,19 @@ def _crawl_CF_problems_page(page: int):
   problems = []
   try:
     driver.get(f"https://codeforces.com/problemset/page/{page}")
-    for l in driver.find_elements_by_css_selector("table.problems>tbody>tr")[1:]:
-      if l.text.count("\n") == 3:
-        code, title, _, level = l.text.split("\n")
+    for row_tag in driver.find_elements_by_css_selector("table.problems>tbody>tr")[1:]:
+      if row_tag.text.count("\n") == 3:
+        code, title, _, level = row_tag.text.split("\n")
       else:
-        code, title, level = l.text.split("\n")
-      level = next(iter(re.findall("\d+", level)), -1)
-      link = l.find_element_by_css_selector("a").get_attribute('href')
+        code, title, level = row_tag.text.split("\n")
+      level = next(iter(re.findall(r"\d+", level)), -1)
+      link = row_tag.find_element_by_css_selector("a").get_attribute('href')
       problems.append({"site_code": "CF",
                        "problem_code": f"{code}",
                        "title": title,
                        "link": link,
                        "level": level})
-  except:
+  except Exception as e:
     logging.warning(traceback.format_exc())
   return problems
 
@@ -169,7 +166,7 @@ def _crawl_HR_problem(code: str):
             "link": link,
             "title": driver.find_element_by_class_name("ui-icon-label").text,
             "level": {"Easy": 1, "Medium": 2, "Hard": 3}[level]}
-  except:
+  except Exception as _:
     logging.warning(traceback.format_exc())
 
 

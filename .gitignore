@@ -2,7 +2,7 @@
 env
 # Credential files
 *.log
-.env
+.env*
 nohup.out
 .vscode
 *.embed
