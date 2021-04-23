@@ -18,12 +18,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 65535
-CLASSROOM_DIR = Path(__file__).resolve().parent.parent
-ENV_PATH = CLASSROOM_DIR / '.env'
+BASE_DIR = Path(__file__).resolve().parent.parent
+ENV_PATH = BASE_DIR / '.env'
 PROBLEM_GITHUB = "https://github.com/SeanHwangG/interview/"
-SECRET_KEY = 'i(1vsy6#=p!s&gnhrr-8%f4&a0kj8efee26v2*u%mjfyjw7d1l'
-DEBUG = os.getenv("DEBUG")
 load_dotenv(dotenv_path=ENV_PATH)
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+DEBUG = os.getenv("DJANGO_DEBUG")
 
 LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "WARN")
 LOGGING_CONFIG = None  # Disable Django's logging setup
@@ -105,7 +105,7 @@ ROOT_URLCONF = 'classroom.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [CLASSROOM_DIR / 'classroom' / 'templates'],
+        'DIRS': [BASE_DIR / 'classroom' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,6 +132,13 @@ if 'RDS_DB_NAME' in os.environ:
           'PASSWORD': os.environ['RDS_PASSWORD'],
           'HOST': os.environ['RDS_HOSTNAME'],
           'PORT': os.environ['RDS_PORT'],
+      }
+  }
+elif "GITHUB_WORKFLOW" in os.environ:
+  DATABASES = {
+      'default': {
+          'ENGINE': 'django.db.backends.sqlite3',
+          'NAME': BASE_DIR / 'db.sqlite3',
       }
   }
 else:
@@ -184,9 +191,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(CLASSROOM_DIR, "..", "www", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 STATICFILES_DIRS = (
-    os.path.join(CLASSROOM_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"

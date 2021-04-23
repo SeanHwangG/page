@@ -2,7 +2,7 @@
 
 ## Diagram
 
-![Class Diagram](images/20210416_155459.png)
+![Class Diagram](images/20210422_203346.png)
 
 ![Usecase Diagram](images/20210416_162126.png)
 

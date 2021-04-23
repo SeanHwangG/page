@@ -1,6 +1,4 @@
 from django.urls import path
 from . import views
 
-urlpatterns = [
-    path('', views.home, name='gitbook'),
-]
+urlpatterns = [path('', views.home, name='gitbook'), ]

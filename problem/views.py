@@ -11,7 +11,7 @@ def home(request):
 
 
 class ProblemViewSet(viewsets.ModelViewSet):
-  queryset = Problem.objects.all().order_by('name')
+  queryset = Problem.objects.all().order_by('code')
   serializer_class = ProblemSerializer
 
 

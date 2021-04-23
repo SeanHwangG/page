@@ -15,24 +15,24 @@ class Command(BaseCommand):
   help = 'Update problem level'
 
   def add_arguments(self, parser):
-    parser.add_argument('-s', '--site_id', type=str, help="glob path for problems", choices=["BJ", "CC", "CF", "LC", "KT", "HR"])
-    parser.add_argument('-nt', '--n_thread', type=int, help="Whether to parse problems in multithreading (default all available)", default=None)
+    parser.add_argument('-s', '--site_code', type=str, help="glob path for problems", choices=["BJ", "CC", "CF", "LC", "KT", "HR"])
+    parser.add_argument('-nt', '--n_thread', type=int, help="numer of thread to crawl (default all)", default=None)
 
-  def handle(self, *args, site_id=None, n_thread=None, **options):
-    logging.info(f"handle({site_id}, {n_thread})")
-    site = Site.objects.get(site_id=site_id)
+  def handle(self, *args, site_code=None, n_thread=None, **options):
+    logging.info(f"handle({site_code}, {n_thread})")
+    site = Site.objects.get(code=site_code)
     total = 0
 
     # Only crawl problems within our database
-    if site_id == "HR":
-      problem_ids = list(Problem.objects.filter(site_id="HR").values_list('problem_id', flat=True))
-    elif site_id == "CC":
-      problem_ids = list(Problem.objects.filter(site_id="CC").values_list('problem_id', flat=True))
+    if site_code == "HR":
+      problem_ids = list(Problem.objects.filter(code="HR").values_list('problem_id', flat=True))
+    elif site_code == "CC":
+      problem_ids = list(Problem.objects.filter(code="CC").values_list('problem_id', flat=True))
     else:
       problem_ids = None
 
-    for problem_dic in crawl_problems(site_id, n_thread, problem_ids):
-      link, problem_id, level, title = itemgetter("link", "problem_id", "level", "title")(problem_dic)
-      _, created = Problem.objects.update_or_create(problem_id=problem_id, defaults={"link": link, "level": level, "site_id": site_id, "title": title})
+    for problem_dic in crawl_problems(site_code, n_thread, problem_ids):
+      link, problem_code, level, title = itemgetter("link", "problem_code", "level", "title")(problem_dic)
+      _, created = Problem.objects.update_or_create(site=site, code=problem_code, defaults={"link": link, "level": level, "title": title})
       total += int(created)
     logging.info(f"Created : {total} problems")
