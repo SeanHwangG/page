@@ -10,17 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import os
-import sys
 import logging.config
-
+import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 65535
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = BASE_DIR / '.env'
-PROBLEM_GITHUB = "https://github.com/SeanHwangG/interview/"
 load_dotenv(dotenv_path=ENV_PATH)
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG")
@@ -52,14 +50,9 @@ logging.config.dictConfig({
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': './debug.log',
-            'formatter': 'verbose'
-        },
     },
     'root': {
-        'handlers': ['file', 'console'],
+        'handlers': ['console'],
         'propagate': False,
         'level': LOG_LEVEL,
     },
@@ -69,9 +62,9 @@ os.environ["WDM_LOG_LEVEL"] = "50"
 for _ in ("boto", "elasticsearch", "urllib3", "selenium.webdriver.remote.remote_connection"):
   logging.getLogger(_).setLevel(logging.CRITICAL)
 
-print(f"Current log level is {LOG_LEVEL}")
-ALLOWED_HOSTS = ["127.0.0.1", "eb-django-app-dev.elasticbeanstalk.com"]
-INSTALLED_APPS = [
+ALLOWED_HOSTS = ["127.0.0.1", "classroom-env.eba-ths6rmin.ap-northeast-2.elasticbeanstalk.com"]
+
+DJANGO_APPS = [
     'crispy_forms',
     'admin_numeric_filter',
     'django.contrib.admin',
@@ -80,15 +73,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'health_check.contrib.psutil',  # disk and memory utilization; requires psutil
+]
+
+THIRD_PARTY_APPS = [
     'django_extensions',
     'health_check',
+    'health_check.contrib.psutil',  # disk and memory utilization; requires psutil
     'rest_framework',
-    'util',
-    'gitbook',
-    'problem',
-    'user'
 ]
+
+LOCAL_APPS = [
+    'classroom.gitbook',
+    'classroom.problem',
+    'classroom.util',
+    'classroom.user'
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,24 +135,14 @@ if 'RDS_DB_NAME' in os.environ:
           'PORT': os.environ['RDS_PORT'],
       }
   }
-elif "GITHUB_WORKFLOW" in os.environ:
+else:
   DATABASES = {
       'default': {
           'ENGINE': 'django.db.backends.sqlite3',
           'NAME': BASE_DIR / 'db.sqlite3',
       }
   }
-else:
-  DATABASES = {
-      'default': {
-          'ENGINE': 'django.db.backends.postgresql',
-          'HOST': os.getenv('DB_HOST'),
-          'NAME': os.getenv("DB_NAME"),
-          'USER': os.getenv('DB_USER'),
-          'PASSWORD': os.getenv('DB_PASSWORD'),
-          'PORT': "5432"
-      }
-  }
+
 logging.debug(DATABASES)
 
 # Password validation
@@ -171,6 +162,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+AUTH_USER_MODEL = "user.User"
 
 
 # Internationalization
@@ -191,9 +183,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+logging.info(STATIC_ROOT)

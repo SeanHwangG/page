@@ -15,15 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-import problem.views
+from classroom.problem.views import ProblemList
+from classroom.user.views import user_list
 from . import views
-from user.views import user_list
 
-urlpatterns = [path('admin/', admin.site.urls),
-               path('', views.home),
-               path('ht/', include('health_check.urls')),
-               path('api/problem/', problem.views.ProblemList.as_view()),
-               path('api/user/', user_list),
-               path('user/', include("user.urls")),
-               path('problem/', include("problem.urls")),
-               path('gitbook/', include("gitbook.urls"))]
+urlpatterns = [path('admin/', admin.site.urls), ]

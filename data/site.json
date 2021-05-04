@@ -1,0 +1,68 @@
+[
+  {
+    "model": "problem.site",
+    "pk": "32a4e7ba-7d9c-447e-a99a-55b604ecbb81",
+    "fields": {
+      "code": "LC",
+      "name": "leetcode",
+      "link": "https://leetcode.com/",
+      "created": "2021-04-29T18:28:50.573Z",
+      "modified": "2021-04-29T18:28:50.573Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "6c553902-b148-454f-8b2e-e08547a2f207",
+    "fields": {
+      "code": "HR",
+      "name": "hackerrank",
+      "link": "https://www.hackerrank.com/",
+      "created": "2021-04-29T18:28:50.581Z",
+      "modified": "2021-04-29T18:28:50.581Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "7bdcc432-3282-4e8f-be98-286e8a35dade",
+    "fields": {
+      "code": "CC",
+      "name": "codechef",
+      "link": "https://www.codechef.com/",
+      "created": "2021-04-29T18:28:50.576Z",
+      "modified": "2021-04-29T18:28:50.576Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "81272a1b-358f-441c-be60-a1ae19c65abc",
+    "fields": {
+      "code": "BJ",
+      "name": "baekjoon",
+      "link": "https://www.acmicpc.net/",
+      "created": "2021-04-29T18:28:50.569Z",
+      "modified": "2021-04-29T18:28:50.569Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "bf4e91fc-8113-403c-803c-242b3bc798c2",
+    "fields": {
+      "code": "CF",
+      "name": "codeforces",
+      "link": "https://codeforces.com/",
+      "created": "2021-04-29T18:28:50.578Z",
+      "modified": "2021-04-29T18:28:50.578Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "e0aef002-b5db-4a92-a1b2-e6793fafe5f7",
+    "fields": {
+      "code": "KT",
+      "name": "kattis",
+      "link": "https://open.kattis.com/",
+      "created": "2021-04-29T18:28:50.584Z",
+      "modified": "2021-04-29T18:28:50.584Z"
+    }
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "model": "gitbook.repository",
+    "pk": "bb3df9c0-3a52-4098-b6de-e83bceccb996",
+    "fields": {
+      "created": "2021-05-04T19:45:19.187Z",
+      "modified": "2021-05-04T19:45:19.187Z",
+      "user": "c26f7026-fddf-45fa-a6be-7ce4f65e6dfa",
+      "github_id": "SeanHwangG",
+      "name": "classroom",
+      "url": "https://github.com/SeanHwangG/classroom",
+      "path_env": "INTERVIEW_PATH"
+    }
+  }
+]

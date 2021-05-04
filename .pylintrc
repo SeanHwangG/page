@@ -1,4 +1,8 @@
-[pycodestyle]
-indent-size=2
+[MASTER]
+indent-string="  "
 max-line-length=140
 ignore= E402,E126 # continuation line over-indented for hanging indent
+
+[pycodestyle]
+max-line-length = 120
+indent-size=2

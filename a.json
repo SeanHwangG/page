@@ -1,0 +1,786 @@
+[
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 4,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 4,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 4,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 4,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 5,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 5,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 5,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 5,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add gitbook",
+      "content_type": 6,
+      "codename": "add_gitbook"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change gitbook",
+      "content_type": 6,
+      "codename": "change_gitbook"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete gitbook",
+      "content_type": 6,
+      "codename": "delete_gitbook"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view gitbook",
+      "content_type": 6,
+      "codename": "view_gitbook"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add header",
+      "content_type": 7,
+      "codename": "add_header"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change header",
+      "content_type": 7,
+      "codename": "change_header"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete header",
+      "content_type": 7,
+      "codename": "delete_header"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view header",
+      "content_type": 7,
+      "codename": "view_header"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add problem",
+      "content_type": 8,
+      "codename": "add_problem"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change problem",
+      "content_type": 8,
+      "codename": "change_problem"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete problem",
+      "content_type": 8,
+      "codename": "delete_problem"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view problem",
+      "content_type": 8,
+      "codename": "view_problem"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add site",
+      "content_type": 9,
+      "codename": "add_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change site",
+      "content_type": 9,
+      "codename": "change_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete site",
+      "content_type": 9,
+      "codename": "delete_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view site",
+      "content_type": 9,
+      "codename": "view_site"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add tag",
+      "content_type": 10,
+      "codename": "add_tag"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change tag",
+      "content_type": 10,
+      "codename": "change_tag"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete tag",
+      "content_type": 10,
+      "codename": "delete_tag"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view tag",
+      "content_type": 10,
+      "codename": "view_tag"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add solution",
+      "content_type": 11,
+      "codename": "add_solution"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change solution",
+      "content_type": 11,
+      "codename": "change_solution"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete solution",
+      "content_type": 11,
+      "codename": "delete_solution"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view solution",
+      "content_type": 11,
+      "codename": "view_solution"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add account",
+      "content_type": 12,
+      "codename": "add_account"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change account",
+      "content_type": 12,
+      "codename": "change_account"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete account",
+      "content_type": 12,
+      "codename": "delete_account"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view account",
+      "content_type": 12,
+      "codename": "view_account"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 13,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 13,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 13,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 13,
+      "codename": "view_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can add team",
+      "content_type": 14,
+      "codename": "add_team"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can change team",
+      "content_type": 14,
+      "codename": "change_team"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can delete team",
+      "content_type": 14,
+      "codename": "delete_team"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can view team",
+      "content_type": 14,
+      "codename": "view_team"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can add membership",
+      "content_type": 15,
+      "codename": "add_membership"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can change membership",
+      "content_type": 15,
+      "codename": "change_membership"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can delete membership",
+      "content_type": 15,
+      "codename": "delete_membership"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can view membership",
+      "content_type": 15,
+      "codename": "view_membership"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "gitbook",
+      "model": "gitbook"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "gitbook",
+      "model": "header"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "problem",
+      "model": "problem"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "problem",
+      "model": "site"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "problem",
+      "model": "tag"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "problem",
+      "model": "solution"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "problem",
+      "model": "account"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "user",
+      "model": "user"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+      "app_label": "user",
+      "model": "team"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+      "app_label": "user",
+      "model": "membership"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "32a4e7ba-7d9c-447e-a99a-55b604ecbb81",
+    "fields": {
+      "code": "LC",
+      "name": "leetcode",
+      "link": "https://leetcode.com/",
+      "created": "2021-04-29T18:28:50.573Z",
+      "modified": "2021-04-29T18:28:50.573Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "6c553902-b148-454f-8b2e-e08547a2f207",
+    "fields": {
+      "code": "HR",
+      "name": "hackerrank",
+      "link": "https://www.hackerrank.com/",
+      "created": "2021-04-29T18:28:50.581Z",
+      "modified": "2021-04-29T18:28:50.581Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "745ac7da-f9c0-48a9-b257-647480c8589a",
+    "fields": {
+      "code": "",
+      "name": "bj",
+      "link": "",
+      "created": "2021-05-01T17:30:09.552Z",
+      "modified": "2021-05-01T17:30:09.552Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "7bdcc432-3282-4e8f-be98-286e8a35dade",
+    "fields": {
+      "code": "CC",
+      "name": "codechef",
+      "link": "https://www.codechef.com/",
+      "created": "2021-04-29T18:28:50.576Z",
+      "modified": "2021-04-29T18:28:50.576Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "81272a1b-358f-441c-be60-a1ae19c65abc",
+    "fields": {
+      "code": "BJ",
+      "name": "baekjoon",
+      "link": "https://www.acmicpc.net/",
+      "created": "2021-04-29T18:28:50.569Z",
+      "modified": "2021-04-29T18:28:50.569Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "bf4e91fc-8113-403c-803c-242b3bc798c2",
+    "fields": {
+      "code": "CF",
+      "name": "codeforces",
+      "link": "https://codeforces.com/",
+      "created": "2021-04-29T18:28:50.578Z",
+      "modified": "2021-04-29T18:28:50.578Z"
+    }
+  },
+  {
+    "model": "problem.site",
+    "pk": "e0aef002-b5db-4a92-a1b2-e6793fafe5f7",
+    "fields": {
+      "code": "KT",
+      "name": "kattis",
+      "link": "https://open.kattis.com/",
+      "created": "2021-04-29T18:28:50.584Z",
+      "modified": "2021-04-29T18:28:50.584Z"
+    }
+  },
+  {
+    "model": "problem.account",
+    "pk": "727a2176-2e07-47ba-8fd7-541eb2c8377d",
+    "fields": {
+      "name": "",
+      "user": "ee63bda6-fca4-4297-bad4-d826b4d5fe65",
+      "site": "745ac7da-f9c0-48a9-b257-647480c8589a"
+    }
+  },
+  {
+    "model": "user.team",
+    "pk": "2d2e61f8-7b43-4698-9f4b-686ef36154a4",
+    "fields": {
+      "name": "prake",
+      "created": "2021-05-01T17:30:09.555Z",
+      "modified": "2021-05-01T17:30:09.555Z"
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": "ee63bda6-fca4-4297-bad4-d826b4d5fe65",
+    "fields": {
+      "password": "pbkdf2_sha256$216000$Rj0xAptF8jnL$Q+kUKRtB+8ZxXGDUT9nBTfN4GB2oIB1TD5/S5aWh0hc=",
+      "last_login": null,
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2021-05-01T17:30:09.307Z",
+      "email": "rbtmd1010@gmail.com",
+      "name": null,
+      "created": "2021-05-01T17:30:09.516Z",
+      "modified": "2021-05-01T17:30:09.516Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "user.membership",
+    "pk": "7b7ad6df-b105-4f78-82a7-f7001d3d7c06",
+    "fields": {
+      "membership_type": "member",
+      "team": "2d2e61f8-7b43-4698-9f4b-686ef36154a4",
+      "user": "ee63bda6-fca4-4297-bad4-d826b4d5fe65",
+      "created": "2021-05-01T17:30:09.567Z",
+      "modified": "2021-05-01T17:30:09.567Z"
+    }
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "python.pythonPath": "${workspaceFolder}/venv/bin/python",
+  "editor.tabSize": 2,
+  "python.formatting.autopep8Args": [
+    "--global-config",
+    "${workspaceFolder}/.pylintrc"
+  ],
+  "python.formatting.provider": "autopep8",
+  "python.linting.pylintEnabled": true,
+  "editor.formatOnSave": true,
+  "python.linting.pylintArgs": [
+    "--load-plugins=pylint_django", // for django
+    "--rcfile=${workspaceFolder}/.pylintrc"
+  ]
+}

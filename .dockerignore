@@ -1,8 +1,0 @@
-# Assume python3 -m vent env
-env
-# Credential files
-*.log
-.env
-token.pickle
-
-__pycache__

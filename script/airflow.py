@@ -1,7 +1,8 @@
-from airflow.utils.dates import days_ago
-from airflow.operators.bash import BashOperator
-from airflow import DAG
 from datetime import timedelta
+
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from airflow.utils.dates import days_ago
 
 default_args = {'owner': 'rbtmd1010',
                 'depends_on_past': False,
@@ -16,6 +17,19 @@ dag = DAG('classroom',
           schedule_interval=timedelta(hours=6),
           start_date=days_ago(2),
           tags=['example'])
+
+# Fetch problem
+# da crawl_problems -s BJ
+# da crawl_problems -s CF
+# da crawl_problems -s CC
+# da crawl_problems -s LC
+# da crawl_problems -s KT
+
+# Read Solution
+# da read_solutions -u rbtmd1010@gmail.com -t * -tt
+
+# Deploy
+# da combine_problems -u rbtmd1010@gmail.com -tt "problem/*" -t "*" -r embed
 
 # t1, t2 and t3 are examples of tasks created by instantiating operators
 t1 = BashOperator(task_id='parse_problem',

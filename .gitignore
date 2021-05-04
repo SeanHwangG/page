@@ -1,14 +1,13 @@
-# Assume python3 -m vent env
-env
+venv
 # Credential files
 *.log
 .env*
 nohup.out
-.vscode
 *.embed
 *.code-workspace
 *.ignore
 token.pickle
+static
 
 drivers
 simple_demo

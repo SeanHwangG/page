@@ -1,6 +1,11 @@
-# Classroom API
+# README
 
+* This is an API server for following gitbook
+  * CS Note : https://seanhwangg.gitbook.io/note/
+  * Interview Prep : https://seanhwangg.gitbook.io/interview/
 ## Diagram
+
+* django-admin graph_models -a -g -o models.png
 
 ![Class Diagram](images/20210422_203346.png)
 
@@ -17,3 +22,4 @@
 
 * django-admin crawl_problems
 * django-admin crawl_solutions
+
