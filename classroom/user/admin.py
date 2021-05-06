@@ -1,10 +1,10 @@
+import datetime
+
+from classroom.problem.models import Solution
+from classroom.user.models import Membership, Team, User
 from django.contrib import admin
 from django.db import models
 from django.db.models import Q
-from .models import User, Membership, Team
-from classroom.problem.models import Solution
-import datetime
-import logging
 
 
 class UserAdmin(admin.ModelAdmin):

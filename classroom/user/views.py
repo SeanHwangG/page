@@ -1,13 +1,12 @@
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from classroom.problem.models import Problem, Solution, Tag
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.parsers import JSONParser
 
 from .forms import UserRegistrationForm
-from .models import Membership, User
+from .models import User
 from .serializers import UserSerializer
 
 
@@ -26,6 +25,7 @@ def signup(request):
 
 def user(request):
   context = User.objects.get(name="황규승")
+  form = UserRegistrationForm(request.POST)
   return render(request, "user/home.html", {"user": context.__dict__, 'form': form})
 
 

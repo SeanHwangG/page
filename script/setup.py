@@ -1,6 +1,5 @@
 import argparse
 import logging
-import pathlib
 
 from django.conf import settings
 from django.core.management import call_command
@@ -16,8 +15,8 @@ def get_args():
 
 
 def get_backup():
-  logging.info("get_backup")
-  for json_backup in sorted(settings.BASE_DIR.glob("data/*.json")):
+  for json_backup in sorted(settings.BASE_DIR.glob("data/*.json*")):
+    logging.info(json_backup)
     call_command("loaddata", str(json_backup))
   return 0
 
