@@ -34,15 +34,14 @@ class ProblemAdmin(admin.ModelAdmin):
     return qs
 
   def title_link(self, problem):
-    return format_html(f"<a href={problem.link}>[{int(problem.level)}] {problem.title}</a>")
+    return format_html(f"<a href={problem.link}>[{problem.raw_level}] {problem.title}</a>")
 
   def tag_list(self, problem):
     return "\n".join([t.name for t in problem.tags.all()])
 
   def solved_users(self, problem):
     solutions = Solution.objects.filter(problem=problem).order_by("user")
-    return format_html(", ".join(f"<a href={solution.link}>{solution.user.name}</a>"
-                                 if solution.link else solution.user.name for solution in solutions))
+    return format_html(", ".join(f"<a href={solution.link}>{solution.user}</a>" if solution.link else str(solution.user) for solution in solutions))
 
 
 class SolutionAdmin(admin.ModelAdmin):
@@ -54,17 +53,15 @@ class SolutionAdmin(admin.ModelAdmin):
 
 
 class SiteAdmin(admin.ModelAdmin):
-  list_display = ("name", "site_link", "name", "modified")
+  list_display = ("name", "site_link", "total_problem", "name", "modified")
 
-  """
   def get_queryset(self, request):
     qs = super(SiteAdmin, self).get_queryset(request)
-    qs = qs.annotate(total_problems=models.Count("problem", filter=Q(problem__site=self)))
+    qs = qs.annotate(total_problems=models.Count("problem"))
     return qs
 
   def total_problem(self, user):
     return user.total_problems
-  """
 
   def site_link(self, site):
     return format_html(f"<a href={site.link}>{site.link}</a>")

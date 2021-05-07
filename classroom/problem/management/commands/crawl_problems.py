@@ -1,5 +1,5 @@
-from problem.models import Tag, Problem, Site
-from util.crawler import crawl_problems
+from classroom.problem.models import Tag, Problem, Site
+from classroom.util.crawler import crawl_problems
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from operator import itemgetter
@@ -26,16 +26,16 @@ class Command(BaseCommand):
 
     # Only crawl problems within our database
     if site_code == "HR":
-      problem_codes = list(Problem.objects.filter(code="HR").values_list('code', flat=True))
+      problem_codes = list(Problem.objects.filter(site__code="HR").values_list('code', flat=True))
     elif site_code == "CC":
-      problem_codes = list(Problem.objects.filter(code="CC").values_list('code', flat=True))
+      problem_codes = list(Problem.objects.filter(site__code="CC").values_list('code', flat=True))
     else:
       problem_codes = None
-
+    logging.info(problem_codes)
     for problem_dic in crawl_problems(site_code, n_thread, problem_codes):
-      link, problem_code, level, title = itemgetter("link", "problem_code", "level", "title")(problem_dic)
+      link, problem_code, level, title = itemgetter("link", "problem_code", "raw_level", "title")(problem_dic)
       _, created = Problem.objects.update_or_create(site=site, code=problem_code, defaults={
-                                                    "link": link, "level": level, "title": title})
+                                                    "link": link, "raw_level": level, "title": title})
       total += int(created)
     logging.info("Created : %s problems", total)
 

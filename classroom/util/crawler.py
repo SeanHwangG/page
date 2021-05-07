@@ -56,7 +56,7 @@ def _crawl_BJ_problems_level(level):
         problems.append({"site_code": "BJ",
                          "problem_code": code,
                          "link": link,
-                         "level": level,
+                         "raw_level": level,
                          "title": title})
   return problems
 
@@ -72,10 +72,10 @@ def _crawl_LC_problems(limit: int = None):
 
   data = driver.find_element_by_class_name("reactable-data").find_elements_by_tag_name("tr")
   for prob in islice(data, limit):
-    code, title, level = prob.text.split('\n')
+    code, title, raw_level = prob.text.split('\n')
     problems.append({"site_code": "LC",
                      "problem_code": code,
-                     "level": {"Easy": 1, "Medium": 2, "Hard": 3}[level[level.find(' ') + 1:]],
+                     "raw_level": raw_level[raw_level.find(' ') + 1:],
                      "link": prob.find_element_by_css_selector("a").get_attribute('href'),
                      "title": title.strip()})
   return problems
@@ -87,28 +87,27 @@ def _crawl_KT_problems_page(page: int):
   problems = []
   driver.get(f"https://open.kattis.com/problems?page={page}")
   for row_tag in driver.find_elements_by_css_selector("tr.odd,tr.even"):
-    title, _, _, _, _, _, _, _, level = row_tag.text.rsplit(maxsplit=8)
+    title, _, _, _, _, _, _, _, raw_level = row_tag.text.rsplit(maxsplit=8)
     link = row_tag.find_element_by_css_selector("a").get_attribute('href')
     problems.append({"site_code": "KT",
                      "problem_code": f"{link.rsplit('/')[-1]}",
                      "title": title,
                      "link": link,
-                     "level": level})
+                     "raw_level": raw_level})
   return problems
 
 
 def _crawl_CC_problem(code: str):
   logging.info("_crawl_CC_problems(%s)", code)
-  CC_levels = ["", "Beginner", "Easy", "Medium", "Hard", "Challenge", "Extcontest"]
   driver = get_chrome_driver()
   link = f"https://www.codechef.com/problems/{code}"
-  level = CC_levels.index(driver.find_elements_by_css_selector("aside>a")[1].text[9:-1])
   driver.get(link)
-  return {"site_code": "CC",
+  raw_level = driver.find_elements_by_css_selector("aside>a")[1].text[9:-1]
+  return [{"site_code": "CC",
           "problem_code": code,
-          "title": driver.find_element_by_css_selector("h1").text.split(" Problem Code")[0],
-          "link": link,
-          "level": level}
+           "title": driver.find_element_by_css_selector("h1").text.split(" Problem Code")[0],
+           "link": link,
+           "raw_level": raw_level}]
 
 
 def _crawl_CF_problems_page(page: int):
@@ -118,32 +117,32 @@ def _crawl_CF_problems_page(page: int):
   driver.get(f"https://codeforces.com/problemset/page/{page}")
   for row_tag in driver.find_elements_by_css_selector("table.problems>tbody>tr")[1:]:
     if row_tag.text.count("\n") == 3:
-      code, title, _, level = row_tag.text.split("\n")
+      code, title, _, raw_level = row_tag.text.split("\n")
     else:
-      code, title, level = row_tag.text.split("\n")
-    level = next(iter(re.findall(r"\d+", level)), -1)
+      code, title, raw_level = row_tag.text.split("\n")
+    raw_level = next(iter(re.findall(r"\d+", raw_level)), -1)
     link = row_tag.find_element_by_css_selector("a").get_attribute('href')
     problems.append({"site_code": "CF",
                      "problem_code": f"{code}",
                      "title": title,
                      "link": link,
-                     "level": level})
+                     "raw_level": raw_level})
   return problems
 
 
 def _crawl_HR_problem(code: str):
-  logging.info("_crawl_HR_problem({code})")
+  logging.info("_crawl_HR_problem(%s)", code)
   driver = get_chrome_driver(False)
   link = f"https://www.hackerrank.com/challenges/{code}/problem"
   logging.info(link)
   driver.get(link)
   WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, 'difficulty-block')))
-  level = driver.find_elements_by_class_name("difficulty-block")[1].text.split()[-1]
-  return {"site_code": "HR",
+  raw_level = driver.find_elements_by_class_name("difficulty-block")[1].text.split()[-1]
+  return [{"site_code": "HR",
           "problem_code": code,
-          "link": link,
-          "title": driver.find_element_by_class_name("ui-icon-label").text,
-          "level": {"Easy": 1, "Medium": 2, "Hard": 3}[level]}
+           "link": link,
+           "title": driver.find_element_by_class_name("ui-icon-label").text,
+           "raw_level": raw_level}]
 
 
 def crawl_problems(site_id: str, n_thread: int = None, codes: List[str] = None):

@@ -17,7 +17,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 65535
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 ENV_PATH = BASE_DIR / '.env'
 load_dotenv(dotenv_path=ENV_PATH)
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")

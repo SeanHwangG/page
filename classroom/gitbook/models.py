@@ -26,6 +26,8 @@ class Repository(TimeStampedModel):
   name = models.CharField(max_length=255, null=False, default="")
   url = models.URLField(null=False)
   path_env = models.CharField(max_length=255, default="CLASSROOM_PATH")
+  tag_type_glob = models.CharField(max_length=255, default="")
+  tag_glob = models.CharField(max_length=255, default="*")
 
   def __str__(self):
     return f"{self.url}"

@@ -15,7 +15,7 @@ def get_args():
 
 
 def get_backup():
-  for json_backup in sorted(settings.BASE_DIR.glob("data/*.json*")):
+  for json_backup in sorted(settings.BASE_DIR.glob("data.ignore/*.json")):
     logging.info(json_backup)
     call_command("loaddata", str(json_backup))
   return 0

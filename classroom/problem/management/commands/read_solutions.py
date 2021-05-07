@@ -1,3 +1,4 @@
+import os
 import logging
 import traceback
 from pathlib import Path
@@ -5,8 +6,8 @@ from pathlib import Path
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.core.exceptions import ObjectDoesNotExist
-from problem.models import Problem, Site, Solution, Tag, User
-from gitbook.models import Repository
+from classroom.problem.models import Problem, Site, Solution, Tag, User
+from classroom.gitbook.models import Repository
 
 
 class Command(BaseCommand):
@@ -14,8 +15,6 @@ class Command(BaseCommand):
 
   def add_arguments(self, parser):
     parser.add_argument('-u', '--user_email', required=True, type=str, help="user_email")
-    parser.add_argument('-t', '--tag_glob', type=str, help="Glob path for each tag")
-    parser.add_argument('-tt', '--tag_type', type=str, help="Set group for tags")
 
   def parse_problems(self, repo: Repository, user: User, tag: Tag, tag_path: Path):
     logging.info("parse_problems(%s, %s, %s)", user, tag, tag_path)
@@ -37,21 +36,24 @@ class Command(BaseCommand):
 
     return new_solution
 
-  def handle(self, tag_glob: str, user_email: str, tag_type: str, *args, **options):
-    logging.info("handle(%s, %s, %s)", tag_glob, user_email, tag_type)
+  def handle(self, user_email: str, *args, **options):
+    logging.info("handle(%s)", user_email)
     new_tag, new_solution = 0, 0
     user = User.objects.get(email=user_email)
     repo = Repository.objects.get(user=user)
+    assert repo.path_env in os.environ, f"{repo.path_env} not in invironment"
+    local_path = os.getenv(repo.path_env)
     try:
-      for tag_path in Path(repo.path_env).glob(tag_glob):
-        logging.debug(tag_path)
-        tag_type, tag_name = str(tag_path).rsplit("/", 2)[1:]
-        tag, created = Tag.objects.get_or_create(name=tag_name, type=tag_type)
-        if created:
-          new_tag += 1
-          logging.info("Created : tag %s", tag)
-        new_solution += self.parse_problems(user, tag, tag_path)
-      logging.info("Created : %s tags from directory", new_tag)
-      logging.info("Created : %s solutions from directory", new_solution)
+      for tag_type_path in Path(local_path).glob(repo.tag_type_glob):
+        logging.debug(tag_type_path)
+        for tag_path in Path(tag_type_path).glob(repo.tag_glob):
+          logging.debug(tag_path)
+          tag, created = Tag.objects.get_or_create(name=tag_path.name, type=tag_type_path.name)
+          if created:
+            new_tag += 1
+            logging.info("Created : tag %s", tag)
+          new_solution += self.parse_problems(repo, user, tag, tag_path)
+        logging.info("Created : %s tags from directory", new_tag)
+        logging.info("Created : %s solutions from directory", new_solution)
     except ObjectDoesNotExist:
       logging.exception("Not found")

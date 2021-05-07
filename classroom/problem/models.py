@@ -40,6 +40,7 @@ class Account(TimeStampedModel):
 class Problem(TimeStampedModel):
   uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
   code = models.CharField(max_length=255, null=False)
+  raw_level = models.CharField(max_length=255, default="")
   level = models.IntegerField(default=-1)
   link = models.CharField(max_length=255, default="")
   title = models.CharField(max_length=255, default="")
@@ -66,6 +67,9 @@ class Solution(TimeStampedModel):
                               choices=[("python", "python"), ("c++", "c++"), ("java", "java"),
                                        ("shell", "shell"), ("sql", "sql"), ("go", "go"), ("unknown", "unknown")])
   code = models.CharField(max_length=65535, default="")
+
+  def __str__(self):
+    return f"{problem} by {user}"
 
   class Meta:
     ordering = ["-created"]

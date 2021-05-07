@@ -9,6 +9,7 @@
   "python.linting.pylintEnabled": true,
   "editor.formatOnSave": true,
   "python.linting.pylintArgs": [
+    "--disable=django-not-configured",
     "--load-plugins=pylint_django", // for django
     "--rcfile=${workspaceFolder}/.pylintrc"
   ]

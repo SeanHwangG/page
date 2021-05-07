@@ -8,6 +8,7 @@ nohup.out
 *.ignore
 token.pickle
 static
+db.sqlite3
 
 drivers
 simple_demo
